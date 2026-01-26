@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --background: #FFFBF5;
+  --foreground: #5D4E60;
+  --font-nunito: 'Nunito', system-ui, sans-serif;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-nunito);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Smooth transitions */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Spring decorative elements */
+.spring-blob {
+  border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
+}
+
+.spring-blob-alt {
+  border-radius: 40% 60% 50% 50% / 50% 50% 60% 40%;
+}
+
+/* Decorative spring elements - flowers */
+.flower::before {
+  content: "🌸";
+}
+
+.flower-alt::before {
+  content: "🌼";
+}
+
+/* Sparkle effect */
+.sparkle {
+  position: relative;
+}
+
+.sparkle::after {
+  content: "✨";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 12px;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+/* Gentle wave divider */
+.wave-divider {
+  position: relative;
+  overflow: hidden;
+}
+
+.wave-divider::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23FFFBF5'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+
+/* Card styles */
+.card-spring {
+  @apply bg-white rounded-3xl shadow-soft border border-cream-300/50 p-6;
+}
+
+.card-spring-hover {
+  @apply card-spring hover:shadow-soft-lg hover:-translate-y-1;
+}
+
+/* Button styles */
+.btn-spring {
+  @apply px-6 py-3 rounded-2xl font-semibold transition-all hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0;
+}
+
+.btn-peach {
+  @apply btn-spring bg-peach text-warm-800 hover:bg-peach-400;
+}
+
+.btn-mint {
+  @apply btn-spring bg-mint text-warm-800 hover:bg-mint-400;
+}
+
+.btn-sky {
+  @apply btn-spring bg-sky text-warm-800 hover:bg-sky-400;
+}
+
+.btn-butter {
+  @apply btn-spring bg-butter text-warm-800 hover:bg-butter-400;
+}
+
+.btn-lavender {
+  @apply btn-spring bg-lavender text-warm-800 hover:bg-lavender-400;
+}
+
+/* Team card styles */
+.team-peach {
+  @apply bg-gradient-to-br from-peach-100 to-peach-200 border-2 border-peach-300/50;
+}
+
+.team-mint {
+  @apply bg-gradient-to-br from-mint-100 to-mint-200 border-2 border-mint-300/50;
+}
+
+/* Input styles */
+.input-spring {
+  @apply w-full px-4 py-3 bg-white border-2 border-cream-300 rounded-2xl focus:border-sky-400 focus:ring-2 focus:ring-sky-200 focus:outline-none placeholder-warm-400;
+}
+
+/* Floating decorations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-5deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 5s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+/* Progress bar styles */
+.progress-spring {
+  @apply h-4 bg-cream-200 rounded-full overflow-hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF7ED;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E2D1F9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C4A1E8;
+}
+
+/* Selection */
+::selection {
+  background-color: #FFE5DC;
+  color: #5D4E60;
+}
