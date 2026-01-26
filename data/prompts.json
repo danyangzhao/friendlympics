@@ -172,5 +172,357 @@
       "artist": "Miley Cyrus",
       "clue": "I can buy myself flowers"
     }
-  ]
+  ],
+  "typing": [
+    "The quick brown fox jumps over the lazy dog.",
+    "Pack my box with five dozen liquor jugs.",
+    "How vexingly quick daft zebras jump!",
+    "Sphinx of black quartz, judge my vow.",
+    "Waltz, bad nymph, for quick jigs vex.",
+    "Jaded zombies acted quaintly but kept driving their oxen forward.",
+    "The five boxing wizards jump quickly.",
+    "Bright vixens jump; dozy fowl quack.",
+    "Quick zephyrs blow, vexing daft Jim.",
+    "Sphinx of black quartz, judge my vow.",
+    "The quick brown fox jumps over the lazy dog and runs away.",
+    "She sells seashells by the seashore.",
+    "How much wood would a woodchuck chuck if a woodchuck could chuck wood?",
+    "Peter Piper picked a peck of pickled peppers.",
+    "A proper copper coffee pot.",
+    "Red lorry, yellow lorry, red lorry, yellow lorry.",
+    "Unique New York, unique New York, you know you need unique New York.",
+    "I scream, you scream, we all scream for ice cream.",
+    "Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair.",
+    "Betty Botter bought some butter but she said the butter's bitter.",
+    "Can you can a can as a canner can can a can?",
+    "I wish to wish the wish you wish to wish, but if you wish the wish the witch wishes, I won't wish the wish you wish to wish.",
+    "Six slippery snails slid slowly seaward.",
+    "A big black bug bit a big black bear, made the big black bear bleed blood.",
+    "Lesser leather never weathered wetter weather better.",
+    "A skunk sat on a stump and thunk the stump stunk, but the stump thunk the skunk stunk."
+  ],
+  "trivia": [
+    {
+      "question": "What year did the first iPhone release?",
+      "options": ["2005", "2006", "2007", "2008"],
+      "answer": 2,
+      "category": "tech"
+    },
+    {
+      "question": "Which planet is known as the Red Planet?",
+      "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+      "answer": 1,
+      "category": "science"
+    },
+    {
+      "question": "What is the capital of Australia?",
+      "options": ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+      "answer": 2,
+      "category": "geography"
+    },
+    {
+      "question": "Who painted the Mona Lisa?",
+      "options": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+      "answer": 2,
+      "category": "art"
+    },
+    {
+      "question": "What is the largest ocean on Earth?",
+      "options": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+      "answer": 3,
+      "category": "geography"
+    },
+    {
+      "question": "In which year did World War II end?",
+      "options": ["1943", "1944", "1945", "1946"],
+      "answer": 2,
+      "category": "history"
+    },
+    {
+      "question": "What is the smallest prime number?",
+      "options": ["0", "1", "2", "3"],
+      "answer": 2,
+      "category": "math"
+    },
+    {
+      "question": "Which element has the chemical symbol 'Au'?",
+      "options": ["Silver", "Gold", "Aluminum", "Argon"],
+      "answer": 1,
+      "category": "science"
+    },
+    {
+      "question": "What is the longest river in the world?",
+      "options": ["Amazon River", "Nile River", "Mississippi River", "Yangtze River"],
+      "answer": 1,
+      "category": "geography"
+    },
+    {
+      "question": "Who wrote 'Romeo and Juliet'?",
+      "options": ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+      "answer": 1,
+      "category": "literature"
+    },
+    {
+      "question": "What is the speed of light in a vacuum?",
+      "options": ["299,792,458 m/s", "300,000,000 m/s", "150,000,000 m/s", "450,000,000 m/s"],
+      "answer": 0,
+      "category": "science"
+    },
+    {
+      "question": "Which country is home to the kangaroo?",
+      "options": ["New Zealand", "Australia", "South Africa", "Brazil"],
+      "answer": 1,
+      "category": "geography"
+    },
+    {
+      "question": "What is the hardest natural substance on Earth?",
+      "options": ["Gold", "Iron", "Diamond", "Platinum"],
+      "answer": 2,
+      "category": "science"
+    },
+    {
+      "question": "In which sport would you perform a slam dunk?",
+      "options": ["Football", "Basketball", "Tennis", "Soccer"],
+      "answer": 1,
+      "category": "sports"
+    },
+    {
+      "question": "What is the capital of Japan?",
+      "options": ["Seoul", "Beijing", "Tokyo", "Bangkok"],
+      "answer": 2,
+      "category": "geography"
+    },
+    {
+      "question": "Which planet is closest to the Sun?",
+      "options": ["Venus", "Earth", "Mercury", "Mars"],
+      "answer": 2,
+      "category": "science"
+    },
+    {
+      "question": "What is the largest mammal in the world?",
+      "options": ["African Elephant", "Blue Whale", "Giraffe", "Polar Bear"],
+      "answer": 1,
+      "category": "science"
+    },
+    {
+      "question": "Who is known as the 'King of Pop'?",
+      "options": ["Elvis Presley", "Michael Jackson", "Prince", "Madonna"],
+      "answer": 1,
+      "category": "music"
+    },
+    {
+      "question": "What is the main ingredient in guacamole?",
+      "options": ["Tomato", "Avocado", "Cucumber", "Pepper"],
+      "answer": 1,
+      "category": "food"
+    },
+    {
+      "question": "In which year did the Berlin Wall fall?",
+      "options": ["1987", "1989", "1991", "1993"],
+      "answer": 1,
+      "category": "history"
+    },
+    {
+      "question": "What is the largest desert in the world?",
+      "options": ["Gobi Desert", "Sahara Desert", "Antarctic Desert", "Arabian Desert"],
+      "answer": 2,
+      "category": "geography"
+    },
+    {
+      "question": "Which programming language is known for web development?",
+      "options": ["Python", "JavaScript", "C++", "Java"],
+      "answer": 1,
+      "category": "tech"
+    },
+    {
+      "question": "What is the smallest country in the world?",
+      "options": ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+      "answer": 1,
+      "category": "geography"
+    },
+    {
+      "question": "Who painted 'Starry Night'?",
+      "options": ["Claude Monet", "Vincent van Gogh", "Salvador Dali", "Pablo Picasso"],
+      "answer": 1,
+      "category": "art"
+    },
+    {
+      "question": "What is the chemical formula for water?",
+      "options": ["H2O", "CO2", "NaCl", "O2"],
+      "answer": 0,
+      "category": "science"
+    },
+    {
+      "question": "Which movie won the Academy Award for Best Picture in 2020?",
+      "options": ["1917", "Joker", "Parasite", "Once Upon a Time in Hollywood"],
+      "answer": 2,
+      "category": "movies"
+    },
+    {
+      "question": "What is the tallest mountain in the world?",
+      "options": ["K2", "Mount Kilimanjaro", "Mount Everest", "Mount Fuji"],
+      "answer": 2,
+      "category": "geography"
+    },
+    {
+      "question": "Which sport is played at Wimbledon?",
+      "options": ["Golf", "Tennis", "Cricket", "Rugby"],
+      "answer": 1,
+      "category": "sports"
+    },
+    {
+      "question": "What is the largest planet in our solar system?",
+      "options": ["Saturn", "Neptune", "Jupiter", "Uranus"],
+      "answer": 2,
+      "category": "science"
+    },
+    {
+      "question": "Who wrote '1984'?",
+      "options": ["George Orwell", "Aldous Huxley", "Ray Bradbury", "H.G. Wells"],
+      "answer": 0,
+      "category": "literature"
+    },
+    {
+      "question": "What is the most widely spoken language in the world?",
+      "options": ["English", "Spanish", "Mandarin Chinese", "Hindi"],
+      "answer": 2,
+      "category": "culture"
+    },
+    {
+      "question": "Which animal is known as the 'King of the Jungle'?",
+      "options": ["Tiger", "Lion", "Leopard", "Cheetah"],
+      "answer": 1,
+      "category": "science"
+    },
+    {
+      "question": "What is the capital of Canada?",
+      "options": ["Toronto", "Vancouver", "Ottawa", "Montreal"],
+      "answer": 2,
+      "category": "geography"
+    },
+    {
+      "question": "In which year did humans first land on the Moon?",
+      "options": ["1967", "1969", "1971", "1973"],
+      "answer": 1,
+      "category": "history"
+    },
+    {
+      "question": "What is the primary ingredient in bread?",
+      "options": ["Sugar", "Flour", "Eggs", "Butter"],
+      "answer": 1,
+      "category": "food"
+    },
+    {
+      "question": "Which band sang 'Bohemian Rhapsody'?",
+      "options": ["The Beatles", "Queen", "Led Zeppelin", "Pink Floyd"],
+      "answer": 1,
+      "category": "music"
+    },
+    {
+      "question": "What is the largest continent by land area?",
+      "options": ["Africa", "North America", "Asia", "Europe"],
+      "answer": 2,
+      "category": "geography"
+    },
+    {
+      "question": "Which fruit is known for keeping the doctor away?",
+      "options": ["Banana", "Orange", "Apple", "Grape"],
+      "answer": 2,
+      "category": "food"
+    },
+    {
+      "question": "What is the square root of 64?",
+      "options": ["6", "7", "8", "9"],
+      "answer": 2,
+      "category": "math"
+    },
+    {
+      "question": "Which country is famous for the Eiffel Tower?",
+      "options": ["Italy", "Spain", "France", "Germany"],
+      "answer": 2,
+      "category": "geography"
+    },
+    {
+      "question": "What is the freezing point of water in Celsius?",
+      "options": ["-10°C", "0°C", "10°C", "32°C"],
+      "answer": 1,
+      "category": "science"
+    },
+    {
+      "question": "Who directed the movie 'Inception'?",
+      "options": ["Steven Spielberg", "Christopher Nolan", "Quentin Tarantino", "Martin Scorsese"],
+      "answer": 1,
+      "category": "movies"
+    },
+    {
+      "question": "What is the longest bone in the human body?",
+      "options": ["Humerus", "Tibia", "Femur", "Radius"],
+      "answer": 2,
+      "category": "science"
+    },
+    {
+      "question": "Which city is known as the 'Big Apple'?",
+      "options": ["Chicago", "Los Angeles", "New York City", "Boston"],
+      "answer": 2,
+      "category": "culture"
+    },
+    {
+      "question": "What is the chemical symbol for iron?",
+      "options": ["Ir", "In", "Fe", "Fr"],
+      "answer": 2,
+      "category": "science"
+    },
+    {
+      "question": "Which ocean is between America and Europe?",
+      "options": ["Pacific Ocean", "Indian Ocean", "Arctic Ocean", "Atlantic Ocean"],
+      "answer": 3,
+      "category": "geography"
+    },
+    {
+      "question": "What is the most popular social media platform?",
+      "options": ["Twitter", "Facebook", "Instagram", "TikTok"],
+      "answer": 1,
+      "category": "tech"
+    },
+    {
+      "question": "Which season comes after winter?",
+      "options": ["Spring", "Summer", "Fall", "Winter again"],
+      "answer": 0,
+      "category": "general"
+    },
+    {
+      "question": "What is the capital of Brazil?",
+      "options": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"],
+      "answer": 2,
+      "category": "geography"
+    },
+    {
+      "question": "Which instrument has 88 keys?",
+      "options": ["Organ", "Piano", "Harpsichord", "Synthesizer"],
+      "answer": 1,
+      "category": "music"
+    },
+    {
+      "question": "What is the largest internal organ in the human body?",
+      "options": ["Heart", "Liver", "Lung", "Brain"],
+      "answer": 1,
+      "category": "science"
+    },
+    {
+      "question": "In which year was the first Super Bowl played?",
+      "options": ["1965", "1967", "1969", "1971"],
+      "answer": 1,
+      "category": "sports"
+    }
+  ],
+  "memory": {
+    "emojis": ["🎸", "🎺", "🎹", "🥁", "🎤", "🎧", "🎼", "🎵"],
+    "animals": ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼"],
+    "food": ["🍎", "🍌", "🍊", "🍇", "🍓", "🍑", "🥝", "🍉"],
+    "sports": ["⚽", "🏀", "🏈", "⚾", "🎾", "🏐", "🏓", "🏸"],
+    "nature": ["🌲", "🌳", "🌴", "🌵", "🌾", "🌿", "🍀", "🌱"],
+    "vehicles": ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑"],
+    "faces": ["😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣"],
+    "hearts": ["❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍"]
+  }
 }

@@ -98,7 +98,13 @@ export default function GameDetail() {
 
   const isPlayableGame = game?.name.toLowerCase().includes('charade') || 
                          game?.name.toLowerCase().includes('song') ||
-                         game?.name.toLowerCase().includes('guess');
+                         game?.name.toLowerCase().includes('guess') ||
+                         game?.name.toLowerCase().includes('typer') ||
+                         game?.name.toLowerCase().includes('typing') ||
+                         game?.name.toLowerCase().includes('trivia') ||
+                         game?.name.toLowerCase().includes('quiz') ||
+                         game?.name.toLowerCase().includes('memory') ||
+                         game?.name.toLowerCase().includes('match');
 
   const getMedalEmoji = (index: number) => {
     if (index === 0) return '🥇';
