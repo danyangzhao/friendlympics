@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+// Decorative spring elements
+const FloatingElement = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <div className={`absolute pointer-events-none select-none ${className}`}>
+    {children}
+  </div>
+);
+
 const ArrowLeftIcon = () => (
   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -63,11 +70,22 @@ export default function LeaderboardPage() {
 
   return (
     <div className="min-h-screen bg-cream-100 pb-20 relative overflow-hidden">
-      {/* Decorative background */}
+      {/* Decorative background elements - matching sign-in page */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-butter-200/30 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 -right-32 w-80 h-80 bg-lavender-200/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-10 w-64 h-64 bg-sky-200/30 rounded-full blur-3xl" />
+        {/* Soft gradient blobs */}
+        <div className="absolute -top-20 -left-20 w-72 h-72 bg-peach-200/40 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 -right-20 w-80 h-80 bg-mint-200/40 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 left-1/3 w-96 h-96 bg-sky-200/40 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-10 w-64 h-64 bg-butter-200/40 rounded-full blur-3xl" />
+        
+        {/* Floating decorative elements */}
+        <FloatingElement className="top-16 left-10 text-3xl animate-float">🌸</FloatingElement>
+        <FloatingElement className="top-32 right-16 text-2xl animate-float-slow">🌷</FloatingElement>
+        <FloatingElement className="bottom-32 left-20 text-2xl animate-float-reverse">🌼</FloatingElement>
+        <FloatingElement className="top-1/3 right-10 text-xl animate-float">☁️</FloatingElement>
+        <FloatingElement className="bottom-20 right-32 text-3xl animate-float-slow">🌿</FloatingElement>
+        <FloatingElement className="top-20 left-1/3 text-xl animate-float-reverse">✨</FloatingElement>
+        <FloatingElement className="bottom-1/3 left-8 text-xl animate-float">🍃</FloatingElement>
       </div>
 
       {/* Header */}

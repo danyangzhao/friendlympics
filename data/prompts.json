@@ -55,151 +55,299 @@
     {
       "title": "Bohemian Rhapsody",
       "artist": "Queen",
-      "clue": "Is this the real life? Is this just fantasy?"
+      "youtubeId": "fJ9rUzIMcZQ",
+      "startTime": 0
     },
     {
       "title": "Sweet Caroline",
       "artist": "Neil Diamond",
-      "clue": "Sweet Caroline, ba ba ba"
+      "youtubeId": "NsLyI1_R01M",
+      "startTime": 0
     },
     {
       "title": "Don't Stop Believin'",
       "artist": "Journey",
-      "clue": "Just a small town girl, living in a lonely world"
+      "youtubeId": "1k8craCGpgs",
+      "startTime": 0
     },
     {
       "title": "Livin' on a Prayer",
       "artist": "Bon Jovi",
-      "clue": "Whoa, we're halfway there"
-    },
-    {
-      "title": "I Will Always Love You",
-      "artist": "Whitney Houston",
-      "clue": "If I should stay, I would only be in your way"
+      "youtubeId": "lDK9QqIzhwk",
+      "startTime": 0
     },
     {
       "title": "Billie Jean",
       "artist": "Michael Jackson",
-      "clue": "Billie Jean is not my lover"
+      "youtubeId": "Zi_XLOBDo_Y",
+      "startTime": 0
     },
     {
       "title": "Hotel California",
       "artist": "Eagles",
-      "clue": "On a dark desert highway, cool wind in my hair"
-    },
-    {
-      "title": "Stairway to Heaven",
-      "artist": "Led Zeppelin",
-      "clue": "There's a lady who's sure all that glitters is gold"
+      "youtubeId": "09839DpTctU",
+      "startTime": 0
     },
     {
       "title": "Imagine",
       "artist": "John Lennon",
-      "clue": "Imagine there's no heaven"
-    },
-    {
-      "title": "Like a Rolling Stone",
-      "artist": "Bob Dylan",
-      "clue": "How does it feel, to be on your own?"
+      "youtubeId": "YkgkThdzX-8",
+      "startTime": 0
     },
     {
       "title": "Smells Like Teen Spirit",
       "artist": "Nirvana",
-      "clue": "Load up on guns, bring your friends"
+      "youtubeId": "hTWKbfoikeg",
+      "startTime": 0
     },
     {
       "title": "Wonderwall",
       "artist": "Oasis",
-      "clue": "Today is gonna be the day"
+      "youtubeId": "bx1Bh8ZvH84",
+      "startTime": 0
     },
     {
       "title": "Hey Jude",
       "artist": "The Beatles",
-      "clue": "Hey Jude, don't be afraid"
-    },
-    {
-      "title": "Thunderstruck",
-      "artist": "AC/DC",
-      "clue": "Thunder, thunder, thunder, thunder"
+      "youtubeId": "A_MjCqQoLLA",
+      "startTime": 0
     },
     {
       "title": "Shape of You",
       "artist": "Ed Sheeran",
-      "clue": "The club isn't the best place to find a lover"
+      "youtubeId": "JGwWNGJdvx8",
+      "startTime": 0
     },
     {
       "title": "Uptown Funk",
       "artist": "Mark Ronson ft. Bruno Mars",
-      "clue": "This hit, that ice cold"
+      "youtubeId": "OPf0YbXqDm0",
+      "startTime": 0
     },
     {
       "title": "Blinding Lights",
       "artist": "The Weeknd",
-      "clue": "I've been tryna call"
-    },
-    {
-      "title": "Watermelon Sugar",
-      "artist": "Harry Styles",
-      "clue": "Tastes like strawberries on a summer evening"
+      "youtubeId": "4NRXx6U8ABQ",
+      "startTime": 0
     },
     {
       "title": "Levitating",
       "artist": "Dua Lipa",
-      "clue": "If you wanna run away with me, I know a galaxy"
-    },
-    {
-      "title": "Good 4 U",
-      "artist": "Olivia Rodrigo",
-      "clue": "Well, good for you, I guess you moved on really easily"
-    },
-    {
-      "title": "Stay",
-      "artist": "The Kid LAROI & Justin Bieber",
-      "clue": "I do the same thing I told you that I never would"
+      "youtubeId": "TUVcZfQe-Kw",
+      "startTime": 0
     },
     {
       "title": "Heat Waves",
       "artist": "Glass Animals",
-      "clue": "Sometimes all I think about is you"
+      "youtubeId": "mRD0-GxqHVo",
+      "startTime": 0
     },
     {
-      "title": "As It Was",
-      "artist": "Harry Styles",
-      "clue": "Holdin' me back, gravity's holdin' me back"
+      "title": "Oops!...I Did It Again",
+      "artist": "Britney Spears",
+      "youtubeId": "pHKD5L9dp1k",
+      "startTime": 0
     },
     {
-      "title": "Flowers",
+      "title": "Party In The U.S.A.",
       "artist": "Miley Cyrus",
-      "clue": "I can buy myself flowers"
+      "youtubeId": "NCUA9p_K4L8",
+      "startTime": 0
+    },
+    {
+      "title": "She Will Be Loved",
+      "artist": "Maroon 5",
+      "youtubeId": "Wf5c_XkcsTc",
+      "startTime": 0
+    },
+    {
+      "title": "Teenage Dirtbag",
+      "artist": "Wheatus",
+      "youtubeId": "Kc4zQ5muz3g",
+      "startTime": 0
+    },
+    {
+      "title": "Bring Me To Life",
+      "artist": "Evanescence",
+      "youtubeId": "sHXmAOanKHA",
+      "startTime": 0
+    },
+    {
+      "title": "Because Of You",
+      "artist": "Kelly Clarkson",
+      "youtubeId": "QPCrB5f8SvQ",
+      "startTime": 0
+    },
+    {
+      "title": "Bleeding Love",
+      "artist": "Leona Lewis",
+      "youtubeId": "ZiYdOwOrBSA",
+      "startTime": 0
+    },
+    {
+      "title": "A Thousand Miles",
+      "artist": "Vanessa Carlton",
+      "youtubeId": "u2R0aWBgpHk",
+      "startTime": 0
+    },
+    {
+      "title": "The Man Who Can't Be Moved",
+      "artist": "The Script",
+      "youtubeId": "m_XP_b5jG6E",
+      "startTime": 0
+    },
+    {
+      "title": "Take A Bow",
+      "artist": "Rihanna",
+      "youtubeId": "0dB8k59BICk",
+      "startTime": 0
+    },
+    {
+      "title": "The Reason",
+      "artist": "Hoobastank",
+      "youtubeId": "5z1gPYAQKsc",
+      "startTime": 0
+    },
+    {
+      "title": "Big Girls Don't Cry",
+      "artist": "Fergie",
+      "youtubeId": "Y0pdQU87dc8",
+      "startTime": 0
+    },
+    {
+      "title": "Hotline Bling (Karaoke)",
+      "artist": "Drake",
+      "youtubeId": "gLIaz2b4vmc",
+      "startTime": 0
+    },
+    {
+      "title": "Better Now (Karaoke)",
+      "artist": "Post Malone",
+      "youtubeId": "DtTFu9qgX38",
+      "startTime": 0
+    },
+    {
+      "title": "Sunflower (Karaoke)",
+      "artist": "Post Malone & Swae Lee",
+      "youtubeId": "awxvtj-0JKw",
+      "startTime": 0
+    },
+    {
+      "title": "Rockstar (Karaoke)",
+      "artist": "Post Malone ft. 21 Savage",
+      "youtubeId": "3MnkQg8xIek",
+      "startTime": 0
+    },
+    {
+      "title": "Congratulations (Karaoke)",
+      "artist": "Post Malone ft. Quavo",
+      "youtubeId": "yhz1SxTCp80",
+      "startTime": 0
+    },
+    {
+      "title": "Wow. (Karaoke)",
+      "artist": "Post Malone",
+      "youtubeId": "u8Qru4vJUJg",
+      "startTime": 0
+    },
+    {
+      "title": "Psycho (Karaoke)",
+      "artist": "Post Malone ft. Ty Dolla $ign",
+      "youtubeId": "JJc6jQfnOYA",
+      "startTime": 0
+    },
+    {
+      "title": "Circles (Karaoke)",
+      "artist": "Post Malone",
+      "youtubeId": "o6eM4kGkU6k",
+      "startTime": 0
+    },
+    {
+      "title": "I Fall Apart (Piano Karaoke)",
+      "artist": "Post Malone",
+      "youtubeId": "B0w9Q6yG0Ec",
+      "startTime": 0
+    },
+    {
+      "title": "White Iverson (Karaoke)",
+      "artist": "Post Malone",
+      "youtubeId": "i12XJdOjhtE",
+      "startTime": 0
+    },
+    {
+      "title": "Old Town Road (Karaoke)",
+      "artist": "Lil Nas X",
+      "youtubeId": "vtPbp1y1I9A",
+      "startTime": 0
+    },
+    {
+      "title": "Lucid Dreams (Karaoke)",
+      "artist": "Juice WRLD",
+      "youtubeId": "Or2jvM8m1b4",
+      "startTime": 0
+    },
+    {
+      "title": "SICKO MODE (Karaoke)",
+      "artist": "Travis Scott",
+      "youtubeId": "SUePmO0mG8I",
+      "startTime": 0
+    },
+    {
+      "title": "Trap Queen (Karaoke)",
+      "artist": "Fetty Wap",
+      "youtubeId": "p0KaXnO_fU4",
+      "startTime": 0
+    },
+    {
+      "title": "WAP (Karaoke)",
+      "artist": "Cardi B & Megan Thee Stallion",
+      "youtubeId": "uwu0P4iTHAA",
+      "startTime": 0
+    },
+    {
+      "title": "Nice For What (Karaoke)",
+      "artist": "Drake",
+      "youtubeId": "9wgBzHF9xp0",
+      "startTime": 0
+    },
+    {
+      "title": "In My Feelings (Karaoke)",
+      "artist": "Drake",
+      "youtubeId": "_QCLxZfhD2w",
+      "startTime": 0
+    },
+    {
+      "title": "One Dance (Karaoke)",
+      "artist": "Drake",
+      "youtubeId": "MtZydtYRHLo",
+      "startTime": 0
+    },
+    {
+      "title": "No Flockin (Karaoke)",
+      "artist": "Kodak Black",
+      "youtubeId": "Xq0snS2k0fc",
+      "startTime": 0
+    },
+    {
+      "title": "XO TOUR Llif3 (Karaoke)",
+      "artist": "Lil Uzi Vert",
+      "youtubeId": "Z0np2VDmRjE",
+      "startTime": 0
     }
   ],
   "typing": [
-    "The quick brown fox jumps over the lazy dog.",
-    "Pack my box with five dozen liquor jugs.",
-    "How vexingly quick daft zebras jump!",
-    "Sphinx of black quartz, judge my vow.",
-    "Waltz, bad nymph, for quick jigs vex.",
-    "Jaded zombies acted quaintly but kept driving their oxen forward.",
-    "The five boxing wizards jump quickly.",
-    "Bright vixens jump; dozy fowl quack.",
-    "Quick zephyrs blow, vexing daft Jim.",
-    "Sphinx of black quartz, judge my vow.",
-    "The quick brown fox jumps over the lazy dog and runs away.",
-    "She sells seashells by the seashore.",
-    "How much wood would a woodchuck chuck if a woodchuck could chuck wood?",
-    "Peter Piper picked a peck of pickled peppers.",
-    "A proper copper coffee pot.",
-    "Red lorry, yellow lorry, red lorry, yellow lorry.",
-    "Unique New York, unique New York, you know you need unique New York.",
-    "I scream, you scream, we all scream for ice cream.",
-    "Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair.",
-    "Betty Botter bought some butter but she said the butter's bitter.",
-    "Can you can a can as a canner can can a can?",
-    "I wish to wish the wish you wish to wish, but if you wish the wish the witch wishes, I won't wish the wish you wish to wish.",
-    "Six slippery snails slid slowly seaward.",
-    "A big black bug bit a big black bear, made the big black bear bleed blood.",
-    "Lesser leather never weathered wetter weather better.",
-    "A skunk sat on a stump and thunk the stump stunk, but the stump thunk the skunk stunk."
+    "The morning sun cast long shadows across the quiet street as neighbors emerged from their homes. Children rushed to catch the school bus while parents sipped coffee on porches, exchanging waves and brief conversations about the weather. A gentle breeze carried the scent of freshly cut grass through the neighborhood.",
+    "Scientists have discovered that the human brain processes information in fascinating ways. When we learn something new, our neurons form connections that strengthen with practice. This is why repetition helps us remember things better. The more we practice a skill, the more automatic it becomes over time.",
+    "The old bookstore on the corner had been there for decades. Its wooden shelves were packed with stories waiting to be discovered. The owner knew every book by heart and could recommend the perfect read for anyone who walked through the creaky front door. Dust motes danced in sunbeams streaming through the windows.",
+    "Cooking is both an art and a science that brings people together. The sizzle of vegetables in a hot pan, the aroma of fresh herbs, and the satisfaction of creating something delicious from simple ingredients makes it a rewarding activity. Every meal tells a story and carries the love of the person who prepared it.",
+    "Technology has transformed how we communicate with each other. We can now video chat with someone across the globe in an instant. While this connectivity brings many benefits, it also reminds us to appreciate face-to-face conversations and the simple joy of spending quality time with the people we care about most.",
+    "The ocean stretches endlessly toward the horizon, its waves rolling in a constant rhythm that has continued for millions of years. Beneath the surface lies a world of incredible diversity, from tiny plankton to massive whales. Each creature plays its part in the delicate balance of marine ecosystems.",
+    "Music has the power to transport us through time and space. A familiar song can instantly bring back memories of specific moments in our lives. Whether it is a lullaby from childhood or a song from a special celebration, melodies become intertwined with our personal histories in remarkable ways.",
+    "Gardens require patience and care to flourish. Every seed planted is an act of hope, trusting that with the right amount of water, sunlight, and attention, something beautiful will grow. Watching a plant develop from a tiny sprout into a blooming flower reminds us of the rewards that come from nurturing living things.",
+    "The mountains stood tall against the evening sky, their peaks touched by the last golden rays of sunlight. Hikers made their way down winding trails, tired but satisfied after a day of exploration. The fresh mountain air and stunning views made every challenging step worthwhile on the journey.",
+    "Learning a new language opens doors to different cultures and ways of thinking. Each language carries unique expressions and ideas that sometimes cannot be directly translated. The process of becoming bilingual not only improves communication skills but also enhances cognitive abilities and broadens perspectives on the world.",
+    "Cities never truly sleep. Even in the quietest hours of the night, there are people working, traveling, and living their lives. The constant hum of activity creates a unique energy that attracts millions of people seeking opportunity, adventure, and connection in these bustling urban environments.",
+    "Friendship is one of life's greatest treasures. True friends support each other through good times and bad, celebrate successes, and provide comfort during challenges. These relationships require effort to maintain, but the bond created through shared experiences and mutual trust is invaluable and enriches our lives immeasurably."
   ],
   "trivia": [
     {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Decorative spring elements
@@ -11,36 +11,34 @@ const FloatingElement = ({ children, className = "" }: { children: React.ReactNo
 );
 
 export default function Home() {
-  const [eventCode, setEventCode] = useState('');
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
   const [team, setTeam] = useState<'boys' | 'girls' | ''>('');
-  const [step, setStep] = useState<'code' | 'profile'>('code');
   const [loading, setLoading] = useState(false);
+  const [initializing, setInitializing] = useState(true);
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleCodeSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      const res = await fetch(`/api/events?code=${encodeURIComponent(eventCode)}`);
-      if (!res.ok) {
+  // Auto-initialize the default event on page load
+  useEffect(() => {
+    const initEvent = async () => {
+      try {
+        const res = await fetch('/api/init');
+        if (!res.ok) {
+          throw new Error('Failed to initialize event');
+        }
         const data = await res.json();
-        throw new Error(data.error || 'Event not found');
+        localStorage.setItem('eventId', data.eventId.toString());
+        localStorage.setItem('eventCode', data.eventCode);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setInitializing(false);
       }
-      const event = await res.json();
-      localStorage.setItem('eventId', event.id.toString());
-      localStorage.setItem('eventCode', event.event_code);
-      setStep('profile');
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    initEvent();
+  }, []);
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,11 +48,12 @@ export default function Home() {
     try {
       const eventId = localStorage.getItem('eventId');
       if (!eventId) {
-        throw new Error('Event not found');
+        throw new Error('Event not initialized');
       }
 
       if (!team) {
         setError('Please select a team');
+        setLoading(false);
         return;
       }
 
@@ -83,6 +82,14 @@ export default function Home() {
       setLoading(false);
     }
   };
+
+  if (initializing) {
+    return (
+      <div className="min-h-screen bg-cream-100 flex items-center justify-center">
+        <div className="text-warm-500 text-xl font-medium">loading... 🌸</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-cream-100 flex items-center justify-center p-4 relative overflow-hidden">
@@ -114,120 +121,80 @@ export default function Home() {
         </h1>
         <p className="text-center text-warm-500 mb-8 text-lg">let the fun begin! ✨</p>
 
-        {step === 'code' ? (
-          <form onSubmit={handleCodeSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-semibold text-warm-600 mb-2 lowercase">
-                event code
-              </label>
-              <input
-                type="text"
-                value={eventCode}
-                onChange={(e) => setEventCode(e.target.value.toUpperCase())}
-                className="input-spring text-center text-2xl font-bold tracking-wider"
-                placeholder="ABC123"
-                required
-                maxLength={10}
-              />
-            </div>
-            {error && (
-              <div className="bg-peach-100 border-2 border-peach-300 text-warm-700 px-4 py-3 rounded-2xl text-sm">
-                {error}
-              </div>
-            )}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full btn-sky text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'checking...' : 'join event 🎉'}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleProfileSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-semibold text-warm-600 mb-2 lowercase">
-                your name *
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="input-spring"
-                placeholder="enter your name"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-warm-600 mb-2 lowercase">
-                nickname (optional)
-              </label>
-              <input
-                type="text"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-                className="input-spring"
-                placeholder="fun nickname"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-warm-600 mb-3 lowercase">
-                pick your team *
-              </label>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setTeam('boys')}
-                  className={`p-5 rounded-2xl border-2 transition-all ${
-                    team === 'boys'
-                      ? 'bg-gradient-to-br from-sky-100 to-sky-200 border-sky-300 ring-2 ring-sky-400 shadow-glow-sky'
-                      : 'bg-cream-50 border-cream-200 hover:border-sky-300 hover:bg-sky-50'
-                  }`}
-                >
-                  <div className="text-4xl mb-2">💙</div>
-                  <div className={`font-bold lowercase ${team === 'boys' ? 'text-warm-700' : 'text-warm-500'}`}>
-                    team boys
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTeam('girls')}
-                  className={`p-5 rounded-2xl border-2 transition-all ${
-                    team === 'girls'
-                      ? 'bg-gradient-to-br from-peach-100 to-peach-200 border-peach-300 ring-2 ring-peach-400 shadow-glow-peach'
-                      : 'bg-cream-50 border-cream-200 hover:border-peach-300 hover:bg-peach-50'
-                  }`}
-                >
-                  <div className="text-4xl mb-2">💗</div>
-                  <div className={`font-bold lowercase ${team === 'girls' ? 'text-warm-700' : 'text-warm-500'}`}>
-                    team girls
-                  </div>
-                </button>
-              </div>
-            </div>
-            {error && (
-              <div className="bg-peach-100 border-2 border-peach-300 text-warm-700 px-4 py-3 rounded-2xl text-sm">
-                {error}
-              </div>
-            )}
-            <div className="flex gap-3">
+        <form onSubmit={handleProfileSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-warm-600 mb-2 lowercase">
+              your name *
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="input-spring"
+              placeholder="enter your name"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-warm-600 mb-2 lowercase">
+              nickname (optional)
+            </label>
+            <input
+              type="text"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              className="input-spring"
+              placeholder="fun nickname"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-warm-600 mb-3 lowercase">
+              pick your team *
+            </label>
+            <div className="grid grid-cols-2 gap-4">
               <button
                 type="button"
-                onClick={() => setStep('code')}
-                className="flex-1 btn-spring bg-cream-200 text-warm-600 hover:bg-cream-300"
+                onClick={() => setTeam('boys')}
+                className={`p-5 rounded-2xl border-2 transition-all ${
+                  team === 'boys'
+                    ? 'bg-gradient-to-br from-sky-100 to-sky-200 border-sky-300 ring-2 ring-sky-400 shadow-glow-sky'
+                    : 'bg-cream-50 border-cream-200 hover:border-sky-300 hover:bg-sky-50'
+                }`}
               >
-                back
+                <div className="text-4xl mb-2">💙</div>
+                <div className={`font-bold lowercase ${team === 'boys' ? 'text-warm-700' : 'text-warm-500'}`}>
+                  team boys
+                </div>
               </button>
               <button
-                type="submit"
-                disabled={loading}
-                className="flex-1 btn-butter text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                type="button"
+                onClick={() => setTeam('girls')}
+                className={`p-5 rounded-2xl border-2 transition-all ${
+                  team === 'girls'
+                    ? 'bg-gradient-to-br from-peach-100 to-peach-200 border-peach-300 ring-2 ring-peach-400 shadow-glow-peach'
+                    : 'bg-cream-50 border-cream-200 hover:border-peach-300 hover:bg-peach-50'
+                }`}
               >
-                {loading ? 'joining...' : "let's go! 🌟"}
+                <div className="text-4xl mb-2">💗</div>
+                <div className={`font-bold lowercase ${team === 'girls' ? 'text-warm-700' : 'text-warm-500'}`}>
+                  team girls
+                </div>
               </button>
             </div>
-          </form>
-        )}
+          </div>
+          {error && (
+            <div className="bg-peach-100 border-2 border-peach-300 text-warm-700 px-4 py-3 rounded-2xl text-sm">
+              {error}
+            </div>
+          )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full btn-butter text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? 'joining...' : "let's go! 🌟"}
+          </button>
+        </form>
       </div>
     </div>
   );

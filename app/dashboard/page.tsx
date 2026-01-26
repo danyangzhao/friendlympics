@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+// Decorative spring elements
+const FloatingElement = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <div className={`absolute pointer-events-none select-none ${className}`}>
+    {children}
+  </div>
+);
+
 // Simple icons as SVG components for a cleaner look
 const TrophyIcon = () => (
   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -101,22 +108,28 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-cream-100 pb-24 relative overflow-hidden">
-      {/* Decorative background */}
+      {/* Decorative background elements - matching sign-in page */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-32 -right-32 w-96 h-96 bg-peach-200/30 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 -left-32 w-80 h-80 bg-mint-200/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-64 h-64 bg-butter-200/30 rounded-full blur-3xl" />
+        {/* Soft gradient blobs */}
+        <div className="absolute -top-20 -left-20 w-72 h-72 bg-peach-200/40 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 -right-20 w-80 h-80 bg-mint-200/40 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 left-1/3 w-96 h-96 bg-sky-200/40 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-10 w-64 h-64 bg-butter-200/40 rounded-full blur-3xl" />
+        
+        {/* Floating decorative elements */}
+        <FloatingElement className="top-32 right-16 text-2xl animate-float-slow">🌷</FloatingElement>
+        <FloatingElement className="bottom-32 left-20 text-2xl animate-float-reverse">🌼</FloatingElement>
+        <FloatingElement className="top-1/3 right-10 text-xl animate-float">☁️</FloatingElement>
+        <FloatingElement className="bottom-20 right-32 text-3xl animate-float-slow">🌿</FloatingElement>
+        <FloatingElement className="bottom-1/3 left-8 text-xl animate-float">🍃</FloatingElement>
       </div>
 
       {/* Header */}
       <div className="relative px-6 pt-12 pb-6">
-        <div className="flex items-center gap-3 mb-1">
-          <span className="text-2xl">🌷</span>
-          <h1 className="text-3xl font-bold text-warm-700">
-            friendlympics
-          </h1>
-        </div>
-        <p className="text-warm-500 ml-10">have fun together ✨</p>
+        <h1 className="text-3xl font-bold text-warm-700 mb-1">
+          🌸 friendlympics
+        </h1>
+        <p className="text-warm-500">have fun together</p>
       </div>
 
       <div className="px-4 space-y-6 relative">
