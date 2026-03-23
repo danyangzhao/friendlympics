@@ -661,6 +661,186 @@
       "options": ["1965", "1967", "1969", "1971"],
       "answer": 1,
       "category": "sports"
+    },
+    {
+      "question": "Which movie features the line 'I'll be back'?",
+      "options": ["Die Hard", "The Terminator", "Rocky", "Top Gun"],
+      "answer": 1,
+      "category": "movies"
+    },
+    {
+      "question": "Which movie is about a clownfish searching for his son?",
+      "options": ["Shark Tale", "Finding Nemo", "Moana", "Surf's Up"],
+      "answer": 1,
+      "category": "movies"
+    },
+    {
+      "question": "Who plays Jack in the movie 'Titanic'?",
+      "options": ["Brad Pitt", "Matt Damon", "Leonardo DiCaprio", "Tom Cruise"],
+      "answer": 2,
+      "category": "movies"
+    },
+    {
+      "question": "Which wizarding school does Harry Potter attend?",
+      "options": ["Beauxbatons", "Durmstrang", "Ilvermorny", "Hogwarts"],
+      "answer": 3,
+      "category": "movies"
+    },
+    {
+      "question": "Which superhero is known as the Caped Crusader?",
+      "options": ["Spider-Man", "Batman", "Iron Man", "Superman"],
+      "answer": 1,
+      "category": "movies"
+    },
+    {
+      "question": "In 'Frozen,' what is the name of Elsa's sister?",
+      "options": ["Anna", "Olaf", "Moana", "Belle"],
+      "answer": 0,
+      "category": "movies"
+    },
+    {
+      "question": "Which movie series features the character Lightning McQueen?",
+      "options": ["Toy Story", "Cars", "Planes", "Turbo"],
+      "answer": 1,
+      "category": "movies"
+    },
+    {
+      "question": "What is the name of the kingdom in 'Black Panther'?",
+      "options": ["Zamunda", "Genovia", "Wakanda", "Asgard"],
+      "answer": 2,
+      "category": "movies"
+    },
+    {
+      "question": "Which movie follows a family with superpowers?",
+      "options": ["Big Hero 6", "The Incredibles", "Inside Out", "Up"],
+      "answer": 1,
+      "category": "movies"
+    },
+    {
+      "question": "Who is the cowboy toy in 'Toy Story'?",
+      "options": ["Buzz", "Woody", "Rex", "Slinky Dog"],
+      "answer": 1,
+      "category": "movies"
+    },
+    {
+      "question": "Which city is famous for the Hollywood sign?",
+      "options": ["Miami", "Seattle", "Los Angeles", "Las Vegas"],
+      "answer": 2,
+      "category": "culture"
+    },
+    {
+      "question": "What do people usually use to eat sushi?",
+      "options": ["Tongs", "Chopsticks", "Wooden spoons", "Hands only"],
+      "answer": 1,
+      "category": "culture"
+    },
+    {
+      "question": "Which holiday is known for costumes and trick-or-treating?",
+      "options": ["Easter", "Thanksgiving", "Halloween", "Valentine's Day"],
+      "answer": 2,
+      "category": "culture"
+    },
+    {
+      "question": "What is the traditional color of school buses in the United States?",
+      "options": ["Blue", "Yellow", "Green", "White"],
+      "answer": 1,
+      "category": "culture"
+    },
+    {
+      "question": "Which board game uses properties like Boardwalk and Park Place?",
+      "options": ["Clue", "Life", "Monopoly", "Sorry!"],
+      "answer": 2,
+      "category": "culture"
+    },
+    {
+      "question": "Which fast-food chain is known for the Big Mac?",
+      "options": ["Burger King", "McDonald's", "Wendy's", "In-N-Out"],
+      "answer": 1,
+      "category": "culture"
+    },
+    {
+      "question": "Which city is famous for Times Square?",
+      "options": ["Chicago", "New York City", "Boston", "San Francisco"],
+      "answer": 1,
+      "category": "culture"
+    },
+    {
+      "question": "Which game is commonly described with the phrase 'bingo' when you win?",
+      "options": ["Dominoes", "Yahtzee", "Bingo", "Checkers"],
+      "answer": 2,
+      "category": "culture"
+    },
+    {
+      "question": "What color are the stars on the flag of the United States?",
+      "options": ["Red", "Blue", "White", "Gold"],
+      "answer": 2,
+      "category": "culture"
+    },
+    {
+      "question": "Which city is known as the 'Windy City'?",
+      "options": ["Chicago", "Denver", "Boston", "Dallas"],
+      "answer": 0,
+      "category": "culture"
+    },
+    {
+      "question": "Which singer is known for the song 'Shake It Off'?",
+      "options": ["Ariana Grande", "Taylor Swift", "Beyonce", "Olivia Rodrigo"],
+      "answer": 1,
+      "category": "music"
+    },
+    {
+      "question": "Which instrument does a drummer play?",
+      "options": ["Violin", "Trumpet", "Drums", "Flute"],
+      "answer": 2,
+      "category": "music"
+    },
+    {
+      "question": "Which artist is known for the album '25'?",
+      "options": ["Adele", "Rihanna", "Lady Gaga", "Katy Perry"],
+      "answer": 0,
+      "category": "music"
+    },
+    {
+      "question": "How many strings does a standard guitar usually have?",
+      "options": ["4", "5", "6", "7"],
+      "answer": 2,
+      "category": "music"
+    },
+    {
+      "question": "What food is guacamole usually served with?",
+      "options": ["Tortilla chips", "Pretzels", "Crackers", "Breadsticks"],
+      "answer": 0,
+      "category": "food"
+    },
+    {
+      "question": "Which breakfast food is often served with syrup?",
+      "options": ["Pancakes", "Scrambled eggs", "Toast", "Oatmeal"],
+      "answer": 0,
+      "category": "food"
+    },
+    {
+      "question": "In basketball, how many points is a free throw worth?",
+      "options": ["1", "2", "3", "4"],
+      "answer": 0,
+      "category": "sports"
+    },
+    {
+      "question": "How many players are on the field for one soccer team during play?",
+      "options": ["9", "10", "11", "12"],
+      "answer": 2,
+      "category": "sports"
+    },
+    {
+      "question": "What does 'WWW' stand for in a website address?",
+      "options": ["World Wide Web", "Web World Wire", "World Web Window", "Wide World Web"],
+      "answer": 0,
+      "category": "tech"
+    },
+    {
+      "question": "Which company makes the PlayStation?",
+      "options": ["Nintendo", "Microsoft", "Sony", "Sega"],
+      "answer": 2,
+      "category": "tech"
     }
   ],
   "memory": {
