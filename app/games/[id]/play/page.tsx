@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { initDefaultEventAndStore } from '@/lib/client-event';
@@ -71,42 +71,65 @@ interface TypingPlayerResult {
 
 type TypingGamePhase = 'setup' | 'playing' | 'results';
 
-// Typing Game Component
-function TypingGame({ 
-  targetText, 
+/** Partial credit for a wrong word: counts matching prefix chars toward accuracy (denominator is full target length). */
+function longestCommonPrefixLength(a: string, b: string): number {
+  let i = 0;
+  const n = Math.min(a.length, b.length);
+  while (i < n && a[i] === b[i]) i++;
+  return i;
+}
+
+// Typing Game Component — word at a time; Space commits and moves on (typos do not misalign later words)
+function TypingGame({
+  targetText,
   onComplete,
   playerName,
-  playerTeam
-}: { 
-  targetText: string; 
+  playerTeam,
+}: {
+  targetText: string;
   onComplete: (wpm: number, accuracy: number, timeMs: number) => void;
   playerName: string;
   playerTeam: 'boys' | 'girls';
 }) {
-  const [input, setInput] = useState('');
+  const tokens = useMemo(() => targetText.match(/\S+|\s+/g) || [], [targetText]);
+  const words = useMemo(() => tokens.filter((t) => /\S/.test(t)), [tokens]);
+
+  const [wordIndex, setWordIndex] = useState(0);
+  const [currentInput, setCurrentInput] = useState('');
+  const [correctCharsSum, setCorrectCharsSum] = useState(0);
+  /** Whether each completed word matched exactly (word-level styling). */
+  const [wordExactMatch, setWordExactMatch] = useState<boolean[]>([]);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [isComplete, setIsComplete] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [finalTimeMs, setFinalTimeMs] = useState<number | null>(null);
   const [isReady, setIsReady] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const readyButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Focus on ready button initially
+  useEffect(() => {
+    setWordIndex(0);
+    setCurrentInput('');
+    setCorrectCharsSum(0);
+    setWordExactMatch([]);
+    setIsComplete(false);
+    setFinalTimeMs(null);
+    setElapsedTime(0);
+    setStartTime((prev) => (prev !== null ? Date.now() : prev));
+  }, [targetText]);
+
   useEffect(() => {
     if (!isReady && readyButtonRef.current) {
       readyButtonRef.current.focus();
     }
   }, [isReady]);
 
-  // Focus on textarea when game starts
   useEffect(() => {
-    if (isReady && textareaRef.current) {
-      textareaRef.current.focus();
+    if (isReady && !isComplete && inputRef.current) {
+      inputRef.current.focus();
     }
-  }, [isReady]);
+  }, [isReady, isComplete, wordIndex]);
 
-  // Handle Enter key to start the game
   const handleStartGame = () => {
     setIsReady(true);
     setStartTime(Date.now());
@@ -119,7 +142,6 @@ function TypingGame({
     }
   };
 
-  // Timer for displaying elapsed time
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (startTime && !isComplete) {
@@ -130,34 +152,66 @@ function TypingGame({
     return () => clearInterval(interval);
   }, [startTime, isComplete]);
 
-  useEffect(() => {
-    if (input === targetText && !isComplete && isReady) {
+  const finishRound = useCallback(
+    (finalCorrectChars: number, timeMs: number) => {
+      const denom = targetText.length || 1;
+      const accuracy = Math.round((finalCorrectChars / denom) * 100);
+      const timeMinutes = timeMs / 60000;
+      const wpm = Math.round((words.length / timeMinutes) || 0);
+      setFinalTimeMs(timeMs);
+      setElapsedTime(timeMs);
+      setIsComplete(true);
+      onComplete(wpm, accuracy, timeMs);
+    },
+    [onComplete, targetText.length, words.length]
+  );
+
+  const commitCurrentWord = useCallback(() => {
+    if (!isReady || isComplete || words.length === 0) return;
+    const expected = words[wordIndex];
+    const typed = currentInput.replace(/\s/g, '');
+    const exact = typed === expected;
+    const added = exact ? expected.length : longestCommonPrefixLength(typed, expected);
+    const nextSum = correctCharsSum + added;
+
+    setWordExactMatch((prev) => [...prev, exact]);
+
+    if (wordIndex >= words.length - 1) {
       const endTime = Date.now();
       const timeMs = endTime - (startTime || endTime);
-      
-      // Set final time and complete state
-      setFinalTimeMs(timeMs);
-      setElapsedTime(timeMs); // Update elapsed to match final
-      setIsComplete(true);
-      
-      const timeMinutes = timeMs / 60000;
-      const wordsTyped = targetText.split(' ').length;
-      const wpm = Math.round((wordsTyped / timeMinutes) || 0);
-      
-      let correctChars = 0;
-      for (let i = 0; i < Math.min(input.length, targetText.length); i++) {
-        if (input[i] === targetText[i]) correctChars++;
-      }
-      const accuracy = Math.round((correctChars / targetText.length) * 100);
-      
-      onComplete(wpm, accuracy, timeMs);
+      setCorrectCharsSum(nextSum);
+      setCurrentInput('');
+      setWordIndex(words.length);
+      finishRound(nextSum, timeMs);
+      return;
     }
-  }, [input, targetText, startTime, onComplete, isComplete, isReady]);
 
-  const getCharStatus = (index: number) => {
-    if (index >= input.length) return 'pending';
-    if (input[index] === targetText[index]) return 'correct';
-    return 'incorrect';
+    setCorrectCharsSum(nextSum);
+    setWordIndex((w) => w + 1);
+    setCurrentInput('');
+  }, [
+    isReady,
+    isComplete,
+    words,
+    wordIndex,
+    currentInput,
+    correctCharsSum,
+    startTime,
+    finishRound,
+  ]);
+
+  const handleWordInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === ' ' && !isComplete) {
+      e.preventDefault();
+      commitCurrentWord();
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData('text').replace(/\s/g, '');
+    const maxLen = words[wordIndex]?.length ?? 0;
+    setCurrentInput((prev) => (prev + pasted).slice(0, maxLen));
   };
 
   const formatElapsedTime = (ms: number) => {
@@ -166,11 +220,52 @@ function TypingGame({
     return `${seconds}.${tenths}s`;
   };
 
-  // Ready screen - waiting to start
+  const renderPrompt = () => {
+    let wordOrdinal = -1;
+    return tokens.map((tok, i) => {
+      if (!/\S/.test(tok)) {
+        return (
+          <span key={`ws-${i}`} className="whitespace-pre-wrap">
+            {tok}
+          </span>
+        );
+      }
+      wordOrdinal += 1;
+      const w = wordOrdinal;
+      if (w < wordIndex) {
+        const ok = wordExactMatch[w];
+        return (
+          <span
+            key={`w-${i}`}
+            className={
+              ok ? 'bg-mint-200 text-mint-800 rounded px-0.5' : 'bg-peach-200 text-peach-800 rounded px-0.5'
+            }
+          >
+            {tok}
+          </span>
+        );
+      }
+      if (w === wordIndex) {
+        return (
+          <span
+            key={`w-${i}`}
+            className="bg-butter-100 text-warm-900 ring-2 ring-butter-400 rounded px-0.5"
+          >
+            {tok}
+          </span>
+        );
+      }
+      return (
+        <span key={`w-${i}`} className="text-warm-400">
+          {tok}
+        </span>
+      );
+    });
+  };
+
   if (!isReady) {
     return (
       <div className="space-y-6" onKeyDown={handleKeyDown}>
-        {/* Current Player Header */}
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-4 border border-cream-200">
           <div className="flex items-center justify-center gap-3">
             <span className="text-2xl">{playerTeam === 'boys' ? '💙' : '💗'}</span>
@@ -183,7 +278,9 @@ function TypingGame({
           <div className="text-6xl mb-6">⌨️</div>
           <h3 className="text-2xl font-bold text-warm-700 mb-4 lowercase">ready to type?</h3>
           <p className="text-warm-500 mb-6">
-            when you press start, the prompt will appear and the clock begins!
+            when you press start, the prompt will appear and the clock begins. type one word at a time and press{' '}
+            <kbd className="px-1.5 py-0.5 bg-cream-200 rounded text-sm">Space</kbd> to move to the next word — a typo
+            won&apos;t throw off the rest.
           </p>
           <button
             ref={readyButtonRef}
@@ -200,9 +297,16 @@ function TypingGame({
     );
   }
 
+  if (words.length === 0) {
+    return (
+      <div className="text-center text-peach-600 p-4">
+        no words to type — skip this prompt or try again.
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Current Player Header */}
       <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-4 border border-cream-200">
         <div className="flex items-center justify-center gap-3">
           <span className="text-2xl">{playerTeam === 'boys' ? '💙' : '💗'}</span>
@@ -210,7 +314,9 @@ function TypingGame({
           <span className="text-warm-500 lowercase">{isComplete ? 'finished!' : 'is typing'}</span>
         </div>
         {startTime && (
-          <div className={`text-center mt-2 text-lg font-mono ${isComplete ? 'text-mint-600 font-bold' : 'text-lavender-600'}`}>
+          <div
+            className={`text-center mt-2 text-lg font-mono ${isComplete ? 'text-mint-600 font-bold' : 'text-lavender-600'}`}
+          >
             {formatElapsedTime(isComplete && finalTimeMs ? finalTimeMs : elapsedTime)}
             {isComplete && ' ✓ recorded!'}
           </div>
@@ -218,40 +324,36 @@ function TypingGame({
       </div>
 
       <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-soft-xl p-6 border-2 border-sky-200">
-        <div className="mb-6">
-          <div className="text-sm text-warm-500 mb-4 lowercase text-center">type this text:</div>
-          <div className="text-lg font-mono text-warm-700 leading-relaxed mb-6 p-4 bg-cream-50 rounded-xl border border-cream-200">
-            {targetText.split('').map((char, i) => {
-              const status = getCharStatus(i);
-              return (
-                <span
-                  key={i}
-                  className={
-                    status === 'correct'
-                      ? 'bg-mint-200 text-mint-800'
-                      : status === 'incorrect'
-                      ? 'bg-peach-200 text-peach-800'
-                      : 'text-warm-400'
-                  }
-                >
-                  {char}
-                </span>
-              );
-            })}
+        <div className="mb-4">
+          <div className="text-sm text-warm-500 mb-3 lowercase text-center">
+            type each word below; press Space to commit and go to the next word (backspace only edits this word).
+          </div>
+          <div className="text-lg font-mono text-warm-700 leading-relaxed mb-4 p-4 bg-cream-50 rounded-xl border border-cream-200 max-h-48 overflow-y-auto">
+            {renderPrompt()}
           </div>
         </div>
-        <textarea
-          ref={textareaRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+        <input
+          ref={inputRef}
+          type="text"
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
+          value={currentInput}
+          onChange={(e) => setCurrentInput(e.target.value.replace(/\s/g, ''))}
+          onKeyDown={handleWordInputKeyDown}
+          onPaste={handlePaste}
           disabled={isComplete}
-          className="w-full px-4 py-3 text-lg font-mono border-2 border-sky-300 rounded-xl focus:outline-none focus:border-sky-500 resize-none"
-          placeholder="start typing here..."
-          rows={4}
+          className="w-full px-4 py-3 text-lg font-mono border-2 border-sky-300 rounded-xl focus:outline-none focus:border-sky-500"
+          placeholder="current word…"
+          aria-label="Type the current word, then press Space"
         />
-        <div className="mt-3 flex justify-between text-sm text-warm-500">
-          <span>{input.length} / {targetText.length} characters</span>
-          <span>{Math.round((input.length / targetText.length) * 100)}% complete</span>
+        <div className="mt-3 flex flex-wrap justify-between gap-2 text-sm text-warm-500">
+          <span>
+            word {Math.min(wordIndex + 1, words.length)} / {words.length}
+          </span>
+          <span>
+            {currentInput.length} / {words[wordIndex]?.length ?? 0} chars in this word
+          </span>
         </div>
         {isComplete && (
           <div className="mt-4 text-center text-mint-600 font-bold text-lg">
@@ -1407,7 +1509,7 @@ export default function PlayGame() {
       case 'song':
         return 'listen to the instrumental intro and guess the song + artist! 🎵';
       case 'typing':
-        return 'type the text as fast as you can! ⚡';
+        return 'type the paragraph — team winner is highest average WPM (same rule as the leaderboard). ⚡';
       case 'trivia':
         return 'answer trivia questions! first team to buzz in wins! 🧠';
       case 'memory':
@@ -1493,11 +1595,12 @@ export default function PlayGame() {
   const hasTypingTeamPlayers = () =>
     users.some((u) => u.team === 'boys' || u.team === 'girls');
 
-  const getTypingTeamTotal = (team: 'boys' | 'girls') => {
-    return getTypingTeamUsers(team).reduce((sum, user) => {
-      const result = typingPlayersCompleted[user.id];
-      return sum + (result?.timeMs || 0);
-    }, 0);
+  /** Average WPM among teammates who finished (matches leaderboard team rule: avg_points on WPM). */
+  const getTypingTeamAvgWpm = (team: 'boys' | 'girls'): number | null => {
+    const teamUsers = getTypingTeamUsers(team);
+    const done = teamUsers.filter((u) => typingPlayersCompleted[u.id]);
+    if (done.length === 0) return null;
+    return done.reduce((sum, u) => sum + typingPlayersCompleted[u.id].wpm, 0) / done.length;
   };
 
   const getTypingTeamCompletedCount = (team: 'boys' | 'girls') => {
@@ -1895,21 +1998,21 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="bg-lavender-200 text-lavender-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
-                        <span>your time is recorded when you complete the text</span>
+                        <span>when you finish, we save WPM (points), completion time, and accuracy in notes</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="bg-lavender-200 text-lavender-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
-                        <span>team times are added together</span>
+                        <span>each team&apos;s score is the average WPM of everyone who played</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="bg-lavender-200 text-lavender-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold flex-shrink-0">5</span>
-                        <span>the team with the lowest total time wins!</span>
+                        <span>higher average WPM wins — same rule as the team leaderboard</span>
                       </li>
                     </ol>
                   </div>
                 </div>
 
-                {/* Team Progress & Cumulative Times */}
+                {/* Team progress: turns done + running avg WPM (leaderboard uses avg WPM per team) */}
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-4 border border-cream-200">
                   <div className="flex justify-center gap-8">
                     <div className="text-center">
@@ -1917,9 +2020,9 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                         {getTypingTeamCompletedCount('boys')}/{getTypingTeamUsers('boys').length}
                       </div>
                       <div className="text-sm text-warm-500">Team Boys 💙</div>
-                      {getTypingTeamTotal('boys') > 0 && (
+                      {getTypingTeamAvgWpm('boys') != null && (
                         <div className="text-xs text-sky-600 font-mono mt-1">
-                          {formatTimeMs(getTypingTeamTotal('boys'))}
+                          {getTypingTeamAvgWpm('boys')!.toFixed(1)} avg wpm
                         </div>
                       )}
                     </div>
@@ -1929,9 +2032,9 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                         {getTypingTeamCompletedCount('girls')}/{getTypingTeamUsers('girls').length}
                       </div>
                       <div className="text-sm text-warm-500">Team Girls 💗</div>
-                      {getTypingTeamTotal('girls') > 0 && (
+                      {getTypingTeamAvgWpm('girls') != null && (
                         <div className="text-xs text-peach-600 font-mono mt-1">
-                          {formatTimeMs(getTypingTeamTotal('girls'))}
+                          {getTypingTeamAvgWpm('girls')!.toFixed(1)} avg wpm
                         </div>
                       )}
                     </div>
@@ -2106,16 +2209,20 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                     <div className="flex justify-center gap-8">
                       <div className="text-center">
                         <div className="text-xl font-bold text-sky-500">
-                          {formatTimeMs(getTypingTeamTotal('boys'))}
+                          {getTypingTeamAvgWpm('boys') != null
+                            ? `${getTypingTeamAvgWpm('boys')!.toFixed(1)} wpm`
+                            : '—'}
                         </div>
-                        <div className="text-xs text-warm-500">Team Boys 💙</div>
+                        <div className="text-xs text-warm-500">Team Boys 💙 (avg)</div>
                       </div>
                       <div className="text-lg text-warm-300 self-center">vs</div>
                       <div className="text-center">
                         <div className="text-xl font-bold text-peach-500">
-                          {formatTimeMs(getTypingTeamTotal('girls'))}
+                          {getTypingTeamAvgWpm('girls') != null
+                            ? `${getTypingTeamAvgWpm('girls')!.toFixed(1)} wpm`
+                            : '—'}
                         </div>
-                        <div className="text-xs text-warm-500">Team Girls 💗</div>
+                        <div className="text-xs text-warm-500">Team Girls 💗 (avg)</div>
                       </div>
                     </div>
                   </div>
@@ -2145,24 +2252,24 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                   {hasTypingTeamPlayers() ? (
                     <>
                       <h2 className="text-3xl font-bold text-warm-700 mb-2 lowercase">
-                        {getTypingTeamTotal('boys') < getTypingTeamTotal('girls')
-                          ? 'team boys wins!'
-                          : getTypingTeamTotal('girls') < getTypingTeamTotal('boys')
+                        {(getTypingTeamAvgWpm('girls') ?? -1) > (getTypingTeamAvgWpm('boys') ?? -1)
                           ? 'team girls wins!'
+                          : (getTypingTeamAvgWpm('boys') ?? -1) > (getTypingTeamAvgWpm('girls') ?? -1)
+                          ? 'team boys wins!'
                           : "it's a tie!"}
                       </h2>
                       <div className="text-5xl mb-4">
-                        {getTypingTeamTotal('boys') < getTypingTeamTotal('girls')
-                          ? '💙'
-                          : getTypingTeamTotal('girls') < getTypingTeamTotal('boys')
+                        {(getTypingTeamAvgWpm('girls') ?? -1) > (getTypingTeamAvgWpm('boys') ?? -1)
                           ? '💗'
+                          : (getTypingTeamAvgWpm('boys') ?? -1) > (getTypingTeamAvgWpm('girls') ?? -1)
+                          ? '💙'
                           : '🤝'}
                       </div>
                     </>
                   ) : (
                     <>
                       <h2 className="text-3xl font-bold text-warm-700 mb-2 lowercase">all done!</h2>
-                      <p className="text-warm-500 text-sm">fastest time wins — see individual times below</p>
+                      <p className="text-warm-500 text-sm">highest WPM ranks first — same as the game leaderboard</p>
                     </>
                   )}
                 </div>
@@ -2170,17 +2277,21 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                 {/* Final Scores */}
                 {hasTypingTeamPlayers() && (
                   <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-6 border border-cream-200">
-                    <h3 className="text-xl font-bold text-warm-700 mb-4 text-center lowercase">final times</h3>
+                    <h3 className="text-xl font-bold text-warm-700 mb-4 text-center lowercase">team average WPM</h3>
                     <div className="flex justify-center gap-12">
                       <div className="text-center">
                         <div className="text-4xl font-bold text-sky-500 font-mono">
-                          {formatTimeMs(getTypingTeamTotal('boys'))}
+                          {getTypingTeamAvgWpm('boys') != null
+                            ? getTypingTeamAvgWpm('boys')!.toFixed(1)
+                            : '—'}
                         </div>
                         <div className="text-warm-500">Team Boys 💙</div>
                       </div>
                       <div className="text-center">
                         <div className="text-4xl font-bold text-peach-500 font-mono">
-                          {formatTimeMs(getTypingTeamTotal('girls'))}
+                          {getTypingTeamAvgWpm('girls') != null
+                            ? getTypingTeamAvgWpm('girls')!.toFixed(1)
+                            : '—'}
                         </div>
                         <div className="text-warm-500">Team Girls 💗</div>
                       </div>
@@ -2196,7 +2307,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                       .sort((a, b) => {
                         const aResult = typingPlayersCompleted[a.id];
                         const bResult = typingPlayersCompleted[b.id];
-                        return (aResult?.timeMs || Infinity) - (bResult?.timeMs || Infinity);
+                        return (bResult?.wpm ?? 0) - (aResult?.wpm ?? 0);
                       })
                       .map((user, index) => {
                         const result = typingPlayersCompleted[user.id];

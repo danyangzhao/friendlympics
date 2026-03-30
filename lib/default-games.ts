@@ -30,7 +30,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     name: 'Fastest Typer',
     type: 'hybrid',
     rules:
-      'Type the displayed text as fast and accurately as possible. Score = WPM with accuracy bonus.',
+      'Type the shown text as fast and accurately as you can. Each run saves WPM as points and completion time; accuracy is stored in notes. Team standings use average WPM across players (higher is better).',
     team_win_rule: 'avg_points',
     time_direction: 'lower_better',
   },
