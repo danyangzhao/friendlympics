@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { calculateLeaderboard, getGameLeaderboard, calculateTeamLeaderboard } from '@/lib/leaderboard';
-import { getGameById } from '@/lib/data';
+import { ensureCanonicalGamesForEvent, getGameById } from '@/lib/data';
 
 export async function GET(request: NextRequest) {
   try {
@@ -17,11 +17,14 @@ export async function GET(request: NextRequest) {
       const leaderboard = getGameLeaderboard(parseInt(gameId));
       return NextResponse.json(leaderboard);
     } else if (eventId) {
+      const parsedEventId = parseInt(eventId);
+      ensureCanonicalGamesForEvent(parsedEventId);
+
       if (type === 'team') {
-        const leaderboard = calculateTeamLeaderboard(parseInt(eventId));
+        const leaderboard = calculateTeamLeaderboard(parsedEventId);
         return NextResponse.json(leaderboard);
       } else {
-        const leaderboard = calculateLeaderboard(parseInt(eventId));
+        const leaderboard = calculateLeaderboard(parsedEventId);
         return NextResponse.json(leaderboard);
       }
     } else {
