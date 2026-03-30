@@ -1,4 +1,16 @@
-import { getScoresByEvent, getUsersByEvent, getGamesByEvent } from './data';
+import {
+  getScoresByEvent,
+  getScoresByGame,
+  getUsersByEvent,
+  getGamesByEvent,
+  getGameById,
+} from './data';
+import {
+  aggregateTeamMetric,
+  compareTeamMetrics,
+  resolveTeamWinRule,
+  resolveTimeDirection,
+} from './scoring';
 
 export interface TeamLeaderboardEntry {
   team: 'boys' | 'girls';
@@ -17,12 +29,13 @@ export interface LeaderboardEntry {
   overallRank: number;
 }
 
+const EPS = 1e-9;
+
 export function calculateTeamLeaderboard(eventId: number): TeamLeaderboardEntry[] {
   const users = getUsersByEvent(eventId);
   const games = getGamesByEvent(eventId);
   const scores = getScoresByEvent(eventId);
 
-  // Initialize team entries
   const teams: Record<'boys' | 'girls', TeamLeaderboardEntry> = {
     boys: {
       team: 'boys',
@@ -38,72 +51,46 @@ export function calculateTeamLeaderboard(eventId: number): TeamLeaderboardEntry[
     },
   };
 
-  // Count team members
-  users.forEach(user => {
+  users.forEach((user) => {
     if (user.team === 'boys' || user.team === 'girls') {
-      teams[user.team].memberCount++;
+      teams[user.team as 'boys' | 'girls'].memberCount++;
     }
   });
 
-  // Process scores by game
   for (const game of games) {
-    const gameScores = scores.filter(s => s.game_id === game.id);
-    
-    // Group scores by team
-    const teamScores: Record<'boys' | 'girls', number> = {
-      boys: 0,
-      girls: 0,
-    };
+    const gameScores = scores.filter((s) => s.game_id === game.id);
+    const boysRows = gameScores.filter((s) => s.team === 'boys');
+    const girlsRows = gameScores.filter((s) => s.team === 'girls');
 
-    if (game.type === 'score' || game.type === 'hybrid') {
-      // Sum points by team
-      gameScores.forEach(score => {
-        if (score.team === 'boys' || score.team === 'girls') {
-          teamScores[score.team] += score.points || 0;
-        }
-      });
-    } else if (game.type === 'time') {
-      // For time-based, calculate average time per team (lower is better)
-      const teamTimes: Record<'boys' | 'girls', number[]> = {
-        boys: [],
-        girls: [],
-      };
-      
-      gameScores.forEach(score => {
-        if ((score.team === 'boys' || score.team === 'girls') && score.time_ms) {
-          teamTimes[score.team].push(score.time_ms);
-        }
-      });
-
-      // Calculate average time for each team
-      Object.keys(teamTimes).forEach(team => {
-        const times = teamTimes[team as 'boys' | 'girls'];
-        if (times.length > 0) {
-          const avgTime = times.reduce((a, b) => a + b, 0) / times.length;
-          // Convert to points (lower time = higher points)
-          teamScores[team as 'boys' | 'girls'] = 10000 - avgTime; // Inverse scoring
-        }
-      });
+    if (boysRows.length === 0 || girlsRows.length === 0) {
+      continue;
     }
 
-    // Award 1 point to the winning team (0.5 each for ties)
-    const boysScore = teamScores.boys;
-    const girlsScore = teamScores.girls;
-    
-    if (boysScore > girlsScore) {
-      teams.boys.gameScores[game.id] = 1;
-      teams.girls.gameScores[game.id] = 0;
-      teams.boys.totalPoints += 1;
-    } else if (girlsScore > boysScore) {
-      teams.girls.gameScores[game.id] = 1;
-      teams.boys.gameScores[game.id] = 0;
-      teams.girls.totalPoints += 1;
-    } else {
-      // Tie - each team gets 0.5 points
+    const rule = resolveTeamWinRule(game);
+    const direction = resolveTimeDirection(game);
+
+    const metricBoys = aggregateTeamMetric(boysRows, rule);
+    const metricGirls = aggregateTeamMetric(girlsRows, rule);
+
+    if (metricBoys === null || metricGirls === null) {
+      continue;
+    }
+
+    const cmp = compareTeamMetrics(metricBoys, metricGirls, rule, direction);
+
+    if (Math.abs(cmp) < EPS) {
       teams.boys.gameScores[game.id] = 0.5;
       teams.girls.gameScores[game.id] = 0.5;
       teams.boys.totalPoints += 0.5;
       teams.girls.totalPoints += 0.5;
+    } else if (cmp > 0) {
+      teams.boys.gameScores[game.id] = 1;
+      teams.girls.gameScores[game.id] = 0;
+      teams.boys.totalPoints += 1;
+    } else {
+      teams.girls.gameScores[game.id] = 1;
+      teams.boys.gameScores[game.id] = 0;
+      teams.girls.totalPoints += 1;
     }
   }
 
@@ -115,7 +102,6 @@ export function calculateLeaderboard(eventId: number): LeaderboardEntry[] {
   const games = getGamesByEvent(eventId);
   const scores = getScoresByEvent(eventId);
 
-  // Initialize user entries
   const userMap = new Map<number, LeaderboardEntry>();
   for (const user of users) {
     userMap.set(user.id, {
@@ -129,19 +115,21 @@ export function calculateLeaderboard(eventId: number): LeaderboardEntry[] {
     });
   }
 
-  // Process scores by game
   for (const game of games) {
-    const gameScores = scores.filter(s => s.game_id === game.id);
-    
+    const gameScores = scores.filter((s) => s.game_id === game.id);
+    const timeDirection = resolveTimeDirection(game);
+
     if (game.type === 'score' || game.type === 'hybrid') {
-      // Sort by points descending
-      gameScores.sort((a, b) => (b.points || 0) - (a.points || 0));
+      gameScores.sort((a, b) => (b.points ?? 0) - (a.points ?? 0));
     } else if (game.type === 'time') {
-      // Sort by time ascending (lower is better)
-      gameScores.sort((a, b) => (a.time_ms || Infinity) - (b.time_ms || Infinity));
+      gameScores.sort((a, b) => {
+        const ta = a.time_ms ?? (timeDirection === 'lower_better' ? Infinity : -Infinity);
+        const tb = b.time_ms ?? (timeDirection === 'lower_better' ? Infinity : -Infinity);
+        if (ta === tb) return 0;
+        return timeDirection === 'lower_better' ? ta - tb : tb - ta;
+      });
     }
 
-    // Assign ranks
     gameScores.forEach((score, index) => {
       const entry = userMap.get(score.user_id);
       if (!entry) return;
@@ -154,12 +142,10 @@ export function calculateLeaderboard(eventId: number): LeaderboardEntry[] {
       };
     });
 
-    // Award 1 point to winner(s) - handle ties
     if (gameScores.length > 0) {
-      // Determine the winning value (best score or best time)
       const firstScore = gameScores[0];
-      let winningValue: number | null;
-      
+      let winningValue: number | null = null;
+
       if (game.type === 'score' || game.type === 'hybrid') {
         winningValue = firstScore.points ?? null;
       } else {
@@ -167,29 +153,29 @@ export function calculateLeaderboard(eventId: number): LeaderboardEntry[] {
       }
 
       if (winningValue !== null) {
-        // Find all players tied for first place (since array is sorted, check consecutive entries)
         const winners: number[] = [];
         for (const score of gameScores) {
           let scoreValue: number | null;
-          
           if (game.type === 'score' || game.type === 'hybrid') {
             scoreValue = score.points ?? null;
           } else {
             scoreValue = score.time_ms ?? null;
           }
 
-          // Check if this score matches the winning value
-          if (scoreValue === winningValue) {
+          if (scoreValue === null) break;
+          const tie =
+            game.type === 'time'
+              ? Math.abs((scoreValue as number) - winningValue) < EPS
+              : scoreValue === winningValue;
+          if (tie) {
             winners.push(score.user_id);
           } else {
-            // Since scores are sorted, we can stop once we find a non-winning value
             break;
           }
         }
 
-        // Award points: 1 point divided among winners (0.5 each if 2-way tie, etc.)
         const pointsPerWinner = winners.length > 0 ? 1 / winners.length : 0;
-        winners.forEach(userId => {
+        winners.forEach((userId) => {
           const entry = userMap.get(userId);
           if (entry) {
             entry.totalPoints += pointsPerWinner;
@@ -199,11 +185,9 @@ export function calculateLeaderboard(eventId: number): LeaderboardEntry[] {
     }
   }
 
-  // Convert to array and sort by total points
   const leaderboard = Array.from(userMap.values());
   leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
 
-  // Assign overall ranks
   leaderboard.forEach((entry, index) => {
     entry.overallRank = index + 1;
   });
@@ -211,14 +195,29 @@ export function calculateLeaderboard(eventId: number): LeaderboardEntry[] {
   return leaderboard;
 }
 
-export function getGameLeaderboard(gameId: number, gameType: string) {
-  const scores = getScoresByGame(gameId);
-  
-  if (gameType === 'score' || gameType === 'hybrid') {
-    return scores.sort((a, b) => (b.points || 0) - (a.points || 0));
-  } else if (gameType === 'time') {
-    return scores.sort((a, b) => (a.time_ms || Infinity) - (b.time_ms || Infinity));
+export function getGameLeaderboard(gameId: number) {
+  const game = getGameById(gameId);
+  if (!game) {
+    return [];
   }
-  
-  return scores;
+
+  const rows = [...getScoresByGame(gameId)];
+  const timeDirection = resolveTimeDirection(game);
+
+  if (game.type === 'score' || game.type === 'hybrid') {
+    return rows.sort((a, b) => (b.points ?? 0) - (a.points ?? 0));
+  }
+  if (game.type === 'time') {
+    return rows.sort((a, b) => {
+      const ta = a.time_ms ?? (timeDirection === 'lower_better' ? Infinity : -Infinity);
+      const tb = b.time_ms ?? (timeDirection === 'lower_better' ? Infinity : -Infinity);
+      if (ta === tb) return 0;
+      if (timeDirection === 'lower_better') {
+        return ta - tb;
+      }
+      return tb - ta;
+    });
+  }
+
+  return rows;
 }

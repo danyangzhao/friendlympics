@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { defaultsForGameType } from '@/lib/scoring';
 
 // Decorative spring elements
 const FloatingElement = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
@@ -28,6 +29,8 @@ interface Game {
   name: string;
   type: string;
   rules?: string;
+  team_win_rule: string;
+  time_direction: string;
 }
 
 interface User {
@@ -65,9 +68,15 @@ export default function HostPage() {
   const [editingUserId, setEditingUserId] = useState<number | null>(null);
   const [editingScoreId, setEditingScoreId] = useState<number | null>(null);
 
-  const [newGame, setNewGame] = useState({ name: '', type: 'score' as 'score' | 'time' | 'hybrid', rules: '' });
+  const [newGame, setNewGame] = useState({
+    name: '',
+    type: 'score' as 'score' | 'time' | 'hybrid',
+    rules: '',
+    team_win_rule: 'avg_points',
+    time_direction: 'lower_better',
+  });
   const [newScore, setNewScore] = useState({
-    team: '' as '' | 'boys' | 'girls',
+    userId: '',
     points: '',
     timeMs: '',
     notes: '',
@@ -81,6 +90,8 @@ export default function HostPage() {
     name: '',
     type: 'score' as 'score' | 'time' | 'hybrid',
     rules: '',
+    team_win_rule: 'avg_points',
+    time_direction: 'lower_better',
   });
   const [userDraft, setUserDraft] = useState({
     name: '',
@@ -88,7 +99,7 @@ export default function HostPage() {
     team: '' as '' | 'boys' | 'girls',
   });
   const [scoreDraft, setScoreDraft] = useState({
-    team: '' as '' | 'boys' | 'girls',
+    userId: '',
     points: '',
     timeSeconds: '',
     notes: '',
@@ -165,12 +176,15 @@ export default function HostPage() {
           name: newGame.name,
           type: newGame.type,
           rules: newGame.rules || null,
+          teamWinRule: newGame.team_win_rule,
+          timeDirection: newGame.time_direction,
         }),
       });
 
       if (res.ok) {
         await loadData(eventId);
-        setNewGame({ name: '', type: 'score', rules: '' });
+        const d = defaultsForGameType('score');
+        setNewGame({ name: '', type: 'score', rules: '', team_win_rule: d.team_win_rule, time_direction: d.time_direction });
         setShowAddGame(false);
       }
     } catch (error) {
@@ -180,10 +194,10 @@ export default function HostPage() {
 
   const handleAddScore = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!eventId || !selectedGame || !newScore.team) return;
+    if (!eventId || !selectedGame || !newScore.userId) return;
 
-    const teamUser = users.find(user => user.team === newScore.team);
-    if (!teamUser) return;
+    const uid = parseInt(newScore.userId, 10);
+    if (!users.some((u) => u.id === uid)) return;
 
     try {
       const res = await fetch('/api/scores', {
@@ -192,15 +206,15 @@ export default function HostPage() {
         body: JSON.stringify({
           eventId,
           gameId: selectedGame,
-          userId: teamUser.id,
+          userId: uid,
           points: newScore.points ? parseFloat(newScore.points) : null,
-          timeMs: newScore.timeMs ? parseInt(newScore.timeMs) * 1000 : null,
+          timeMs: newScore.timeMs ? parseFloat(newScore.timeMs) * 1000 : null,
           notes: newScore.notes || null,
         }),
       });
 
       if (res.ok) {
-        setNewScore({ team: '', points: '', timeMs: '', notes: '' });
+        setNewScore({ userId: '', points: '', timeMs: '', notes: '' });
         setShowAddScore(false);
         setSelectedGame(null);
       }
@@ -237,7 +251,15 @@ export default function HostPage() {
 
   const handleStartEditGame = (game: Game) => {
     setEditingGameId(game.id);
-    setGameDraft({ name: game.name, type: game.type as any, rules: game.rules || '' });
+    const t = game.type as 'score' | 'time' | 'hybrid';
+    const d = defaultsForGameType(t);
+    setGameDraft({
+      name: game.name,
+      type: t,
+      rules: game.rules || '',
+      team_win_rule: game.team_win_rule || d.team_win_rule,
+      time_direction: game.time_direction || d.time_direction,
+    });
   };
 
   const handleSaveGame = async (gameId: number) => {
@@ -250,6 +272,8 @@ export default function HostPage() {
           name: gameDraft.name,
           type: gameDraft.type,
           rules: gameDraft.rules || null,
+          teamWinRule: gameDraft.team_win_rule,
+          timeDirection: gameDraft.time_direction,
         }),
       });
 
@@ -323,7 +347,7 @@ export default function HostPage() {
   const handleStartEditScore = (score: Score) => {
     setEditingScoreId(score.id);
     setScoreDraft({
-      team: (score.team as any) || '',
+      userId: String(score.user_id),
       points: score.points !== undefined && score.points !== null ? String(score.points) : '',
       timeSeconds: score.time_ms ? String(score.time_ms / 1000) : '',
       notes: score.notes || '',
@@ -331,9 +355,9 @@ export default function HostPage() {
   };
 
   const handleSaveScore = async (scoreId: number) => {
-    if (!scoreDraft.team) return;
-    const teamUser = users.find(user => user.team === scoreDraft.team);
-    if (!teamUser) return;
+    if (!scoreDraft.userId) return;
+    const uid = parseInt(scoreDraft.userId, 10);
+    if (!users.some((u) => u.id === uid)) return;
 
     try {
       const res = await fetch('/api/scores', {
@@ -341,7 +365,7 @@ export default function HostPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           id: scoreId,
-          userId: teamUser.id,
+          userId: uid,
           points: scoreDraft.points ? parseFloat(scoreDraft.points) : null,
           timeMs: scoreDraft.timeSeconds ? parseFloat(scoreDraft.timeSeconds) * 1000 : null,
           notes: scoreDraft.notes || null,
@@ -440,13 +464,39 @@ export default function HostPage() {
               />
               <select
                 value={newGame.type}
-                onChange={(e) => setNewGame({ ...newGame, type: e.target.value as any })}
+                onChange={(e) => {
+                  const type = e.target.value as 'score' | 'time' | 'hybrid';
+                  const d = defaultsForGameType(type);
+                  setNewGame({ ...newGame, type, team_win_rule: d.team_win_rule, time_direction: d.time_direction });
+                }}
                 className="input-spring text-sm"
               >
                 <option value="score">points</option>
                 <option value="time">time</option>
                 <option value="hybrid">points + time</option>
               </select>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <select
+                  value={newGame.team_win_rule}
+                  onChange={(e) => setNewGame({ ...newGame, team_win_rule: e.target.value })}
+                  className="input-spring text-sm"
+                  title="How team winner is computed"
+                >
+                  <option value="avg_points">team: avg points</option>
+                  <option value="sum_points">team: sum points</option>
+                  <option value="avg_time_ms">team: avg time</option>
+                  <option value="sum_time_ms">team: sum time (e.g. relay)</option>
+                </select>
+                <select
+                  value={newGame.time_direction}
+                  onChange={(e) => setNewGame({ ...newGame, time_direction: e.target.value })}
+                  className="input-spring text-sm"
+                  title="Lower time wins vs longer time wins"
+                >
+                  <option value="lower_better">time: lower is better (races)</option>
+                  <option value="higher_better">time: higher is better (holds)</option>
+                </select>
+              </div>
               <textarea
                 placeholder="rules (optional)"
                 value={newGame.rules}
@@ -482,13 +532,37 @@ export default function HostPage() {
                     />
                     <select
                       value={gameDraft.type}
-                      onChange={(e) => setGameDraft({ ...gameDraft, type: e.target.value as any })}
+                      onChange={(e) => {
+                        const type = e.target.value as 'score' | 'time' | 'hybrid';
+                        const d = defaultsForGameType(type);
+                        setGameDraft({ ...gameDraft, type, team_win_rule: d.team_win_rule, time_direction: d.time_direction });
+                      }}
                       className="input-spring text-sm"
                     >
                       <option value="score">points</option>
                       <option value="time">time</option>
                       <option value="hybrid">points + time</option>
                     </select>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <select
+                        value={gameDraft.team_win_rule}
+                        onChange={(e) => setGameDraft({ ...gameDraft, team_win_rule: e.target.value })}
+                        className="input-spring text-sm"
+                      >
+                        <option value="avg_points">team: avg points</option>
+                        <option value="sum_points">team: sum points</option>
+                        <option value="avg_time_ms">team: avg time</option>
+                        <option value="sum_time_ms">team: sum time</option>
+                      </select>
+                      <select
+                        value={gameDraft.time_direction}
+                        onChange={(e) => setGameDraft({ ...gameDraft, time_direction: e.target.value })}
+                        className="input-spring text-sm"
+                      >
+                        <option value="lower_better">time: lower better</option>
+                        <option value="higher_better">time: higher better</option>
+                      </select>
+                    </div>
                     <textarea
                       value={gameDraft.rules}
                       onChange={(e) => setGameDraft({ ...gameDraft, rules: e.target.value })}
@@ -514,7 +588,9 @@ export default function HostPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-semibold text-warm-700 lowercase">{game.name}</h3>
-                      <span className="text-xs text-warm-400 lowercase">{game.type}</span>
+                      <span className="text-xs text-warm-400 lowercase">
+                        {game.type} · {game.team_win_rule ?? 'avg_points'} · {game.time_direction ?? 'lower_better'}
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 text-sm">
                       <button
@@ -578,20 +654,36 @@ export default function HostPage() {
               {selectedGame && (
                 <>
                   <select
-                    value={newScore.team}
-                    onChange={(e) => setNewScore({ ...newScore, team: e.target.value as 'boys' | 'girls' | '' })}
+                    value={newScore.userId}
+                    onChange={(e) => setNewScore({ ...newScore, userId: e.target.value })}
                     className="input-spring text-sm"
                     required
                   >
-                    <option value="">select team...</option>
-                    <option value="boys">team boys 💙</option>
-                    <option value="girls">team girls 💗</option>
+                    <option value="">select player...</option>
+                    <optgroup label="team boys 💙">
+                      {users
+                        .filter((u) => u.team === 'boys')
+                        .map((u) => (
+                          <option key={u.id} value={u.id}>
+                            {u.name}
+                            {u.nickname ? ` (${u.nickname})` : ''}
+                          </option>
+                        ))}
+                    </optgroup>
+                    <optgroup label="team girls 💗">
+                      {users
+                        .filter((u) => u.team === 'girls')
+                        .map((u) => (
+                          <option key={u.id} value={u.id}>
+                            {u.name}
+                            {u.nickname ? ` (${u.nickname})` : ''}
+                          </option>
+                        ))}
+                    </optgroup>
                   </select>
 
-                  {newScore.team && !users.find(user => user.team === newScore.team) && (
-                    <p className="text-sm text-peach-600">
-                      no players found for this team. add a player to record scores.
-                    </p>
+                  {users.length === 0 && (
+                    <p className="text-sm text-peach-600">add players first to record scores.</p>
                   )}
 
                   {games.find(g => g.id === selectedGame)?.type !== 'time' && (
@@ -629,7 +721,7 @@ export default function HostPage() {
                 <button
                   type="submit"
                   className="flex-1 btn-butter text-sm py-2 disabled:opacity-50"
-                  disabled={!selectedGame || !newScore.team || !users.find(user => user.team === newScore.team)}
+                  disabled={!selectedGame || !newScore.userId}
                 >
                   add score
                 </button>
@@ -638,7 +730,7 @@ export default function HostPage() {
                   onClick={() => {
                     setShowAddScore(false);
                     setSelectedGame(null);
-                    setNewScore({ team: '', points: '', timeMs: '', notes: '' });
+                    setNewScore({ userId: '', points: '', timeMs: '', notes: '' });
                   }}
                   className="flex-1 btn-spring bg-cream-200 text-warm-600 text-sm py-2"
                 >
@@ -665,13 +757,29 @@ export default function HostPage() {
                       {isEditing ? (
                         <div className="space-y-3">
                           <select
-                            value={scoreDraft.team}
-                            onChange={(e) => setScoreDraft({ ...scoreDraft, team: e.target.value as 'boys' | 'girls' | '' })}
+                            value={scoreDraft.userId}
+                            onChange={(e) => setScoreDraft({ ...scoreDraft, userId: e.target.value })}
                             className="input-spring text-sm"
                           >
-                            <option value="">select team...</option>
-                            <option value="boys">team boys 💙</option>
-                            <option value="girls">team girls 💗</option>
+                            <option value="">select player...</option>
+                            <optgroup label="team boys 💙">
+                              {users
+                                .filter((u) => u.team === 'boys')
+                                .map((u) => (
+                                  <option key={u.id} value={u.id}>
+                                    {u.name}
+                                  </option>
+                                ))}
+                            </optgroup>
+                            <optgroup label="team girls 💗">
+                              {users
+                                .filter((u) => u.team === 'girls')
+                                .map((u) => (
+                                  <option key={u.id} value={u.id}>
+                                    {u.name}
+                                  </option>
+                                ))}
+                            </optgroup>
                           </select>
                           {selectedGameData?.type !== 'time' && (
                             <input
@@ -718,7 +826,11 @@ export default function HostPage() {
                         <div className="flex items-center justify-between">
                           <div className="text-sm text-warm-700">
                             <div className="font-semibold flex items-center gap-2">
-                              {score.team === 'boys' ? '💙 team boys' : score.team === 'girls' ? '💗 team girls' : score.nickname || score.name}
+                              {score.name}
+                              {score.team === 'boys' ? ' 💙' : score.team === 'girls' ? ' 💗' : ''}
+                              {score.nickname ? (
+                                <span className="text-warm-500 font-normal text-xs">({score.nickname})</span>
+                              ) : null}
                             </div>
                             <div className="text-xs text-warm-400 lowercase">
                               {score.notes || 'no notes'}

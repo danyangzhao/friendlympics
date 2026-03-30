@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       if (!game) {
         return NextResponse.json({ error: 'Game not found' }, { status: 404 });
       }
-      const leaderboard = getGameLeaderboard(parseInt(gameId), game.type);
+      const leaderboard = getGameLeaderboard(parseInt(gameId));
       return NextResponse.json(leaderboard);
     } else if (eventId) {
       if (type === 'team') {

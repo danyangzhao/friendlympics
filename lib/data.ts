@@ -1,4 +1,6 @@
 import db from './db';
+import type { TeamWinRule, TimeDirection } from './scoring';
+import { defaultsForGameType } from './scoring';
 
 // Event operations
 export function createEvent(name: string, eventCode: string, startAt: string, endAt: string) {
@@ -35,9 +37,21 @@ export function getUsersByEvent(eventId: number) {
 }
 
 // Game operations
-export function createGame(eventId: number, name: string, type: 'score' | 'time' | 'hybrid', rules?: string) {
-  const stmt = db.prepare('INSERT INTO games (event_id, name, type, rules) VALUES (?, ?, ?, ?)');
-  const result = stmt.run(eventId, name, type, rules || null);
+export function createGame(
+  eventId: number,
+  name: string,
+  type: 'score' | 'time' | 'hybrid',
+  rules?: string,
+  teamWinRule?: TeamWinRule,
+  timeDirection?: TimeDirection
+) {
+  const def = defaultsForGameType(type);
+  const tw = teamWinRule ?? def.team_win_rule;
+  const td = timeDirection ?? def.time_direction;
+  const stmt = db.prepare(
+    'INSERT INTO games (event_id, name, type, rules, team_win_rule, time_direction) VALUES (?, ?, ?, ?, ?, ?)'
+  );
+  const result = stmt.run(eventId, name, type, rules || null, tw, td);
   return result.lastInsertRowid as number;
 }
 
@@ -51,9 +65,18 @@ export function getGamesByEvent(eventId: number) {
   return stmt.all(eventId) as any[];
 }
 
-export function updateGame(id: number, name: string, type: 'score' | 'time' | 'hybrid', rules?: string) {
-  const stmt = db.prepare('UPDATE games SET name = ?, type = ?, rules = ? WHERE id = ?');
-  stmt.run(name, type, rules || null, id);
+export function updateGame(
+  id: number,
+  name: string,
+  type: 'score' | 'time' | 'hybrid',
+  rules: string | undefined,
+  teamWinRule: TeamWinRule,
+  timeDirection: TimeDirection
+) {
+  const stmt = db.prepare(
+    'UPDATE games SET name = ?, type = ?, rules = ?, team_win_rule = ?, time_direction = ? WHERE id = ?'
+  );
+  stmt.run(name, type, rules || null, teamWinRule, timeDirection, id);
 }
 
 export function deleteGame(id: number) {
@@ -90,7 +113,7 @@ export function getScoresByGame(gameId: number) {
     FROM scores s
     JOIN users u ON s.user_id = u.id
     WHERE s.game_id = ?
-    ORDER BY s.points DESC, s.time_ms ASC
+    ORDER BY s.id ASC
   `);
   return stmt.all(gameId) as any[];
 }
