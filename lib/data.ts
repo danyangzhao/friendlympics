@@ -3,6 +3,8 @@ import type { TeamWinRule, TimeDirection } from './scoring';
 import { defaultsForGameType } from './scoring';
 import { CANONICAL_GAMES } from './default-games';
 
+const RETIRED_CANONICAL_GAMES = new Set(['Eggs in a Carton']);
+
 // Event operations
 export function createEvent(name: string, eventCode: string, startAt: string, endAt: string) {
   const stmt = db.prepare('INSERT INTO events (name, event_code, start_at, end_at) VALUES (?, ?, ?, ?)');
@@ -85,9 +87,65 @@ export function deleteGame(id: number) {
   stmt.run(id);
 }
 
-/** Inserts missing canonical games and updates type/rules/scoring for matching names. Leaves other games unchanged. */
+function moveGameReferences(sourceGameId: number, targetGameId: number) {
+  db.prepare('UPDATE scores SET game_id = ? WHERE game_id = ?').run(targetGameId, sourceGameId);
+  db.prepare('UPDATE game_sessions SET game_id = ? WHERE game_id = ?').run(targetGameId, sourceGameId);
+}
+
+function normalizeLegacyPuzzleGame(eventId: number, existingGames: any[]) {
+  const legacyPuzzleRows = existingGames.filter((g) => g.name === '500-Piece Puzzle');
+  if (legacyPuzzleRows.length === 0) return existingGames;
+
+  const canonicalPuzzleDef = CANONICAL_GAMES.find((g) => g.name === '250-Piece Puzzle');
+  if (!canonicalPuzzleDef) return existingGames;
+
+  const canonicalPuzzleRow = existingGames.find((g) => g.name === canonicalPuzzleDef.name);
+
+  if (canonicalPuzzleRow) {
+    for (const legacyRow of legacyPuzzleRows) {
+      moveGameReferences(legacyRow.id, canonicalPuzzleRow.id);
+      deleteGame(legacyRow.id);
+    }
+    updateGame(
+      canonicalPuzzleRow.id,
+      canonicalPuzzleDef.name,
+      canonicalPuzzleDef.type,
+      canonicalPuzzleDef.rules,
+      canonicalPuzzleDef.team_win_rule,
+      canonicalPuzzleDef.time_direction
+    );
+    return getGamesByEvent(eventId);
+  }
+
+  const [primaryLegacyRow, ...duplicateLegacyRows] = legacyPuzzleRows;
+  updateGame(
+    primaryLegacyRow.id,
+    canonicalPuzzleDef.name,
+    canonicalPuzzleDef.type,
+    canonicalPuzzleDef.rules,
+    canonicalPuzzleDef.team_win_rule,
+    canonicalPuzzleDef.time_direction
+  );
+
+  for (const duplicateLegacyRow of duplicateLegacyRows) {
+    moveGameReferences(duplicateLegacyRow.id, primaryLegacyRow.id);
+    deleteGame(duplicateLegacyRow.id);
+  }
+
+  return getGamesByEvent(eventId);
+}
+
+/** Inserts missing canonical games, normalizes legacy names, and removes retired seeded games. */
 export function ensureCanonicalGamesForEvent(eventId: number) {
-  const existing = getGamesByEvent(eventId);
+  let existing = getGamesByEvent(eventId);
+  existing = normalizeLegacyPuzzleGame(eventId, existing);
+
+  for (const retiredGame of existing.filter((g) => RETIRED_CANONICAL_GAMES.has(g.name))) {
+    deleteGame(retiredGame.id);
+  }
+
+  existing = getGamesByEvent(eventId);
+
   for (const game of CANONICAL_GAMES) {
     const row = existing.find((g) => g.name === game.name);
     if (row) {

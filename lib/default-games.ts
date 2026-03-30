@@ -61,14 +61,6 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
 
   // Manual Score Entry Games (host records scores after physical activity)
   {
-    name: 'Eggs in a Carton',
-    type: 'time',
-    rules:
-      "Bounce ping pong balls into an egg carton — fill the carton as fast as you can! Shortest time wins. Host enters each team's time in the app.",
-    team_win_rule: 'avg_time_ms',
-    time_direction: 'lower_better',
-  },
-  {
     name: '4x400 Meter Relay',
     type: 'time',
     rules: 'Each team member runs 400m. Fastest combined team time wins!',
@@ -84,9 +76,9 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     time_direction: 'higher_better',
   },
   {
-    name: '500-Piece Puzzle',
+    name: '250-Piece Puzzle',
     type: 'time',
-    rules: 'Race to complete a 500-piece puzzle. Fastest team wins!',
+    rules: 'Race to complete a 250-piece puzzle. Fastest team wins!',
     team_win_rule: 'avg_time_ms',
     time_direction: 'lower_better',
   },

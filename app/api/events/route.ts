@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createEvent, getEventByCode } from '@/lib/data';
+import { createEvent, ensureCanonicalGamesForEvent, getEventByCode } from '@/lib/data';
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
     }
 
     const eventId = createEvent(name, eventCode, startAt, endAt);
+    ensureCanonicalGamesForEvent(eventId);
     return NextResponse.json({ id: eventId, name, eventCode, startAt, endAt });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
