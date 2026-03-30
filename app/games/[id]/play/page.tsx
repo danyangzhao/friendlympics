@@ -1030,7 +1030,7 @@ export default function PlayGame() {
         } else if (name.includes('relay') || name.includes('4x400') || 
                    name.includes('puzzle') || 
                    name.includes('beer pong') || name.includes('pong') ||
-                   name.includes('egg carton') || name.includes('eggs in a carton')) {
+                   (name.includes('egg') && name.includes('carton'))) {
           setGameType('manual');
         }
       }
@@ -1426,7 +1426,7 @@ export default function PlayGame() {
     const name = game.name.toLowerCase();
     if (name.includes('relay') || name.includes('4x400')) return '🏃';
     if (name.includes('puzzle')) return '🧩';
-    if (name.includes('egg carton') || name.includes('eggs in a carton')) return '🥚';
+    if (name.includes('egg') && name.includes('carton')) return '🥚';
     if (name.includes('pong') || name.includes('beer')) return '🍺';
     return '🎯';
   };
@@ -1444,17 +1444,17 @@ export default function PlayGame() {
     }
     if (name.includes('puzzle')) {
       return [
-        'Each team works together to complete a 500-piece puzzle',
+        'Each team works together to complete a 250-piece puzzle',
         'Start the timer when you begin',
         'Stop when the puzzle is complete',
         'Record the completion time for each team'
       ];
     }
-    if (name.includes('egg carton') || name.includes('eggs in a carton')) {
+    if (name.includes('egg') && name.includes('carton')) {
       return [
-        'Each team bounces ping pong balls into an egg carton — fill every slot!',
-        'Time each team from start until the carton is full',
-        'Shortest time wins — enter each team\'s time in Host view below'
+        'Each team bounces ping pong balls into an egg carton — count how many land in the slots',
+        'Agree on scoring (e.g. 1 point per ball, or total balls in the carton)',
+        'Highest score wins — enter each player\'s points below'
       ];
     }
     if (name.includes('pong') || name.includes('beer')) {
