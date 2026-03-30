@@ -1,6 +1,7 @@
 import db from './db';
 import type { TeamWinRule, TimeDirection } from './scoring';
 import { defaultsForGameType } from './scoring';
+import { CANONICAL_GAMES } from './default-games';
 
 // Event operations
 export function createEvent(name: string, eventCode: string, startAt: string, endAt: string) {
@@ -82,6 +83,19 @@ export function updateGame(
 export function deleteGame(id: number) {
   const stmt = db.prepare('DELETE FROM games WHERE id = ?');
   stmt.run(id);
+}
+
+/** Inserts missing canonical games and updates type/rules/scoring for matching names. Leaves other games unchanged. */
+export function ensureCanonicalGamesForEvent(eventId: number) {
+  const existing = getGamesByEvent(eventId);
+  for (const game of CANONICAL_GAMES) {
+    const row = existing.find((g) => g.name === game.name);
+    if (row) {
+      updateGame(row.id, game.name, game.type, game.rules, game.team_win_rule, game.time_direction);
+    } else {
+      createGame(eventId, game.name, game.type, game.rules, game.team_win_rule, game.time_direction);
+    }
+  }
 }
 
 // Score operations

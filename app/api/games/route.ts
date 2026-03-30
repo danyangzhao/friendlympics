@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createGame, getGamesByEvent, updateGame, deleteGame } from '@/lib/data';
+import { createGame, getGamesByEvent, updateGame, deleteGame, ensureCanonicalGamesForEvent } from '@/lib/data';
 import type { TeamWinRule, TimeDirection } from '@/lib/scoring';
 import { defaultsForGameType } from '@/lib/scoring';
 
@@ -49,7 +49,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Event ID required' }, { status: 400 });
     }
 
-    const games = getGamesByEvent(parseInt(eventId));
+    const id = parseInt(eventId, 10);
+    if (Number.isNaN(id)) {
+      return NextResponse.json({ error: 'Invalid event ID' }, { status: 400 });
+    }
+
+    // Merge canonical games from code so dashboard always lists the full standard set
+    ensureCanonicalGamesForEvent(id);
+    const games = getGamesByEvent(id);
     return NextResponse.json(games);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
