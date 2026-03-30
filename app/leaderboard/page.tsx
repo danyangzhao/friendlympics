@@ -214,7 +214,7 @@ export default function LeaderboardPage() {
 
         {/* Fun message */}
         <div className="text-center py-4">
-          <p className="text-warm-400 text-sm">remember, it's all about having fun together! 🌸✨</p>
+          <p className="text-warm-400 text-sm">friendship on pause. game faces on.</p>
         </div>
       </div>
     </div>

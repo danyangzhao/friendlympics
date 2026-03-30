@@ -1,4 +1,32 @@
-import { getScoresByEvent, getUsersByEvent, getGamesByEvent } from './data';
+import { getScoresByEvent, getUsersByEvent, getGamesByEvent, getScoresByGame } from './data';
+
+/** Collapse multiple scores per user to their best score. For score/hybrid: highest points wins. For time: lowest time wins. */
+function getBestScoresPerUser(
+  scores: { user_id: number; points?: number | null; time_ms?: number | null; [key: string]: any }[],
+  gameType: string
+): { user_id: number; points?: number | null; time_ms?: number | null; [key: string]: any }[] {
+  const byUser = new Map<number, typeof scores>();
+  for (const s of scores) {
+    const list = byUser.get(s.user_id) || [];
+    list.push(s);
+    byUser.set(s.user_id, list);
+  }
+  const result: typeof scores = [];
+  for (const [, userScores] of byUser) {
+    if (gameType === 'score' || gameType === 'hybrid') {
+      const best = userScores.reduce((a, b) => ((b.points ?? 0) > (a.points ?? 0) ? b : a));
+      result.push(best);
+    } else {
+      const best = userScores.reduce((a, b) => {
+        const aTime = a.time_ms ?? Infinity;
+        const bTime = b.time_ms ?? Infinity;
+        return bTime < aTime ? b : a;
+      });
+      result.push(best);
+    }
+  }
+  return result;
+}
 
 export interface TeamLeaderboardEntry {
   team: 'boys' | 'girls';
@@ -40,8 +68,9 @@ export function calculateTeamLeaderboard(eventId: number): TeamLeaderboardEntry[
 
   // Count team members
   users.forEach(user => {
-    if (user.team === 'boys' || user.team === 'girls') {
-      teams[user.team].memberCount++;
+    const team = user.team as 'boys' | 'girls' | undefined;
+    if (team === 'boys' || team === 'girls') {
+      teams[team].memberCount++;
     }
   });
 
@@ -58,8 +87,9 @@ export function calculateTeamLeaderboard(eventId: number): TeamLeaderboardEntry[
     if (game.type === 'score' || game.type === 'hybrid') {
       // Sum points by team
       gameScores.forEach(score => {
-        if (score.team === 'boys' || score.team === 'girls') {
-          teamScores[score.team] += score.points || 0;
+        const team = (score as { team?: string }).team;
+        if (team === 'boys' || team === 'girls') {
+          teamScores[team] += (score.points || 0);
         }
       });
     } else if (game.type === 'time') {
@@ -70,8 +100,9 @@ export function calculateTeamLeaderboard(eventId: number): TeamLeaderboardEntry[
       };
       
       gameScores.forEach(score => {
-        if ((score.team === 'boys' || score.team === 'girls') && score.time_ms) {
-          teamTimes[score.team].push(score.time_ms);
+        const team = (score as { team?: string }).team;
+        if ((team === 'boys' || team === 'girls') && score.time_ms) {
+          teamTimes[team].push(score.time_ms);
         }
       });
 
@@ -131,7 +162,9 @@ export function calculateLeaderboard(eventId: number): LeaderboardEntry[] {
 
   // Process scores by game
   for (const game of games) {
-    const gameScores = scores.filter(s => s.game_id === game.id);
+    const gameScoresRaw = scores.filter(s => s.game_id === game.id);
+    // Use best score per user when a player has multiple entries (e.g. extra slot for smaller team)
+    const gameScores = getBestScoresPerUser(gameScoresRaw, game.type);
     
     if (game.type === 'score' || game.type === 'hybrid') {
       // Sort by points descending
@@ -148,8 +181,8 @@ export function calculateLeaderboard(eventId: number): LeaderboardEntry[] {
 
       const rank = index + 1;
       entry.gameScores[game.id] = {
-        points: score.points,
-        timeMs: score.time_ms,
+        points: score.points ?? undefined,
+        timeMs: score.time_ms ?? undefined,
         rank,
       };
     });
@@ -213,12 +246,29 @@ export function calculateLeaderboard(eventId: number): LeaderboardEntry[] {
 
 export function getGameLeaderboard(gameId: number, gameType: string) {
   const scores = getScoresByGame(gameId);
-  
-  if (gameType === 'score' || gameType === 'hybrid') {
-    return scores.sort((a, b) => (b.points || 0) - (a.points || 0));
-  } else if (gameType === 'time') {
-    return scores.sort((a, b) => (a.time_ms || Infinity) - (b.time_ms || Infinity));
+  // Group by user to get best score and entry count (for extra-slot indicator)
+  const byUser = new Map<number, { best: (typeof scores)[0]; count: number }>();
+  for (const s of scores) {
+    const existing = byUser.get(s.user_id);
+    if (!existing) {
+      byUser.set(s.user_id, { best: s, count: 1 });
+    } else {
+      existing.count += 1;
+      const isBetter =
+        gameType === 'score' || gameType === 'hybrid'
+          ? (s.points ?? 0) > (existing.best.points ?? 0)
+          : (s.time_ms ?? Infinity) < (existing.best.time_ms ?? Infinity);
+      if (isBetter) existing.best = s;
+    }
   }
-  
-  return scores;
+  const result = Array.from(byUser.values()).map(({ best, count }) => ({
+    ...best,
+    entryCount: count,
+  }));
+  if (gameType === 'score' || gameType === 'hybrid') {
+    return result.sort((a, b) => (b.points || 0) - (a.points || 0));
+  } else if (gameType === 'time') {
+    return result.sort((a, b) => (a.time_ms || Infinity) - (b.time_ms || Infinity));
+  }
+  return result;
 }

@@ -12,8 +12,10 @@ const SAMPLE_GAMES = [
   { name: 'Fastest Typer', type: 'hybrid' as const, rules: 'Type the displayed text as fast and accurately as possible. Score = WPM with accuracy bonus.' },
   { name: 'Trivia Quiz', type: 'score' as const, rules: 'Answer trivia questions! First team to buzz in gets to answer. +1 point for correct answers.' },
   { name: 'Memory Match', type: 'hybrid' as const, rules: 'Flip cards to find matching pairs. Score based on moves and time - fewer moves = higher score!' },
+  { name: 'Speed Drawing', type: 'score' as const, rules: 'Draw each word as fast as you can! The app shows 25 random words per round. Host enters team scores when you\'re done.' },
   
   // Manual Score Entry Games (host records scores after physical activity)
+  { name: 'Eggs in a Carton', type: 'time' as const, rules: 'Bounce ping pong balls into an egg carton — fill the carton as fast as you can! Shortest time wins. Host enters each team\'s time in the app.' },
   { name: '4x400 Meter Relay', type: 'time' as const, rules: 'Each team member runs 400m. Fastest combined team time wins!' },
   { name: 'Plank + Wall Sit Relay', type: 'time' as const, rules: 'Team endurance challenge! Combined time holding plank and wall sit positions.' },
   { name: '500-Piece Puzzle', type: 'time' as const, rules: 'Race to complete a 500-piece puzzle. Fastest team wins!' },
