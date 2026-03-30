@@ -1434,6 +1434,14 @@ export default function PlayGame() {
   const getManualGameInstructions = () => {
     if (!game) return [];
     const name = game.name.toLowerCase();
+    if (name.includes('flip cup')) {
+      return [
+        'Teams run the flip cup relay head-to-head',
+        'Decide how you want to count points, such as successful flips or relay wins',
+        'Add up each team\'s total points',
+        'Record the final score below'
+      ];
+    }
     if (name.includes('relay') || name.includes('4x400')) {
       return [
         'Each team runs a 4x400m relay race',

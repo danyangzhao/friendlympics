@@ -55,7 +55,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     type: 'score',
     rules:
       "Draw each word as fast as you can! The app shows 25 random words per round. Host enters team scores when you're done.",
-    team_win_rule: 'avg_points',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
 
@@ -86,15 +86,15 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     name: 'Beer Pong',
     type: 'score',
     rules: 'Classic beer pong tournament. Points = number of games won.',
-    team_win_rule: 'avg_points',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
   {
     name: 'Flip Cup Relay',
-    type: 'time',
+    type: 'score',
     rules:
-      'Team relay - drink and flip your cup! Fastest team to flip all cups wins.',
-    team_win_rule: 'avg_time_ms',
+      'Team relay - drink and flip your cup! Points = successful flips or relay wins.',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
 ];
