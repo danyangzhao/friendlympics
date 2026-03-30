@@ -121,8 +121,7 @@ export default function GameDetail() {
                          gameName.includes('puzzle') ||
                          gameName.includes('beer pong') ||
                          gameName.includes('pong') ||
-                         gameName.includes('egg carton') ||
-                         gameName.includes('eggs in a carton');
+                         (gameName.includes('egg') && gameName.includes('carton'));
 
   const getMedalEmoji = (index: number) => {
     if (index === 0) return '🥇';
