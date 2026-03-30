@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import { GameScoreEntry } from '@/app/components/GameScoreEntry';
+import { initDefaultEventAndStore } from '@/lib/client-event';
 
 // Decorative spring elements
 const FloatingElement = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
@@ -60,25 +62,30 @@ export default function GameDetail() {
   const params = useParams();
   const gameId = parseInt(params.id as string);
 
+  const [eventId, setEventId] = useState<number | null>(null);
   const [game, setGame] = useState<Game | null>(null);
   const [scores, setScores] = useState<Score[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadGameData();
-  }, [gameId]);
-
-  const loadGameData = async () => {
+  const loadGameData = useCallback(async () => {
+    const eid = localStorage.getItem('eventId');
+    if (!eid) return;
     try {
+      let eventIdNum = parseInt(eid, 10);
+      let gamesRes = await fetch(`/api/games?eventId=${eventIdNum}`);
+      if (gamesRes.status === 404) {
+        eventIdNum = await initDefaultEventAndStore();
+        setEventId(eventIdNum);
+        gamesRes = await fetch(`/api/games?eventId=${eventIdNum}`);
+      }
       const [gameRes, scoresRes] = await Promise.all([
-        fetch(`/api/games?eventId=${localStorage.getItem('eventId')}`).then(res => res.json()),
-        fetch(`/api/scores?gameId=${gameId}`).then(res => res.json()),
+        gamesRes.json(),
+        fetch(`/api/scores?gameId=${gameId}`).then((res) => res.json()),
       ]);
 
-      const gameData = gameRes.find((g: Game) => g.id === gameId);
+      const gameData = Array.isArray(gameRes) ? gameRes.find((g: Game) => g.id === gameId) : undefined;
       setGame(gameData || null);
 
-      // Get game type for sorting
       if (gameData) {
         const leaderboardRes = await fetch(`/api/leaderboard?gameId=${gameId}`);
         if (leaderboardRes.ok) {
@@ -95,7 +102,19 @@ export default function GameDetail() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [gameId]);
+
+  useEffect(() => {
+    const e = localStorage.getItem('eventId');
+    const u = localStorage.getItem('userId');
+    if (!e || !u) {
+      router.replace('/');
+      return;
+    }
+    setEventId(parseInt(e, 10));
+    setLoading(true);
+    loadGameData();
+  }, [gameId, router, loadGameData]);
 
   const formatTime = (ms?: number) => {
     if (!ms) return 'N/A';
@@ -212,6 +231,15 @@ export default function GameDetail() {
             </h2>
             <p className="text-warm-600 whitespace-pre-wrap leading-relaxed">{game.rules}</p>
           </div>
+        )}
+
+        {eventId !== null && (
+          <GameScoreEntry
+            eventId={eventId}
+            gameId={gameId}
+            gameType={game.type}
+            onSaved={loadGameData}
+          />
         )}
 
         {/* Scores */}

@@ -137,6 +137,8 @@ function normalizeLegacyPuzzleGame(eventId: number, existingGames: any[]) {
 
 /** Inserts missing canonical games, normalizes legacy names, and removes retired seeded games. */
 export function ensureCanonicalGamesForEvent(eventId: number) {
+  if (!getEventById(eventId)) return;
+
   let existing = getGamesByEvent(eventId);
   existing = normalizeLegacyPuzzleGame(eventId, existing);
 

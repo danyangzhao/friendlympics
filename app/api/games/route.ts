@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createGame, getGamesByEvent, updateGame, deleteGame, ensureCanonicalGamesForEvent } from '@/lib/data';
+import {
+  createGame,
+  getGamesByEvent,
+  getEventById,
+  updateGame,
+  deleteGame,
+  ensureCanonicalGamesForEvent,
+} from '@/lib/data';
 import type { TeamWinRule, TimeDirection } from '@/lib/scoring';
 import { defaultsForGameType } from '@/lib/scoring';
 
@@ -29,12 +36,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid game type' }, { status: 400 });
     }
 
+    const eid = typeof eventId === 'number' ? eventId : parseInt(String(eventId), 10);
+    if (Number.isNaN(eid) || !getEventById(eid)) {
+      return NextResponse.json({ error: 'Event not found' }, { status: 404 });
+    }
+
     const def = defaultsForGameType(type);
     const tw = parseTeamWinRule(teamWinRule) ?? def.team_win_rule;
     const td = parseTimeDirection(timeDirection) ?? def.time_direction;
 
-    const gameId = createGame(eventId, name, type, rules, tw, td);
-    return NextResponse.json({ id: gameId, eventId, name, type, rules, teamWinRule: tw, timeDirection: td });
+    const gameId = createGame(eid, name, type, rules, tw, td);
+    return NextResponse.json({ id: gameId, eventId: eid, name, type, rules, teamWinRule: tw, timeDirection: td });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -52,6 +64,10 @@ export async function GET(request: NextRequest) {
     const id = parseInt(eventId, 10);
     if (Number.isNaN(id)) {
       return NextResponse.json({ error: 'Invalid event ID' }, { status: 400 });
+    }
+
+    if (!getEventById(id)) {
+      return NextResponse.json({ error: 'Event not found' }, { status: 404 });
     }
 
     // Merge canonical games from code so dashboard always lists the full standard set

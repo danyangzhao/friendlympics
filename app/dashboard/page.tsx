@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { initDefaultEventAndStore } from '@/lib/client-event';
 
 // Decorative spring elements
 const FloatingElement = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
@@ -82,10 +83,15 @@ export default function Dashboard() {
 
   const loadData = async (eId: number) => {
     try {
-      const [gamesRes, leaderboardRes] = await Promise.all([
-        fetch(`/api/games?eventId=${eId}`),
-        fetch(`/api/leaderboard?eventId=${eId}&type=team`),
-      ]);
+      let id = eId;
+      let gamesRes = await fetch(`/api/games?eventId=${id}`);
+      if (gamesRes.status === 404) {
+        id = await initDefaultEventAndStore();
+        setEventId(id);
+        gamesRes = await fetch(`/api/games?eventId=${id}`);
+      }
+
+      const leaderboardRes = await fetch(`/api/leaderboard?eventId=${id}&type=team`);
 
       if (gamesRes.ok) {
         const gamesData = await gamesRes.json();
