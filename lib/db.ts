@@ -43,6 +43,8 @@ db.exec(`
     name TEXT NOT NULL,
     type TEXT NOT NULL CHECK(type IN ('score', 'time', 'hybrid')),
     rules TEXT,
+    team_win_rule TEXT NOT NULL DEFAULT 'avg_points' CHECK(team_win_rule IN ('avg_points', 'sum_points', 'avg_time_ms', 'sum_time_ms')),
+    time_direction TEXT NOT NULL DEFAULT 'lower_better' CHECK(time_direction IN ('lower_better', 'higher_better')),
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
   );
@@ -83,6 +85,24 @@ try {
 } catch (e) {
   // Column doesn't exist, add it
   db.exec('ALTER TABLE users ADD COLUMN team TEXT CHECK(team IN (\'boys\', \'girls\'))');
+}
+
+// Migration: games.team_win_rule
+try {
+  db.prepare('SELECT team_win_rule FROM games LIMIT 1').get();
+} catch {
+  db.exec(
+    "ALTER TABLE games ADD COLUMN team_win_rule TEXT NOT NULL DEFAULT 'avg_points' CHECK(team_win_rule IN ('avg_points', 'sum_points', 'avg_time_ms', 'sum_time_ms'))"
+  );
+}
+
+// Migration: games.time_direction
+try {
+  db.prepare('SELECT time_direction FROM games LIMIT 1').get();
+} catch {
+  db.exec(
+    "ALTER TABLE games ADD COLUMN time_direction TEXT NOT NULL DEFAULT 'lower_better' CHECK(time_direction IN ('lower_better', 'higher_better'))"
+  );
 }
 
 export default db;
