@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import { initDefaultEventAndStore } from '@/lib/client-event';
 
 // Decorative spring elements
 const FloatingElement = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
@@ -938,6 +939,12 @@ export default function PlayGame() {
     notes: '',
   });
   const [isSavingScore, setIsSavingScore] = useState(false);
+  /** Who this round's score is saved under (charades, memory). */
+  const [sessionScoreUserId, setSessionScoreUserId] = useState<number | null>(null);
+  /** DB user id to attach team boys score rows (song, trivia). */
+  const [sessionBoysUserId, setSessionBoysUserId] = useState<number | null>(null);
+  /** DB user id to attach team girls score rows (song, trivia). */
+  const [sessionGirlsUserId, setSessionGirlsUserId] = useState<number | null>(null);
   const [prompts, setPrompts] = useState<string[]>([]);
   const [songs, setSongs] = useState<Song[]>([]);
   const [typingPrompts, setTypingPrompts] = useState<string[]>([]);
@@ -955,6 +962,12 @@ export default function PlayGame() {
   useEffect(() => {
     loadGame();
     loadPrompts();
+  }, [gameId]);
+
+  useEffect(() => {
+    setSessionScoreUserId(null);
+    setSessionBoysUserId(null);
+    setSessionGirlsUserId(null);
   }, [gameId]);
 
   useEffect(() => {
@@ -988,11 +1001,16 @@ export default function PlayGame() {
         return;
       }
 
-      const parsedEventId = parseInt(storedEventId);
+      let parsedEventId = parseInt(storedEventId, 10);
       setEventId(parsedEventId);
-      const res = await fetch(`/api/games?eventId=${parsedEventId}`);
+      let res = await fetch(`/api/games?eventId=${parsedEventId}`);
+      if (res.status === 404) {
+        parsedEventId = await initDefaultEventAndStore();
+        setEventId(parsedEventId);
+        res = await fetch(`/api/games?eventId=${parsedEventId}`);
+      }
       const games = await res.json();
-      const gameData = games.find((g: Game) => g.id === gameId);
+      const gameData = Array.isArray(games) ? games.find((g: Game) => g.id === gameId) : undefined;
       
       if (gameData) {
         setGame(gameData);
@@ -1107,6 +1125,18 @@ export default function PlayGame() {
   };
 
   const startGame = () => {
+    if (gameType === 'charades' || gameType === 'memory') {
+      if (sessionScoreUserId == null) return;
+    }
+    if (gameType === 'song' || gameType === 'trivia') {
+      if (
+        sessionBoysUserId == null ||
+        sessionGirlsUserId == null ||
+        sessionBoysUserId === sessionGirlsUserId
+      ) {
+        return;
+      }
+    }
     setIsRunning(true);
     setTimeLeft(60);
     setScore({ correct: 0, incorrect: 0 });
@@ -1209,45 +1239,8 @@ export default function PlayGame() {
     }
   };
 
-  const handleSaveTypingScore = async () => {
-    if (!eventId || !game || !typingScore) return;
-    
-    // Find team user (use first available team)
-    const teamUser = users.find(user => user.team);
-    if (!teamUser) return;
-
-    setIsSavingScore(true);
-    try {
-      const res = await fetch('/api/scores', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          eventId,
-          gameId: game.id,
-          userId: teamUser.id,
-          points: typingScore.wpm,
-          timeMs: typingScore.timeMs,
-          notes: `${typingScore.accuracy}% accuracy`,
-        }),
-      });
-
-      if (res.ok) {
-        setTypingScore(null);
-        setIsRunning(false);
-        setTimeLeft(60);
-      }
-    } catch (error) {
-      console.error('Failed to save score:', error);
-    } finally {
-      setIsSavingScore(false);
-    }
-  };
-
   const handleSaveMemoryScore = async () => {
-    if (!eventId || !game || !memoryScore) return;
-    
-    const teamUser = users.find(user => user.team);
-    if (!teamUser) return;
+    if (!eventId || !game || !memoryScore || sessionScoreUserId == null) return;
 
     setIsSavingScore(true);
     try {
@@ -1257,7 +1250,7 @@ export default function PlayGame() {
         body: JSON.stringify({
           eventId,
           gameId: game.id,
-          userId: teamUser.id,
+          userId: sessionScoreUserId,
           points: 1000 - memoryScore.moves * 10, // Score based on moves
           timeMs: memoryScore.timeMs,
           notes: `${memoryScore.moves} moves`,
@@ -1277,10 +1270,7 @@ export default function PlayGame() {
   };
 
   const handleSaveCharadesScore = async () => {
-    if (!eventId || !game) return;
-    
-    const teamUser = users.find(user => user.team);
-    if (!teamUser) return;
+    if (!eventId || !game || sessionScoreUserId == null) return;
 
     setIsSavingScore(true);
     try {
@@ -1290,7 +1280,7 @@ export default function PlayGame() {
         body: JSON.stringify({
           eventId,
           gameId: game.id,
-          userId: teamUser.id,
+          userId: sessionScoreUserId,
           points: score.correct,
           timeMs: 60000, // 60 second game
           notes: `${score.correct} correct, ${score.incorrect} skipped`,
@@ -1301,6 +1291,9 @@ export default function PlayGame() {
         // Reset to allow another round
         setScore({ correct: 0, incorrect: 0 });
         setTimeLeft(60);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        console.error('Failed to save charades score:', err);
       }
     } catch (error) {
       console.error('Failed to save score:', error);
@@ -1310,24 +1303,19 @@ export default function PlayGame() {
   };
 
   const handleSaveTriviaScores = async () => {
-    if (!eventId || !game) return;
-
-    const boysUser = users.find(user => user.team === 'boys');
-    const girlsUser = users.find(user => user.team === 'girls');
-
-    if (!boysUser && !girlsUser) return;
+    if (!eventId || !game || sessionBoysUserId == null || sessionGirlsUserId == null) return;
 
     setIsSavingScore(true);
     try {
       // Save boys team score
-      if (boysUser && triviaScore.boys > 0) {
+      if (triviaScore.boys > 0) {
         await fetch('/api/scores', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             eventId,
             gameId: game.id,
-            userId: boysUser.id,
+            userId: sessionBoysUserId,
             points: triviaScore.boys,
             timeMs: 60000,
             notes: `Team Boys: ${triviaScore.boys} correct answers`,
@@ -1336,14 +1324,14 @@ export default function PlayGame() {
       }
 
       // Save girls team score
-      if (girlsUser && triviaScore.girls > 0) {
+      if (triviaScore.girls > 0) {
         await fetch('/api/scores', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             eventId,
             gameId: game.id,
-            userId: girlsUser.id,
+            userId: sessionGirlsUserId,
             points: triviaScore.girls,
             timeMs: 60000,
             notes: `Team Girls: ${triviaScore.girls} correct answers`,
@@ -1362,24 +1350,19 @@ export default function PlayGame() {
   };
 
   const handleSaveSongScores = async () => {
-    if (!eventId || !game) return;
-
-    const boysUser = users.find(user => user.team === 'boys');
-    const girlsUser = users.find(user => user.team === 'girls');
-
-    if (!boysUser && !girlsUser) return;
+    if (!eventId || !game || sessionBoysUserId == null || sessionGirlsUserId == null) return;
 
     setIsSavingScore(true);
     try {
       // Save boys team score
-      if (boysUser && songScore.boys > 0) {
+      if (songScore.boys > 0) {
         await fetch('/api/scores', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             eventId,
             gameId: game.id,
-            userId: boysUser.id,
+            userId: sessionBoysUserId,
             points: songScore.boys,
             notes: `Team Boys: ${songScore.boys} songs guessed correctly`,
           }),
@@ -1387,14 +1370,14 @@ export default function PlayGame() {
       }
 
       // Save girls team score
-      if (girlsUser && songScore.girls > 0) {
+      if (songScore.girls > 0) {
         await fetch('/api/scores', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             eventId,
             gameId: game.id,
-            userId: girlsUser.id,
+            userId: sessionGirlsUserId,
             points: songScore.girls,
             notes: `Team Girls: ${songScore.girls} songs guessed correctly`,
           }),
@@ -1499,6 +1482,17 @@ export default function PlayGame() {
     return users.filter(u => u.team === team);
   };
 
+  const getTypingNoTeamUsers = () => users.filter((u) => !u.team);
+
+  /** Everyone who must finish a typing turn (team players if any, else all players). */
+  const getTypingParticipants = () => {
+    const withTeam = users.filter((u) => u.team === 'boys' || u.team === 'girls');
+    return withTeam.length > 0 ? withTeam : users;
+  };
+
+  const hasTypingTeamPlayers = () =>
+    users.some((u) => u.team === 'boys' || u.team === 'girls');
+
   const getTypingTeamTotal = (team: 'boys' | 'girls') => {
     return getTypingTeamUsers(team).reduce((sum, user) => {
       const result = typingPlayersCompleted[user.id];
@@ -1515,8 +1509,11 @@ export default function PlayGame() {
   };
 
   const getAllTypingPlayersCompleted = () => {
-    const allPlayers = users.filter(u => u.team === 'boys' || u.team === 'girls');
-    return allPlayers.length > 0 && allPlayers.every(u => typingPlayersCompleted[u.id] !== undefined);
+    const participants = getTypingParticipants();
+    return (
+      participants.length > 0 &&
+      participants.every((u) => typingPlayersCompleted[u.id] !== undefined)
+    );
   };
   
   const getCompletedPlayersCount = () => {
@@ -1561,10 +1558,10 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
     }
 
     // Check if all players completed
-    const allPlayers = users.filter(u => u.team === 'boys' || u.team === 'girls');
+    const allPlayers = getTypingParticipants();
     const completedCount = Object.keys(typingPlayersCompleted).length + 1; // +1 for current player
 
-    if (completedCount >= allPlayers.length) {
+    if (allPlayers.length > 0 && completedCount >= allPlayers.length) {
       // All players done - show results
       setTimeout(() => {
         setTypingGamePhase('results');
@@ -1874,6 +1871,11 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
             {/* Setup Phase - Rules & Player Selection */}
             {typingGamePhase === 'setup' && (
               <>
+                {users.length === 0 && (
+                  <div className="bg-peach-50 border border-peach-200 rounded-2xl p-4 text-center text-peach-800 text-sm mb-4">
+                    add players on the host page first. each person then taps &quot;start typing&quot; for their turn.
+                  </div>
+                )}
                 {/* Game Rules */}
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-6 border border-cream-200">
                   <div className="text-center mb-4">
@@ -2033,6 +2035,54 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                   </div>
                 </div>
 
+                {/* Players without a team */}
+                {getTypingNoTeamUsers().length > 0 && (
+                  <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft p-5 border border-cream-200">
+                    <h3 className="text-lg font-bold text-warm-600 mb-3 flex items-center gap-2">
+                      👤 Players (no team)
+                    </h3>
+                    <p className="text-warm-500 text-sm mb-3">
+                      Assign teams on the host page if you want boys vs girls totals; everyone here can still take a turn.
+                    </p>
+                    <div className="space-y-2">
+                      {getTypingNoTeamUsers().map((user) => {
+                        const result = typingPlayersCompleted[user.id];
+                        const isCompleted = !!result;
+                        return (
+                          <div
+                            key={user.id}
+                            className={`flex items-center justify-between p-3 rounded-xl transition-all ${
+                              isCompleted
+                                ? 'bg-mint-100 border border-mint-300'
+                                : 'bg-cream-50 border border-cream-200'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="text-lg">{isCompleted ? '✅' : '⏳'}</span>
+                              <span className="font-medium text-warm-700">
+                                {user.nickname || user.name}
+                              </span>
+                            </div>
+                            {isCompleted ? (
+                              <div className="text-right">
+                                <div className="text-sm font-mono text-mint-700">{formatTimeMs(result.timeMs)}</div>
+                                <div className="text-xs text-warm-500">{result.wpm} WPM</div>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => startTypingForPlayer(user.id)}
+                                className="btn-butter text-sm px-4 py-2"
+                              >
+                                start typing
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 {/* Reset Button */}
                 {Object.keys(typingPlayersCompleted).length > 0 && (
                   <div className="text-center">
@@ -2051,23 +2101,31 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
             {typingGamePhase === 'playing' && currentTypingPlayerId && currentTypingText && (
               <>
                 {/* Team Progress Bar */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-4 border border-cream-200">
-                  <div className="flex justify-center gap-8">
-                    <div className="text-center">
-                      <div className="text-xl font-bold text-sky-500">
-                        {formatTimeMs(getTypingTeamTotal('boys'))}
+                {hasTypingTeamPlayers() ? (
+                  <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-4 border border-cream-200">
+                    <div className="flex justify-center gap-8">
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-sky-500">
+                          {formatTimeMs(getTypingTeamTotal('boys'))}
+                        </div>
+                        <div className="text-xs text-warm-500">Team Boys 💙</div>
                       </div>
-                      <div className="text-xs text-warm-500">Team Boys 💙</div>
-                    </div>
-                    <div className="text-lg text-warm-300 self-center">vs</div>
-                    <div className="text-center">
-                      <div className="text-xl font-bold text-peach-500">
-                        {formatTimeMs(getTypingTeamTotal('girls'))}
+                      <div className="text-lg text-warm-300 self-center">vs</div>
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-peach-500">
+                          {formatTimeMs(getTypingTeamTotal('girls'))}
+                        </div>
+                        <div className="text-xs text-warm-500">Team Girls 💗</div>
                       </div>
-                      <div className="text-xs text-warm-500">Team Girls 💗</div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-4 border border-cream-200 text-center">
+                    <p className="text-warm-500 text-sm lowercase">
+                      no team split — pick &quot;start typing&quot; for each player in order
+                    </p>
+                  </div>
+                )}
 
                 <TypingGame
                   targetText={currentTypingText}
@@ -2084,47 +2142,57 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                 {/* Winner Announcement */}
                 <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-soft-xl p-8 text-center border-2 border-butter-200">
                   <div className="text-6xl mb-4">🏆</div>
-                  <h2 className="text-3xl font-bold text-warm-700 mb-2 lowercase">
-                    {getTypingTeamTotal('boys') < getTypingTeamTotal('girls')
-                      ? 'team boys wins!'
-                      : getTypingTeamTotal('girls') < getTypingTeamTotal('boys')
-                      ? 'team girls wins!'
-                      : "it's a tie!"}
-                  </h2>
-                  <div className="text-5xl mb-4">
-                    {getTypingTeamTotal('boys') < getTypingTeamTotal('girls')
-                      ? '💙'
-                      : getTypingTeamTotal('girls') < getTypingTeamTotal('boys')
-                      ? '💗'
-                      : '🤝'}
-                  </div>
+                  {hasTypingTeamPlayers() ? (
+                    <>
+                      <h2 className="text-3xl font-bold text-warm-700 mb-2 lowercase">
+                        {getTypingTeamTotal('boys') < getTypingTeamTotal('girls')
+                          ? 'team boys wins!'
+                          : getTypingTeamTotal('girls') < getTypingTeamTotal('boys')
+                          ? 'team girls wins!'
+                          : "it's a tie!"}
+                      </h2>
+                      <div className="text-5xl mb-4">
+                        {getTypingTeamTotal('boys') < getTypingTeamTotal('girls')
+                          ? '💙'
+                          : getTypingTeamTotal('girls') < getTypingTeamTotal('boys')
+                          ? '💗'
+                          : '🤝'}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <h2 className="text-3xl font-bold text-warm-700 mb-2 lowercase">all done!</h2>
+                      <p className="text-warm-500 text-sm">fastest time wins — see individual times below</p>
+                    </>
+                  )}
                 </div>
 
                 {/* Final Scores */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-6 border border-cream-200">
-                  <h3 className="text-xl font-bold text-warm-700 mb-4 text-center lowercase">final times</h3>
-                  <div className="flex justify-center gap-12">
-                    <div className="text-center">
-                      <div className="text-4xl font-bold text-sky-500 font-mono">
-                        {formatTimeMs(getTypingTeamTotal('boys'))}
+                {hasTypingTeamPlayers() && (
+                  <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-6 border border-cream-200">
+                    <h3 className="text-xl font-bold text-warm-700 mb-4 text-center lowercase">final times</h3>
+                    <div className="flex justify-center gap-12">
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-sky-500 font-mono">
+                          {formatTimeMs(getTypingTeamTotal('boys'))}
+                        </div>
+                        <div className="text-warm-500">Team Boys 💙</div>
                       </div>
-                      <div className="text-warm-500">Team Boys 💙</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-4xl font-bold text-peach-500 font-mono">
-                        {formatTimeMs(getTypingTeamTotal('girls'))}
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-peach-500 font-mono">
+                          {formatTimeMs(getTypingTeamTotal('girls'))}
+                        </div>
+                        <div className="text-warm-500">Team Girls 💗</div>
                       </div>
-                      <div className="text-warm-500">Team Girls 💗</div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 {/* Individual Results */}
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft p-5 border border-cream-200">
                   <h3 className="text-lg font-bold text-warm-700 mb-4 lowercase">individual times</h3>
                   <div className="space-y-2">
-                    {users
-                      .filter(u => u.team === 'boys' || u.team === 'girls')
+                    {getTypingParticipants()
                       .sort((a, b) => {
                         const aResult = typingPlayersCompleted[a.id];
                         const bResult = typingPlayersCompleted[b.id];
@@ -2139,7 +2207,9 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                           >
                             <div className="flex items-center gap-3">
                               <span className="text-lg font-bold text-warm-400">#{index + 1}</span>
-                              <span className="text-lg">{user.team === 'boys' ? '💙' : '💗'}</span>
+                              <span className="text-lg">
+                                {user.team === 'boys' ? '💙' : user.team === 'girls' ? '💗' : '👤'}
+                              </span>
                               <span className="font-medium text-warm-700">{user.nickname || user.name}</span>
                             </div>
                             <div className="text-right">
@@ -2392,14 +2462,114 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
         )}
 
         {/* Ready to Play - for non-typing, non-manual games */}
-        {gameType !== 'typing' && gameType !== 'manual' && gameType !== 'speed_drawing' && !isRunning && timeLeft === 60 && !typingScore && !memoryScore && (
+        {gameType &&
+          gameType !== 'typing' &&
+          gameType !== 'manual' &&
+          gameType !== 'speed_drawing' &&
+          !isRunning &&
+          timeLeft === 60 &&
+          !typingScore &&
+          !memoryScore && (
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-8 text-center border border-cream-200">
             <div className="text-5xl mb-4">🎯</div>
             <h2 className="text-2xl font-bold text-warm-700 mb-4 lowercase">ready to play?</h2>
             <p className="text-warm-500 mb-6">{getGameDescription()}</p>
+
+            {(gameType === 'charades' || gameType === 'memory') && (
+              <div className="mb-6 text-left max-w-md mx-auto">
+                <label className="block text-sm font-medium text-warm-600 mb-2 lowercase">
+                  who is this round for? (score saves under this player)
+                </label>
+                <select
+                  value={sessionScoreUserId ?? ''}
+                  onChange={(e) =>
+                    setSessionScoreUserId(e.target.value ? parseInt(e.target.value, 10) : null)
+                  }
+                  className="input-spring w-full text-lg"
+                >
+                  <option value="">select a player…</option>
+                  {users.map((u) => (
+                    <option key={u.id} value={u.id}>
+                      {u.nickname || u.name}
+                      {u.team ? ` (${u.team})` : ''}
+                    </option>
+                  ))}
+                </select>
+                {users.length === 0 && (
+                  <p className="text-sm text-peach-600 mt-2">add players from the host page first.</p>
+                )}
+              </div>
+            )}
+
+            {(gameType === 'song' || gameType === 'trivia') && (
+              <div className="mb-6 space-y-4 text-left max-w-md mx-auto">
+                <p className="text-sm text-warm-500">
+                  Pick one player per side so scores can be saved in the leaderboard (two different people).
+                </p>
+                <div>
+                  <label className="block text-sm font-medium text-warm-600 mb-2 lowercase">
+                    team boys — attach score to
+                  </label>
+                  <select
+                    value={sessionBoysUserId ?? ''}
+                    onChange={(e) =>
+                      setSessionBoysUserId(e.target.value ? parseInt(e.target.value, 10) : null)
+                    }
+                    className="input-spring w-full text-lg"
+                  >
+                    <option value="">select player…</option>
+                    {users.map((u) => (
+                      <option key={u.id} value={u.id}>
+                        {u.nickname || u.name}
+                        {u.team ? ` (${u.team})` : ''}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-warm-600 mb-2 lowercase">
+                    team girls — attach score to
+                  </label>
+                  <select
+                    value={sessionGirlsUserId ?? ''}
+                    onChange={(e) =>
+                      setSessionGirlsUserId(e.target.value ? parseInt(e.target.value, 10) : null)
+                    }
+                    className="input-spring w-full text-lg"
+                  >
+                    <option value="">select player…</option>
+                    {users.map((u) => (
+                      <option key={u.id} value={u.id}>
+                        {u.nickname || u.name}
+                        {u.team ? ` (${u.team})` : ''}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {users.length < 2 && (
+                  <p className="text-sm text-peach-600">need at least two players for team vs team.</p>
+                )}
+                {sessionBoysUserId != null &&
+                  sessionGirlsUserId != null &&
+                  sessionBoysUserId === sessionGirlsUserId && (
+                <p className="text-sm text-peach-600">choose two different players.</p>
+                  )}
+              </div>
+            )}
+
             <button
+              type="button"
               onClick={startGame}
-              className="btn-butter text-xl px-10 py-4 lowercase"
+              className="btn-butter text-xl px-10 py-4 lowercase disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={
+                users.length === 0 ||
+                ((gameType === 'charades' || gameType === 'memory') && sessionScoreUserId == null) ||
+                ((gameType === 'song' || gameType === 'trivia') &&
+                  (users.length < 2 ||
+                    sessionBoysUserId == null ||
+                    sessionGirlsUserId == null ||
+                    sessionBoysUserId === sessionGirlsUserId))
+              }
             >
               start game 🚀
             </button>
@@ -2450,13 +2620,6 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                     skip
                   </button>
                 </div>
-                <button
-                  onClick={nextPrompt}
-                  className="mt-4 text-lavender-500 hover:text-lavender-600 flex items-center gap-2 mx-auto lowercase font-medium"
-                >
-                  <RefreshIcon />
-                  new prompt
-                </button>
               </div>
             )}
 
@@ -2517,7 +2680,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
               <button
                 onClick={handleSaveMemoryScore}
                 className="btn-butter lowercase"
-                disabled={isSavingScore}
+                disabled={isSavingScore || sessionScoreUserId == null}
               >
                 {isSavingScore ? 'saving...' : 'save score ✨'}
               </button>
@@ -2561,7 +2724,11 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
               <button
                 onClick={handleSaveSongScores}
                 className="btn-butter lowercase"
-                disabled={isSavingScore}
+                disabled={
+                  isSavingScore ||
+                  sessionBoysUserId == null ||
+                  sessionGirlsUserId == null
+                }
               >
                 {isSavingScore ? 'saving...' : 'record scores ✨'}
               </button>
@@ -2610,7 +2777,12 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
               <button
                 onClick={handleSaveTriviaScores}
                 className="btn-butter lowercase"
-                disabled={isSavingScore || (triviaScore.boys === 0 && triviaScore.girls === 0)}
+                disabled={
+                  isSavingScore ||
+                  (triviaScore.boys === 0 && triviaScore.girls === 0) ||
+                  sessionBoysUserId == null ||
+                  sessionGirlsUserId == null
+                }
               >
                 {isSavingScore ? 'saving...' : 'record scores ✨'}
               </button>
@@ -2648,7 +2820,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
               <button
                 onClick={handleSaveCharadesScore}
                 className="btn-butter lowercase"
-                disabled={isSavingScore}
+                disabled={isSavingScore || sessionScoreUserId == null}
               >
                 {isSavingScore ? 'saving...' : 'record score ✨'}
               </button>

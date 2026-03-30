@@ -87,6 +87,7 @@ export function deleteGame(id: number) {
 
 /** Inserts missing canonical games and updates type/rules/scoring for matching names. Leaves other games unchanged. */
 export function ensureCanonicalGamesForEvent(eventId: number) {
+  if (!getEventById(eventId)) return;
   const existing = getGamesByEvent(eventId);
   for (const game of CANONICAL_GAMES) {
     const row = existing.find((g) => g.name === game.name);
