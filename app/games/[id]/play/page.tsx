@@ -367,7 +367,18 @@ declare global {
 }
 
 type SongGamePhase = 'idle' | 'playing' | 'buzzing' | 'guessing' | 'stealing' | 'revealing';
-type GameType = 'charades' | 'song' | 'typing' | 'trivia' | 'memory' | 'manual' | null;
+type GameType = 'charades' | 'song' | 'typing' | 'trivia' | 'memory' | 'manual' | 'speed_drawing' | null;
+
+/** Shuffle and take up to `count` unique words from pool. */
+function pickRandomWords(pool: string[], count: number): string[] {
+  if (pool.length === 0) return [];
+  const shuffled = [...pool];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled.slice(0, Math.min(count, shuffled.length));
+}
 
 function YouTubePlayer({
   videoId,
@@ -921,7 +932,7 @@ export default function PlayGame() {
   const [songScore, setSongScore] = useState({ boys: 0, girls: 0 });
   const [memoryScore, setMemoryScore] = useState<{ moves: number; timeMs: number } | null>(null);
   const [manualScore, setManualScore] = useState({
-    team: '' as '' | 'boys' | 'girls',
+    userId: '' as string,
     points: '',
     timeSeconds: '',
     notes: '',
@@ -932,6 +943,9 @@ export default function PlayGame() {
   const [typingPrompts, setTypingPrompts] = useState<string[]>([]);
   const [triviaQuestions, setTriviaQuestions] = useState<TriviaQuestion[]>([]);
   const [memoryThemes, setMemoryThemes] = useState<Record<string, string[]>>({});
+  const [speedDrawingPool, setSpeedDrawingPool] = useState<string[]>([]);
+  const [drawingRoundWords, setDrawingRoundWords] = useState<string[]>([]);
+  const [drawingWordsHidden, setDrawingWordsHidden] = useState(false);
   const [usedPrompts, setUsedPrompts] = useState<Set<number>>(new Set());
   const [usedSongs, setUsedSongs] = useState<Set<number>>(new Set());
   const [usedTyping, setUsedTyping] = useState<Set<number>>(new Set());
@@ -944,9 +958,15 @@ export default function PlayGame() {
   }, [gameId]);
 
   useEffect(() => {
+    if (gameType === 'speed_drawing' && speedDrawingPool.length > 0) {
+      setDrawingRoundWords(pickRandomWords(speedDrawingPool, 25));
+    }
+  }, [gameType, speedDrawingPool]);
+
+  useEffect(() => {
     let interval: NodeJS.Timeout;
     // Song game handles its own timing via YouTube player
-    if (isRunning && timeLeft > 0 && gameType !== 'typing' && gameType !== 'memory' && gameType !== 'song') {
+    if (isRunning && timeLeft > 0 && gameType !== 'typing' && gameType !== 'memory' && gameType !== 'song' && gameType !== 'speed_drawing') {
       interval = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
@@ -979,6 +999,8 @@ export default function PlayGame() {
         const name = gameData.name.toLowerCase();
         if (name.includes('charade')) {
           setGameType('charades');
+        } else if (name.includes('speed drawing')) {
+          setGameType('speed_drawing');
         } else if (name.includes('song') || name.includes('guess')) {
           setGameType('song');
         } else if (name.includes('typer') || name.includes('typing')) {
@@ -989,7 +1011,8 @@ export default function PlayGame() {
           setGameType('memory');
         } else if (name.includes('relay') || name.includes('4x400') || 
                    name.includes('puzzle') || 
-                   name.includes('beer pong') || name.includes('pong')) {
+                   name.includes('beer pong') || name.includes('pong') ||
+                   name.includes('egg carton') || name.includes('eggs in a carton')) {
           setGameType('manual');
         }
       }
@@ -1021,6 +1044,7 @@ export default function PlayGame() {
       setTypingPrompts(data.typing || []);
       setTriviaQuestions(data.trivia || []);
       setMemoryThemes(data.memory || {});
+      setSpeedDrawingPool(data.speedDrawing || []);
     } catch (error) {
       console.error('Failed to load prompts:', error);
     }
@@ -1146,10 +1170,10 @@ export default function PlayGame() {
 
   const handleManualScoreSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!eventId || !game || !manualScore.team) return;
+    if (!eventId || !game || !manualScore.userId) return;
 
-    const teamUser = users.find(user => user.team === manualScore.team);
-    if (!teamUser) return;
+    const userIdNum = parseInt(manualScore.userId, 10);
+    if (isNaN(userIdNum)) return;
 
     setIsSavingScore(true);
     try {
@@ -1163,7 +1187,7 @@ export default function PlayGame() {
         body: JSON.stringify({
           eventId,
           gameId: game.id,
-          userId: teamUser.id,
+          userId: userIdNum,
           points,
           timeMs,
           notes: manualScore.notes || null,
@@ -1407,6 +1431,8 @@ export default function PlayGame() {
         return 'match all the pairs! 🧩';
       case 'manual':
         return 'play this game outside the app and record scores here! 📝';
+      case 'speed_drawing':
+        return '25 numbered words — sketch to remember, then guess which number was what! ✏️';
       default:
         return 'let\'s play! 🎮';
     }
@@ -1417,6 +1443,7 @@ export default function PlayGame() {
     const name = game.name.toLowerCase();
     if (name.includes('relay') || name.includes('4x400')) return '🏃';
     if (name.includes('puzzle')) return '🧩';
+    if (name.includes('egg carton') || name.includes('eggs in a carton')) return '🥚';
     if (name.includes('pong') || name.includes('beer')) return '🍺';
     return '🎯';
   };
@@ -1438,6 +1465,13 @@ export default function PlayGame() {
         'Start the timer when you begin',
         'Stop when the puzzle is complete',
         'Record the completion time for each team'
+      ];
+    }
+    if (name.includes('egg carton') || name.includes('eggs in a carton')) {
+      return [
+        'Each team bounces ping pong balls into an egg carton — fill every slot!',
+        'Time each team from start until the carton is full',
+        'Shortest time wins — enter each team\'s time in Host view below'
       ];
     }
     if (name.includes('pong') || name.includes('beer')) {
@@ -2176,37 +2210,27 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                 <span>📝</span> record scores
               </h2>
               <form onSubmit={handleManualScoreSubmit} className="space-y-4">
-                {/* Team Selection */}
                 <div>
-                  <label className="block text-sm text-warm-500 mb-2 lowercase">select team</label>
-                  <div className="flex gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setManualScore({ ...manualScore, team: 'boys' })}
-                      className={`flex-1 py-3 rounded-xl font-medium transition-all ${
-                        manualScore.team === 'boys'
-                          ? 'bg-sky-200 border-2 border-sky-500 text-sky-700'
-                          : 'bg-cream-100 border-2 border-cream-300 text-warm-600 hover:border-sky-300'
-                      }`}
-                    >
-                      💙 Team Boys
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setManualScore({ ...manualScore, team: 'girls' })}
-                      className={`flex-1 py-3 rounded-xl font-medium transition-all ${
-                        manualScore.team === 'girls'
-                          ? 'bg-peach-200 border-2 border-peach-500 text-peach-700'
-                          : 'bg-cream-100 border-2 border-cream-300 text-warm-600 hover:border-peach-300'
-                      }`}
-                    >
-                      💗 Team Girls
-                    </button>
-                  </div>
-                  {manualScore.team && !users.find(user => user.team === manualScore.team) && (
-                    <p className="text-sm text-peach-600 mt-2">
-                      no players found for this team. add a player first.
-                    </p>
+                  <label className="block text-sm text-warm-500 mb-2 lowercase">select player</label>
+                  <select
+                    value={manualScore.userId}
+                    onChange={(e) => setManualScore({ ...manualScore, userId: e.target.value })}
+                    className="input-spring text-lg w-full"
+                    required
+                  >
+                    <option value="">choose who this score is for...</option>
+                    {users.filter(u => u.team === 'boys').map((u) => (
+                      <option key={u.id} value={u.id}>💙 {u.nickname || u.name} (boys)</option>
+                    ))}
+                    {users.filter(u => u.team === 'girls').map((u) => (
+                      <option key={u.id} value={u.id}>💗 {u.nickname || u.name} (girls)</option>
+                    ))}
+                    {users.filter(u => !u.team).map((u) => (
+                      <option key={u.id} value={u.id}>{u.nickname || u.name} (no team)</option>
+                    ))}
+                  </select>
+                  {users.length === 0 && (
+                    <p className="text-sm text-peach-600 mt-2">add players from the dashboard or host view first.</p>
                   )}
                 </div>
 
@@ -2267,7 +2291,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                 <button
                   type="submit"
                   className="w-full btn-butter text-lg py-4 lowercase disabled:opacity-50"
-                  disabled={isSavingScore || !manualScore.team || !users.find(user => user.team === manualScore.team)}
+                  disabled={isSavingScore || !manualScore.userId || users.length === 0}
                 >
                   {isSavingScore ? 'saving...' : 'save score ✨'}
                 </button>
@@ -2292,8 +2316,83 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
           </>
         )}
 
+        {/* Speed Drawing — 25 random words */}
+        {gameType === 'speed_drawing' && (
+          <>
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-6 border border-cream-200">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">✏️</span>
+                <h2 className="text-xl font-bold text-warm-700 lowercase">speed drawing</h2>
+              </div>
+              <p className="text-warm-500 text-sm mb-3">
+                Someone reads the 25 numbered words aloud while everyone quick-sketches each one to remember it later.
+                Hide the words for the guessing phase — teams use their drawings to recall which number was which.
+                Enter scores in Host when you&apos;re done.
+              </p>
+              {drawingRoundWords.length === 0 ? (
+                <p className="text-peach-600 text-sm">Loading word list…</p>
+              ) : (
+                <>
+                  <div className="flex flex-wrap items-center gap-2 mb-4">
+                    <button
+                      type="button"
+                      onClick={() => setDrawingWordsHidden((h) => !h)}
+                      className="btn-butter lowercase flex items-center justify-center gap-2"
+                    >
+                      {drawingWordsHidden ? 'show words' : 'hide words'}
+                    </button>
+                    <span className="text-warm-400 text-xs">
+                      {drawingWordsHidden ? 'Words hidden — time to guess by number!' : 'Words visible — study & draw'}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mb-4">
+                    {drawingRoundWords.map((word, i) => (
+                      <div
+                        key={`${word}-${i}`}
+                        className={`rounded-xl px-3 py-2 text-center border ${
+                          drawingWordsHidden
+                            ? 'bg-warm-100/80 border-warm-200'
+                            : 'bg-butter-50 border-butter-200'
+                        }`}
+                      >
+                        <div className="text-xs font-bold text-lavender-600 tabular-nums">#{i + 1}</div>
+                        <div
+                          className={`text-sm font-medium mt-1 lowercase min-h-[1.25rem] ${
+                            drawingWordsHidden ? 'text-warm-400' : 'text-warm-700'
+                          }`}
+                        >
+                          {drawingWordsHidden ? '?' : word}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDrawingRoundWords(pickRandomWords(speedDrawingPool, 25));
+                      setDrawingWordsHidden(false);
+                    }}
+                    className="btn-lavender w-full lowercase flex items-center justify-center gap-2"
+                  >
+                    <RefreshIcon />
+                    new 25 words
+                  </button>
+                </>
+              )}
+            </div>
+            <div className="flex gap-4 justify-center flex-wrap">
+              <Link href={`/games/${gameId}`} className="btn-spring bg-cream-200 text-warm-600 lowercase">
+                ← back to game
+              </Link>
+              <Link href="/host" className="btn-butter lowercase">
+                host: enter scores 🏆
+              </Link>
+            </div>
+          </>
+        )}
+
         {/* Ready to Play - for non-typing, non-manual games */}
-        {gameType !== 'typing' && gameType !== 'manual' && !isRunning && timeLeft === 60 && !typingScore && !memoryScore && (
+        {gameType !== 'typing' && gameType !== 'manual' && gameType !== 'speed_drawing' && !isRunning && timeLeft === 60 && !typingScore && !memoryScore && (
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-8 text-center border border-cream-200">
             <div className="text-5xl mb-4">🎯</div>
             <h2 className="text-2xl font-bold text-warm-700 mb-4 lowercase">ready to play?</h2>
@@ -2572,26 +2671,33 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
         )}
 
         {/* Manual Score Entry - hidden for typing game (automatic) and manual games (has dedicated UI above) */}
-        {gameType !== 'typing' && gameType !== 'manual' && (
+        {gameType !== 'typing' && gameType !== 'manual' && gameType !== 'speed_drawing' && (
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft p-6 border border-cream-200">
             <h2 className="text-lg font-bold text-warm-700 mb-4 lowercase flex items-center gap-2">
               <span>📝</span> manual score entry
             </h2>
             <form onSubmit={handleManualScoreSubmit} className="space-y-3">
               <select
-                value={manualScore.team}
-                onChange={(e) => setManualScore({ ...manualScore, team: e.target.value as 'boys' | 'girls' | '' })}
+                value={manualScore.userId}
+                onChange={(e) => setManualScore({ ...manualScore, userId: e.target.value })}
                 className="input-spring text-sm"
                 required
               >
-                <option value="">select team...</option>
-                <option value="boys">team boys 💙</option>
-                <option value="girls">team girls 💗</option>
+                <option value="">select player...</option>
+                {users.filter(u => u.team === 'boys').map((u) => (
+                  <option key={u.id} value={u.id}>💙 {u.nickname || u.name} (boys)</option>
+                ))}
+                {users.filter(u => u.team === 'girls').map((u) => (
+                  <option key={u.id} value={u.id}>💗 {u.nickname || u.name} (girls)</option>
+                ))}
+                {users.filter(u => !u.team).map((u) => (
+                  <option key={u.id} value={u.id}>{u.nickname || u.name} (no team)</option>
+                ))}
               </select>
 
-              {manualScore.team && !users.find(user => user.team === manualScore.team) && (
+              {users.length === 0 && (
                 <p className="text-sm text-peach-600">
-                  no players found for this team. add a player to record scores.
+                  no players yet. add players to record scores.
                 </p>
               )}
 
@@ -2627,7 +2733,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
               <button
                 type="submit"
                 className="w-full btn-lavender lowercase disabled:opacity-50"
-                disabled={isSavingScore || !manualScore.team || !users.find(user => user.team === manualScore.team)}
+                disabled={isSavingScore || !manualScore.userId || users.length === 0}
               >
                 {isSavingScore ? 'saving...' : 'save score ✨'}
               </button>

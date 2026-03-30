@@ -48,9 +48,11 @@ interface Score {
   user_id: number;
   name: string;
   nickname?: string;
+  team?: 'boys' | 'girls';
   points?: number;
   time_ms?: number;
   rank?: number;
+  entryCount?: number;
 }
 
 export default function GameDetail() {
@@ -103,15 +105,24 @@ export default function GameDetail() {
     return `${minutes}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const isPlayableGame = game?.name.toLowerCase().includes('charade') || 
-                         game?.name.toLowerCase().includes('song') ||
-                         game?.name.toLowerCase().includes('guess') ||
-                         game?.name.toLowerCase().includes('typer') ||
-                         game?.name.toLowerCase().includes('typing') ||
-                         game?.name.toLowerCase().includes('trivia') ||
-                         game?.name.toLowerCase().includes('quiz') ||
-                         game?.name.toLowerCase().includes('memory') ||
-                         game?.name.toLowerCase().includes('match');
+  const gameName = game?.name.toLowerCase() || '';
+  const isPlayableGame = gameName.includes('charade') || 
+                         gameName.includes('song') ||
+                         gameName.includes('guess') ||
+                         gameName.includes('typer') ||
+                         gameName.includes('typing') ||
+                         gameName.includes('trivia') ||
+                         gameName.includes('quiz') ||
+                         gameName.includes('memory') ||
+                         gameName.includes('match') ||
+                         gameName.includes('speed drawing') ||
+                         gameName.includes('relay') ||
+                         gameName.includes('4x400') ||
+                         gameName.includes('puzzle') ||
+                         gameName.includes('beer pong') ||
+                         gameName.includes('pong') ||
+                         gameName.includes('egg carton') ||
+                         gameName.includes('eggs in a carton');
 
   const getMedalEmoji = (index: number) => {
     if (index === 0) return '🥇';
@@ -234,7 +245,16 @@ export default function GameDetail() {
                     <span className="font-bold text-lg w-8 text-center">
                       {getMedalEmoji(index)}
                     </span>
-                    <span className="font-semibold text-warm-700">{score.nickname || score.name}</span>
+                    <div className="flex flex-col">
+                      <span className="font-semibold text-warm-700">
+                        {score.team === 'boys' && '💙 '}
+                        {score.team === 'girls' && '💗 '}
+                        {score.nickname || score.name}
+                      </span>
+                      {score.entryCount && score.entryCount > 1 && (
+                        <span className="text-xs text-warm-500 lowercase">competed twice (extra slot)</span>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-4">
                     {game.type !== 'time' && score.points !== null && (

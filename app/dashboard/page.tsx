@@ -42,6 +42,17 @@ interface Game {
   type: string;
 }
 
+/** Keep one Speed Drawing row (lowest id) so duplicate DB rows don’t show twice on the dashboard. */
+function dedupeGamesForDashboard(games: Game[]): Game[] {
+  const speedDrawing = games.filter((g) => g.name.toLowerCase().includes('speed drawing'));
+  if (speedDrawing.length <= 1) return games;
+  const keepId = Math.min(...speedDrawing.map((g) => g.id));
+  return games.filter((g) => {
+    if (!g.name.toLowerCase().includes('speed drawing')) return true;
+    return g.id === keepId;
+  });
+}
+
 interface TeamLeaderboardEntry {
   team: 'boys' | 'girls';
   totalPoints: number;
@@ -106,6 +117,8 @@ export default function Dashboard() {
   const boysPercent = totalPoints > 0 ? (boysTeam.totalPoints / totalPoints) * 100 : 50;
   const girlsPercent = totalPoints > 0 ? (girlsTeam.totalPoints / totalPoints) * 100 : 50;
 
+  const gamesForDisplay = dedupeGamesForDashboard(games);
+
   return (
     <div className="min-h-screen bg-cream-100 pb-24 relative overflow-hidden">
       {/* Decorative background elements - matching sign-in page */}
@@ -127,9 +140,9 @@ export default function Dashboard() {
       {/* Header */}
       <div className="relative px-6 pt-12 pb-6">
         <h1 className="text-3xl font-bold text-warm-700 mb-1">
-          🌸 friendlympics
+          2026 friendlympics
         </h1>
-        <p className="text-warm-500">have fun together</p>
+        <p className="text-warm-500">may the best side brag forever</p>
       </div>
 
       <div className="px-4 space-y-6 relative">
@@ -204,10 +217,10 @@ export default function Dashboard() {
             <h2 className="text-xl font-bold text-warm-700 lowercase">games</h2>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            {games.length === 0 ? (
+            {gamesForDisplay.length === 0 ? (
               <div className="col-span-2 text-center py-8 text-warm-400">no games yet 🌱</div>
             ) : (
-              games.map((game) => (
+              gamesForDisplay.map((game) => (
                 <Link
                   key={game.id}
                   href={`/games/${game.id}`}

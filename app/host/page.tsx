@@ -67,7 +67,7 @@ export default function HostPage() {
 
   const [newGame, setNewGame] = useState({ name: '', type: 'score' as 'score' | 'time' | 'hybrid', rules: '' });
   const [newScore, setNewScore] = useState({
-    team: '' as '' | 'boys' | 'girls',
+    userId: '' as string,
     points: '',
     timeMs: '',
     notes: '',
@@ -88,7 +88,7 @@ export default function HostPage() {
     team: '' as '' | 'boys' | 'girls',
   });
   const [scoreDraft, setScoreDraft] = useState({
-    team: '' as '' | 'boys' | 'girls',
+    userId: '' as string,
     points: '',
     timeSeconds: '',
     notes: '',
@@ -180,10 +180,10 @@ export default function HostPage() {
 
   const handleAddScore = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!eventId || !selectedGame || !newScore.team) return;
+    if (!eventId || !selectedGame || !newScore.userId) return;
 
-    const teamUser = users.find(user => user.team === newScore.team);
-    if (!teamUser) return;
+    const userIdNum = parseInt(newScore.userId, 10);
+    if (isNaN(userIdNum)) return;
 
     try {
       const res = await fetch('/api/scores', {
@@ -192,7 +192,7 @@ export default function HostPage() {
         body: JSON.stringify({
           eventId,
           gameId: selectedGame,
-          userId: teamUser.id,
+          userId: userIdNum,
           points: newScore.points ? parseFloat(newScore.points) : null,
           timeMs: newScore.timeMs ? parseInt(newScore.timeMs) * 1000 : null,
           notes: newScore.notes || null,
@@ -200,9 +200,8 @@ export default function HostPage() {
       });
 
       if (res.ok) {
-        setNewScore({ team: '', points: '', timeMs: '', notes: '' });
-        setShowAddScore(false);
-        setSelectedGame(null);
+        setNewScore({ userId: '', points: '', timeMs: '', notes: '' });
+        if (selectedGame) loadScoresForGame(selectedGame);
       }
     } catch (error) {
       console.error('Failed to add score:', error);
@@ -323,7 +322,7 @@ export default function HostPage() {
   const handleStartEditScore = (score: Score) => {
     setEditingScoreId(score.id);
     setScoreDraft({
-      team: (score.team as any) || '',
+      userId: String(score.user_id),
       points: score.points !== undefined && score.points !== null ? String(score.points) : '',
       timeSeconds: score.time_ms ? String(score.time_ms / 1000) : '',
       notes: score.notes || '',
@@ -331,9 +330,9 @@ export default function HostPage() {
   };
 
   const handleSaveScore = async (scoreId: number) => {
-    if (!scoreDraft.team) return;
-    const teamUser = users.find(user => user.team === scoreDraft.team);
-    if (!teamUser) return;
+    if (!scoreDraft.userId) return;
+    const userIdNum = parseInt(scoreDraft.userId, 10);
+    if (isNaN(userIdNum)) return;
 
     try {
       const res = await fetch('/api/scores', {
@@ -341,7 +340,7 @@ export default function HostPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           id: scoreId,
-          userId: teamUser.id,
+          userId: userIdNum,
           points: scoreDraft.points ? parseFloat(scoreDraft.points) : null,
           timeMs: scoreDraft.timeSeconds ? parseFloat(scoreDraft.timeSeconds) * 1000 : null,
           notes: scoreDraft.notes || null,
@@ -578,19 +577,26 @@ export default function HostPage() {
               {selectedGame && (
                 <>
                   <select
-                    value={newScore.team}
-                    onChange={(e) => setNewScore({ ...newScore, team: e.target.value as 'boys' | 'girls' | '' })}
+                    value={newScore.userId}
+                    onChange={(e) => setNewScore({ ...newScore, userId: e.target.value })}
                     className="input-spring text-sm"
                     required
                   >
-                    <option value="">select team...</option>
-                    <option value="boys">team boys 💙</option>
-                    <option value="girls">team girls 💗</option>
+                    <option value="">select player...</option>
+                    {users.filter(u => u.team === 'boys').map((u) => (
+                      <option key={u.id} value={u.id}>💙 {u.nickname || u.name} (boys)</option>
+                    ))}
+                    {users.filter(u => u.team === 'girls').map((u) => (
+                      <option key={u.id} value={u.id}>💗 {u.nickname || u.name} (girls)</option>
+                    ))}
+                    {users.filter(u => !u.team).map((u) => (
+                      <option key={u.id} value={u.id}>{u.nickname || u.name} (no team)</option>
+                    ))}
                   </select>
 
-                  {newScore.team && !users.find(user => user.team === newScore.team) && (
+                  {users.length === 0 && (
                     <p className="text-sm text-peach-600">
-                      no players found for this team. add a player to record scores.
+                      no players yet. add players to record scores.
                     </p>
                   )}
 
@@ -629,7 +635,7 @@ export default function HostPage() {
                 <button
                   type="submit"
                   className="flex-1 btn-butter text-sm py-2 disabled:opacity-50"
-                  disabled={!selectedGame || !newScore.team || !users.find(user => user.team === newScore.team)}
+                  disabled={!selectedGame || !newScore.userId || users.length === 0}
                 >
                   add score
                 </button>
@@ -638,7 +644,7 @@ export default function HostPage() {
                   onClick={() => {
                     setShowAddScore(false);
                     setSelectedGame(null);
-                    setNewScore({ team: '', points: '', timeMs: '', notes: '' });
+                    setNewScore({ userId: '', points: '', timeMs: '', notes: '' });
                   }}
                   className="flex-1 btn-spring bg-cream-200 text-warm-600 text-sm py-2"
                 >
@@ -649,6 +655,42 @@ export default function HostPage() {
           )}
 
           <div className="mt-6 space-y-3">
+            {/* Score entry counts & extra-slot indicator for uneven teams */}
+            {selectedGame && !scoresLoading && users.length > 0 && (() => {
+              const boysCount = users.filter(u => u.team === 'boys').length;
+              const girlsCount = users.filter(u => u.team === 'girls').length;
+              const maxSlots = Math.max(boysCount, girlsCount);
+              const boysEntries = gameScores.filter(s => s.team === 'boys').length;
+              const girlsEntries = gameScores.filter(s => s.team === 'girls').length;
+              const smallerTeam = boysCount < girlsCount ? 'boys' : girlsCount < boysCount ? 'girls' : null;
+              const boysSlots = smallerTeam === 'boys' ? maxSlots : boysCount;
+              const girlsSlots = smallerTeam === 'girls' ? maxSlots : girlsCount;
+              return (
+                <div className="p-3 bg-cream-50 rounded-2xl border border-cream-200 space-y-2 mb-4">
+                  <h4 className="text-xs font-bold text-warm-500 uppercase tracking-wider">entries per team</h4>
+                  <div className="flex gap-4 text-sm">
+                    <div className={`flex-1 p-2 rounded-xl ${boysEntries >= boysSlots ? 'bg-sky-100 border border-sky-200' : 'bg-sky-50 border border-sky-200'}`}>
+                      <span className="font-semibold text-warm-700">💙 boys</span>
+                      <span className="ml-2 text-warm-600">{boysEntries}/{boysSlots}</span>
+                      {smallerTeam === 'boys' && boysSlots > boysCount && (
+                        <span className="block text-xs text-sky-600 mt-0.5">
+                          {boysEntries >= boysSlots ? 'extra slot used ✓' : `${boysSlots - boysCount} extra slot(s) available`}
+                        </span>
+                      )}
+                    </div>
+                    <div className={`flex-1 p-2 rounded-xl ${girlsEntries >= girlsSlots ? 'bg-peach-100 border border-peach-200' : 'bg-peach-50 border border-peach-200'}`}>
+                      <span className="font-semibold text-warm-700">💗 girls</span>
+                      <span className="ml-2 text-warm-600">{girlsEntries}/{girlsSlots}</span>
+                      {smallerTeam === 'girls' && girlsSlots > girlsCount && (
+                        <span className="block text-xs text-peach-600 mt-0.5">
+                          {girlsEntries >= girlsSlots ? 'extra slot used ✓' : `${girlsSlots - girlsCount} extra slot(s) available`}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
             <h3 className="text-sm font-bold text-warm-700 lowercase">scores</h3>
             {!selectedGame && <p className="text-sm text-warm-400">select a game to view scores.</p>}
             {selectedGame && scoresLoading && <p className="text-sm text-warm-400">loading scores...</p>}
@@ -665,13 +707,20 @@ export default function HostPage() {
                       {isEditing ? (
                         <div className="space-y-3">
                           <select
-                            value={scoreDraft.team}
-                            onChange={(e) => setScoreDraft({ ...scoreDraft, team: e.target.value as 'boys' | 'girls' | '' })}
+                            value={scoreDraft.userId}
+                            onChange={(e) => setScoreDraft({ ...scoreDraft, userId: e.target.value })}
                             className="input-spring text-sm"
                           >
-                            <option value="">select team...</option>
-                            <option value="boys">team boys 💙</option>
-                            <option value="girls">team girls 💗</option>
+                            <option value="">select player...</option>
+                            {users.filter(u => u.team === 'boys').map((u) => (
+                              <option key={u.id} value={u.id}>💙 {u.nickname || u.name} (boys)</option>
+                            ))}
+                            {users.filter(u => u.team === 'girls').map((u) => (
+                              <option key={u.id} value={u.id}>💗 {u.nickname || u.name} (girls)</option>
+                            ))}
+                            {users.filter(u => !u.team).map((u) => (
+                              <option key={u.id} value={u.id}>{u.nickname || u.name} (no team)</option>
+                            ))}
                           </select>
                           {selectedGameData?.type !== 'time' && (
                             <input
@@ -718,7 +767,9 @@ export default function HostPage() {
                         <div className="flex items-center justify-between">
                           <div className="text-sm text-warm-700">
                             <div className="font-semibold flex items-center gap-2">
-                              {score.team === 'boys' ? '💙 team boys' : score.team === 'girls' ? '💗 team girls' : score.nickname || score.name}
+                              {score.team === 'boys' && '💙 '}
+                              {score.team === 'girls' && '💗 '}
+                              {score.nickname || score.name}
                             </div>
                             <div className="text-xs text-warm-400 lowercase">
                               {score.notes || 'no notes'}

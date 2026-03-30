@@ -19,6 +19,8 @@ try {
   const games = [
     { name: 'Charades', type: 'score' as const, rules: 'Act out the prompts! 60 seconds per round.' },
     { name: 'Guess the Song', type: 'score' as const, rules: 'Guess the song from the clue!' },
+    { name: 'Speed Drawing', type: 'score' as const, rules: 'Draw each word as fast as you can! 25 random words per round in the app. Host enters scores when done.' },
+    { name: 'Eggs in a Carton', type: 'time' as const, rules: 'Bounce ping pong balls into an egg carton — fill the carton as fast as you can! Shortest time wins. Host enters each team\'s time in the app.' },
     { name: '100m Dash', type: 'time' as const, rules: 'Fastest time wins!' },
     { name: 'Puzzle Challenge', type: 'hybrid' as const, rules: 'Complete puzzles. Points for completion, time bonus!' },
   ];
