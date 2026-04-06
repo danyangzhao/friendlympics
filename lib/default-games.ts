@@ -16,7 +16,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     type: 'score',
     rules:
       "Act out the prompts! 60 seconds per round. Your team guesses what you're acting.",
-    team_win_rule: 'avg_points',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
   {
@@ -39,7 +39,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     type: 'score',
     rules:
       'Answer trivia questions! First team to buzz in gets to answer. +1 point for correct answers.',
-    team_win_rule: 'avg_points',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
   {
@@ -47,7 +47,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     type: 'hybrid',
     rules:
       'Flip cards to find matching pairs. Score based on moves and time - fewer moves = higher score!',
-    team_win_rule: 'avg_points',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
   {
