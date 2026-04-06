@@ -51,6 +51,8 @@ export default function HostPage() {
   const [showAddPlayer, setShowAddPlayer] = useState(false);
   const [editingGameId, setEditingGameId] = useState<number | null>(null);
   const [editingUserId, setEditingUserId] = useState<number | null>(null);
+  const [showEndConfirm, setShowEndConfirm] = useState(false);
+  const [endingEvent, setEndingEvent] = useState(false);
 
   const [newGame, setNewGame] = useState({
     name: '',
@@ -260,6 +262,26 @@ export default function HostPage() {
       }
     } catch (error) {
       console.error('Failed to delete user:', error);
+    }
+  };
+
+  const handleEndEvent = async () => {
+    if (!eventId) return;
+    setEndingEvent(true);
+    try {
+      const res = await fetch('/api/events', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: eventId, status: 'completed' }),
+      });
+      if (res.ok) {
+        router.push('/summary');
+      }
+    } catch (error) {
+      console.error('Failed to end event:', error);
+    } finally {
+      setEndingEvent(false);
+      setShowEndConfirm(false);
     }
   };
 
@@ -623,6 +645,43 @@ export default function HostPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* End Event Button */}
+        <div className="pt-4">
+          {!showEndConfirm ? (
+            <button
+              onClick={() => setShowEndConfirm(true)}
+              className="w-full py-4 rounded-2xl font-semibold text-warm-600 bg-gradient-to-r from-peach-100 to-butter-100 border-2 border-peach-300 hover:from-peach-200 hover:to-butter-200 transition-all hover:shadow-soft lowercase"
+            >
+              🏁 end event
+            </button>
+          ) : (
+            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-soft-lg border-2 border-peach-300 space-y-4">
+              <div className="text-center">
+                <div className="text-3xl mb-2">🏁</div>
+                <h3 className="text-lg font-bold text-warm-700 lowercase">end the event?</h3>
+                <p className="text-warm-500 text-sm mt-1">
+                  this will create the final summary with awards and the score race chart.
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleEndEvent}
+                  disabled={endingEvent}
+                  className="flex-1 py-3 rounded-2xl font-semibold text-white bg-gradient-to-r from-peach-400 to-orange-400 hover:from-peach-500 hover:to-orange-500 transition-all disabled:opacity-50 lowercase"
+                >
+                  {endingEvent ? 'ending...' : 'yes, end it!'}
+                </button>
+                <button
+                  onClick={() => setShowEndConfirm(false)}
+                  className="flex-1 py-3 rounded-2xl font-semibold text-warm-600 bg-cream-200 hover:bg-cream-300 transition-all lowercase"
+                >
+                  cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
