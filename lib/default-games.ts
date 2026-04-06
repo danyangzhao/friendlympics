@@ -15,7 +15,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     name: 'Charades',
     type: 'score',
     rules:
-      "Act out the prompts! 60 seconds per round. Your team guesses what you're acting.",
+      "Act out the prompts! 60 seconds per round. Your team guesses what you're acting. You may only skip 1 time.",
     team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
@@ -46,7 +46,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     name: 'Memory Match',
     type: 'hybrid',
     rules:
-      'Flip cards to find matching pairs. Score based on moves and time - fewer moves = higher score!',
+      'Flip cards to find matching pairs on a 5×5 board (12 pairs plus a free space in the center). The full board flashes face-up briefly at the start so you can memorize positions. Score = points from moves (1000 minus 10 per move) plus a speed bonus up to 150 that rewards faster finishes; total capped at 1200.',
     team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
@@ -68,10 +68,10 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     time_direction: 'lower_better',
   },
   {
-    name: 'Plank + Wall Sit Relay',
+    name: 'plank-off',
     type: 'time',
     rules:
-      'Team endurance challenge! Combined time holding plank and wall sit positions.',
+      "Team endurance challenge! We will record every individual's time for overall hold of a plank. We will take the average score across the team. Highest average time wins!",
     team_win_rule: 'avg_time_ms',
     time_direction: 'higher_better',
   },

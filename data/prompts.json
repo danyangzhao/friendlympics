@@ -56,7 +56,6 @@
     "Goalkeeper",
     "Belly dancer",
     "Taxi driver",
-
     "Flying",
     "Swimming",
     "Running",
@@ -135,7 +134,6 @@
     "Ironing",
     "Knitting",
     "Sewing",
-
     "Monkey",
     "Penguin",
     "Flamingo",
@@ -201,7 +199,6 @@
     "Skunk",
     "Toucan",
     "Stingray",
-
     "Telescope",
     "Typewriter",
     "Binoculars",
@@ -318,7 +315,6 @@
     "Foosball",
     "Darts",
     "Ping pong",
-
     "Popcorn",
     "Spaghetti",
     "Pizza",
@@ -349,7 +345,6 @@
     "Soup",
     "Candy",
     "Cake",
-
     "Tornado",
     "Volcano",
     "Thunderstorm",
@@ -362,7 +357,6 @@
     "Flood",
     "Whirlpool",
     "Tidal wave",
-
     "Mountain",
     "River",
     "Beach",
@@ -380,7 +374,6 @@
     "Cactus",
     "Ocean",
     "Campfire",
-
     "Selfie",
     "Photobomb",
     "Karaoke",
@@ -404,7 +397,6 @@
     "Sleepover",
     "Simon says",
     "Tag",
-
     "Werewolf",
     "Frankenstein",
     "Unicorn",
@@ -418,7 +410,6 @@
     "Goblin",
     "Yeti",
     "Phoenix",
-
     "Brain freeze",
     "Sunburn",
     "Dizzy",
@@ -429,7 +420,6 @@
     "Blindfolded",
     "Hiccups",
     "Burp",
-
     "House",
     "Hospital",
     "School",
@@ -447,7 +437,6 @@
     "Windmill",
     "Bridge",
     "Barn",
-
     "Christmas",
     "Halloween",
     "Birthday",
@@ -458,7 +447,6 @@
     "Circus",
     "Parade",
     "Concert",
-
     "Waving",
     "Shivering",
     "Crawling",
@@ -521,12 +509,6 @@
       "startTime": 0
     },
     {
-      "title": "Sweet Caroline",
-      "artist": "Neil Diamond",
-      "youtubeId": "NsLyI1_R01M",
-      "startTime": 0
-    },
-    {
       "title": "Don't Stop Believin'",
       "artist": "Journey",
       "youtubeId": "1k8craCGpgs",
@@ -554,18 +536,6 @@
       "title": "Imagine",
       "artist": "John Lennon",
       "youtubeId": "YkgkThdzX-8",
-      "startTime": 0
-    },
-    {
-      "title": "Smells Like Teen Spirit",
-      "artist": "Nirvana",
-      "youtubeId": "hTWKbfoikeg",
-      "startTime": 0
-    },
-    {
-      "title": "Wonderwall",
-      "artist": "Oasis",
-      "youtubeId": "bx1Bh8ZvH84",
       "startTime": 0
     },
     {
@@ -607,67 +577,61 @@
     {
       "title": "Oops!...I Did It Again",
       "artist": "Britney Spears",
-      "youtubeId": "pHKD5L9dp1k",
+      "youtubeId": "YiirLAiEeIQ",
       "startTime": 0
     },
     {
       "title": "Party In The U.S.A.",
       "artist": "Miley Cyrus",
-      "youtubeId": "NCUA9p_K4L8",
+      "youtubeId": "G7KNmW9a75Y",
       "startTime": 0
     },
     {
       "title": "She Will Be Loved",
       "artist": "Maroon 5",
-      "youtubeId": "Wf5c_XkcsTc",
-      "startTime": 0
-    },
-    {
-      "title": "Teenage Dirtbag",
-      "artist": "Wheatus",
-      "youtubeId": "Kc4zQ5muz3g",
+      "youtubeId": "BQWz8Y7_3UY",
       "startTime": 0
     },
     {
       "title": "Bring Me To Life",
       "artist": "Evanescence",
-      "youtubeId": "sHXmAOanKHA",
+      "youtubeId": "7eEWoltlF4E",
       "startTime": 0
     },
     {
       "title": "Because Of You",
       "artist": "Kelly Clarkson",
-      "youtubeId": "QPCrB5f8SvQ",
+      "youtubeId": "KVFGtJ_8URU",
       "startTime": 0
     },
     {
       "title": "Bleeding Love",
       "artist": "Leona Lewis",
-      "youtubeId": "ZiYdOwOrBSA",
+      "youtubeId": "9knNb5c6jeU",
       "startTime": 0
     },
     {
       "title": "A Thousand Miles",
       "artist": "Vanessa Carlton",
-      "youtubeId": "u2R0aWBgpHk",
+      "youtubeId": "Yh2-HymK6Rc",
       "startTime": 0
     },
     {
       "title": "The Man Who Can't Be Moved",
       "artist": "The Script",
-      "youtubeId": "m_XP_b5jG6E",
+      "youtubeId": "_KQ5mWOIis8",
       "startTime": 0
     },
     {
       "title": "Take A Bow",
       "artist": "Rihanna",
-      "youtubeId": "0dB8k59BICk",
+      "youtubeId": "04VRrMIzcPk",
       "startTime": 0
     },
     {
       "title": "The Reason",
       "artist": "Hoobastank",
-      "youtubeId": "5z1gPYAQKsc",
+      "youtubeId": "FDg_IThF1bs",
       "startTime": 0
     },
     {
@@ -677,27 +641,57 @@
       "startTime": 0
     },
     {
+      "title": "Toxic",
+      "artist": "Britney Spears",
+      "youtubeId": "LOZuxwVk7TU",
+      "startTime": 0
+    },
+    {
+      "title": "Since U Been Gone",
+      "artist": "Kelly Clarkson",
+      "youtubeId": "R7UrFYvl5TE",
+      "startTime": 0
+    },
+    {
+      "title": "Umbrella",
+      "artist": "Rihanna ft. Jay-Z",
+      "youtubeId": "CvBfHwUxHIk",
+      "startTime": 0
+    },
+    {
+      "title": "Dynamite",
+      "artist": "Taio Cruz",
+      "youtubeId": "Vysgv7qVYTo",
+      "startTime": 0
+    },
+    {
+      "title": "Somebody That I Used to Know",
+      "artist": "Gotye ft. Kimbra",
+      "youtubeId": "8UVNT4wvIGY",
+      "startTime": 0
+    },
+    {
       "title": "Hotline Bling (Karaoke)",
       "artist": "Drake",
-      "youtubeId": "gLIaz2b4vmc",
+      "youtubeId": "gE2c2P08CaI",
       "startTime": 0
     },
     {
       "title": "Better Now (Karaoke)",
       "artist": "Post Malone",
-      "youtubeId": "DtTFu9qgX38",
+      "youtubeId": "uecJwzXztsE",
       "startTime": 0
     },
     {
       "title": "Sunflower (Karaoke)",
       "artist": "Post Malone & Swae Lee",
-      "youtubeId": "awxvtj-0JKw",
+      "youtubeId": "14Z8qFsF4as",
       "startTime": 0
     },
     {
       "title": "Rockstar (Karaoke)",
       "artist": "Post Malone ft. 21 Savage",
-      "youtubeId": "3MnkQg8xIek",
+      "youtubeId": "fzDBNsfr-B0",
       "startTime": 0
     },
     {
@@ -709,91 +703,91 @@
     {
       "title": "Wow. (Karaoke)",
       "artist": "Post Malone",
-      "youtubeId": "u8Qru4vJUJg",
+      "youtubeId": "QXbfC9VQnGk",
       "startTime": 0
     },
     {
       "title": "Psycho (Karaoke)",
       "artist": "Post Malone ft. Ty Dolla $ign",
-      "youtubeId": "JJc6jQfnOYA",
+      "youtubeId": "1_A0EY8nny0",
       "startTime": 0
     },
     {
       "title": "Circles (Karaoke)",
       "artist": "Post Malone",
-      "youtubeId": "o6eM4kGkU6k",
+      "youtubeId": "ylEf2z9zJWQ",
       "startTime": 0
     },
     {
       "title": "I Fall Apart (Piano Karaoke)",
       "artist": "Post Malone",
-      "youtubeId": "B0w9Q6yG0Ec",
+      "youtubeId": "lerf1DbV4e8",
       "startTime": 0
     },
     {
       "title": "White Iverson (Karaoke)",
       "artist": "Post Malone",
-      "youtubeId": "i12XJdOjhtE",
+      "youtubeId": "bdRcnQrCfEw",
       "startTime": 0
     },
     {
       "title": "Old Town Road (Karaoke)",
       "artist": "Lil Nas X",
-      "youtubeId": "vtPbp1y1I9A",
+      "youtubeId": "FOrx4KV_V68",
       "startTime": 0
     },
     {
       "title": "Lucid Dreams (Karaoke)",
       "artist": "Juice WRLD",
-      "youtubeId": "Or2jvM8m1b4",
+      "youtubeId": "oZa6nT3FCNE",
       "startTime": 0
     },
     {
       "title": "SICKO MODE (Karaoke)",
       "artist": "Travis Scott",
-      "youtubeId": "SUePmO0mG8I",
+      "youtubeId": "PiKAeCA875c",
       "startTime": 0
     },
     {
       "title": "Trap Queen (Karaoke)",
       "artist": "Fetty Wap",
-      "youtubeId": "p0KaXnO_fU4",
+      "youtubeId": "p3kfqZZrxuE",
       "startTime": 0
     },
     {
       "title": "WAP (Karaoke)",
       "artist": "Cardi B & Megan Thee Stallion",
-      "youtubeId": "uwu0P4iTHAA",
+      "youtubeId": "N__bkSePJKA",
       "startTime": 0
     },
     {
       "title": "Nice For What (Karaoke)",
       "artist": "Drake",
-      "youtubeId": "9wgBzHF9xp0",
+      "youtubeId": "lh1R7SJNwR0",
       "startTime": 0
     },
     {
       "title": "In My Feelings (Karaoke)",
       "artist": "Drake",
-      "youtubeId": "_QCLxZfhD2w",
+      "youtubeId": "yAGBcciW6gs",
       "startTime": 0
     },
     {
       "title": "One Dance (Karaoke)",
       "artist": "Drake",
-      "youtubeId": "MtZydtYRHLo",
+      "youtubeId": "62bv1TY6OXY",
       "startTime": 0
     },
     {
       "title": "No Flockin (Karaoke)",
       "artist": "Kodak Black",
-      "youtubeId": "Xq0snS2k0fc",
+      "youtubeId": "7fo3G2dJJrs",
       "startTime": 0
     },
     {
       "title": "XO TOUR Llif3 (Karaoke)",
       "artist": "Lil Uzi Vert",
-      "youtubeId": "Z0np2VDmRjE",
+      "youtubeId": "6z9U7jhcuYs",
       "startTime": 0
     }
   ],
@@ -814,505 +808,1187 @@
   "trivia": [
     {
       "question": "What year did the first iPhone release?",
-      "options": ["2005", "2006", "2007", "2008"],
+      "options": [
+        "2005",
+        "2006",
+        "2007",
+        "2008"
+      ],
       "answer": 2,
       "category": "tech"
     },
     {
       "question": "Which planet is known as the Red Planet?",
-      "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+      "options": [
+        "Venus",
+        "Mars",
+        "Jupiter",
+        "Saturn"
+      ],
       "answer": 1,
       "category": "science"
     },
     {
       "question": "What is the capital of Australia?",
-      "options": ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+      "options": [
+        "Sydney",
+        "Melbourne",
+        "Canberra",
+        "Brisbane"
+      ],
       "answer": 2,
       "category": "geography"
     },
     {
       "question": "Who painted the Mona Lisa?",
-      "options": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+      "options": [
+        "Vincent van Gogh",
+        "Pablo Picasso",
+        "Leonardo da Vinci",
+        "Michelangelo"
+      ],
       "answer": 2,
       "category": "art"
     },
     {
       "question": "What is the largest ocean on Earth?",
-      "options": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+      "options": [
+        "Atlantic Ocean",
+        "Indian Ocean",
+        "Arctic Ocean",
+        "Pacific Ocean"
+      ],
       "answer": 3,
       "category": "geography"
     },
     {
       "question": "In which year did World War II end?",
-      "options": ["1943", "1944", "1945", "1946"],
+      "options": [
+        "1943",
+        "1944",
+        "1945",
+        "1946"
+      ],
       "answer": 2,
       "category": "history"
     },
     {
       "question": "What is the smallest prime number?",
-      "options": ["0", "1", "2", "3"],
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
       "answer": 2,
       "category": "math"
     },
     {
       "question": "Which element has the chemical symbol 'Au'?",
-      "options": ["Silver", "Gold", "Aluminum", "Argon"],
+      "options": [
+        "Silver",
+        "Gold",
+        "Aluminum",
+        "Argon"
+      ],
       "answer": 1,
       "category": "science"
     },
     {
       "question": "What is the longest river in the world?",
-      "options": ["Amazon River", "Nile River", "Mississippi River", "Yangtze River"],
+      "options": [
+        "Amazon River",
+        "Nile River",
+        "Mississippi River",
+        "Yangtze River"
+      ],
       "answer": 1,
       "category": "geography"
     },
     {
       "question": "Who wrote 'Romeo and Juliet'?",
-      "options": ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+      "options": [
+        "Charles Dickens",
+        "William Shakespeare",
+        "Jane Austen",
+        "Mark Twain"
+      ],
       "answer": 1,
       "category": "literature"
     },
     {
       "question": "What is the speed of light in a vacuum?",
-      "options": ["299,792,458 m/s", "300,000,000 m/s", "150,000,000 m/s", "450,000,000 m/s"],
+      "options": [
+        "299,792,458 m/s",
+        "300,000,000 m/s",
+        "150,000,000 m/s",
+        "450,000,000 m/s"
+      ],
       "answer": 0,
       "category": "science"
     },
     {
       "question": "Which country is home to the kangaroo?",
-      "options": ["New Zealand", "Australia", "South Africa", "Brazil"],
+      "options": [
+        "New Zealand",
+        "Australia",
+        "South Africa",
+        "Brazil"
+      ],
       "answer": 1,
       "category": "geography"
     },
     {
       "question": "What is the hardest natural substance on Earth?",
-      "options": ["Gold", "Iron", "Diamond", "Platinum"],
+      "options": [
+        "Gold",
+        "Iron",
+        "Diamond",
+        "Platinum"
+      ],
       "answer": 2,
       "category": "science"
     },
     {
       "question": "In which sport would you perform a slam dunk?",
-      "options": ["Football", "Basketball", "Tennis", "Soccer"],
+      "options": [
+        "Football",
+        "Basketball",
+        "Tennis",
+        "Soccer"
+      ],
       "answer": 1,
       "category": "sports"
     },
     {
       "question": "What is the capital of Japan?",
-      "options": ["Seoul", "Beijing", "Tokyo", "Bangkok"],
+      "options": [
+        "Seoul",
+        "Beijing",
+        "Tokyo",
+        "Bangkok"
+      ],
       "answer": 2,
       "category": "geography"
     },
     {
       "question": "Which planet is closest to the Sun?",
-      "options": ["Venus", "Earth", "Mercury", "Mars"],
+      "options": [
+        "Venus",
+        "Earth",
+        "Mercury",
+        "Mars"
+      ],
       "answer": 2,
       "category": "science"
     },
     {
       "question": "What is the largest mammal in the world?",
-      "options": ["African Elephant", "Blue Whale", "Giraffe", "Polar Bear"],
+      "options": [
+        "African Elephant",
+        "Blue Whale",
+        "Giraffe",
+        "Polar Bear"
+      ],
       "answer": 1,
       "category": "science"
     },
     {
       "question": "Who is known as the 'King of Pop'?",
-      "options": ["Elvis Presley", "Michael Jackson", "Prince", "Madonna"],
+      "options": [
+        "Elvis Presley",
+        "Michael Jackson",
+        "Prince",
+        "Madonna"
+      ],
       "answer": 1,
       "category": "music"
     },
     {
       "question": "What is the main ingredient in guacamole?",
-      "options": ["Tomato", "Avocado", "Cucumber", "Pepper"],
+      "options": [
+        "Tomato",
+        "Avocado",
+        "Cucumber",
+        "Pepper"
+      ],
       "answer": 1,
       "category": "food"
     },
     {
       "question": "In which year did the Berlin Wall fall?",
-      "options": ["1987", "1989", "1991", "1993"],
+      "options": [
+        "1987",
+        "1989",
+        "1991",
+        "1993"
+      ],
       "answer": 1,
       "category": "history"
     },
     {
       "question": "What is the largest desert in the world?",
-      "options": ["Gobi Desert", "Sahara Desert", "Antarctic Desert", "Arabian Desert"],
+      "options": [
+        "Gobi Desert",
+        "Sahara Desert",
+        "Antarctic Desert",
+        "Arabian Desert"
+      ],
       "answer": 2,
       "category": "geography"
     },
     {
       "question": "Which programming language is known for web development?",
-      "options": ["Python", "JavaScript", "C++", "Java"],
+      "options": [
+        "Python",
+        "JavaScript",
+        "C++",
+        "Java"
+      ],
       "answer": 1,
       "category": "tech"
     },
     {
       "question": "What is the smallest country in the world?",
-      "options": ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+      "options": [
+        "Monaco",
+        "Vatican City",
+        "San Marino",
+        "Liechtenstein"
+      ],
       "answer": 1,
       "category": "geography"
     },
     {
       "question": "Who painted 'Starry Night'?",
-      "options": ["Claude Monet", "Vincent van Gogh", "Salvador Dali", "Pablo Picasso"],
+      "options": [
+        "Claude Monet",
+        "Vincent van Gogh",
+        "Salvador Dali",
+        "Pablo Picasso"
+      ],
       "answer": 1,
       "category": "art"
     },
     {
       "question": "What is the chemical formula for water?",
-      "options": ["H2O", "CO2", "NaCl", "O2"],
+      "options": [
+        "H2O",
+        "CO2",
+        "NaCl",
+        "O2"
+      ],
       "answer": 0,
       "category": "science"
     },
     {
       "question": "Which movie won the Academy Award for Best Picture in 2020?",
-      "options": ["1917", "Joker", "Parasite", "Once Upon a Time in Hollywood"],
+      "options": [
+        "1917",
+        "Joker",
+        "Parasite",
+        "Once Upon a Time in Hollywood"
+      ],
       "answer": 2,
       "category": "movies"
     },
     {
       "question": "What is the tallest mountain in the world?",
-      "options": ["K2", "Mount Kilimanjaro", "Mount Everest", "Mount Fuji"],
+      "options": [
+        "K2",
+        "Mount Kilimanjaro",
+        "Mount Everest",
+        "Mount Fuji"
+      ],
       "answer": 2,
       "category": "geography"
     },
     {
       "question": "Which sport is played at Wimbledon?",
-      "options": ["Golf", "Tennis", "Cricket", "Rugby"],
+      "options": [
+        "Golf",
+        "Tennis",
+        "Cricket",
+        "Rugby"
+      ],
       "answer": 1,
       "category": "sports"
     },
     {
       "question": "What is the largest planet in our solar system?",
-      "options": ["Saturn", "Neptune", "Jupiter", "Uranus"],
+      "options": [
+        "Saturn",
+        "Neptune",
+        "Jupiter",
+        "Uranus"
+      ],
       "answer": 2,
       "category": "science"
     },
     {
       "question": "Who wrote '1984'?",
-      "options": ["George Orwell", "Aldous Huxley", "Ray Bradbury", "H.G. Wells"],
+      "options": [
+        "George Orwell",
+        "Aldous Huxley",
+        "Ray Bradbury",
+        "H.G. Wells"
+      ],
       "answer": 0,
       "category": "literature"
     },
     {
       "question": "What is the most widely spoken language in the world?",
-      "options": ["English", "Spanish", "Mandarin Chinese", "Hindi"],
+      "options": [
+        "English",
+        "Spanish",
+        "Mandarin Chinese",
+        "Hindi"
+      ],
       "answer": 2,
       "category": "culture"
     },
     {
       "question": "Which animal is known as the 'King of the Jungle'?",
-      "options": ["Tiger", "Lion", "Leopard", "Cheetah"],
+      "options": [
+        "Tiger",
+        "Lion",
+        "Leopard",
+        "Cheetah"
+      ],
       "answer": 1,
       "category": "science"
     },
     {
       "question": "What is the capital of Canada?",
-      "options": ["Toronto", "Vancouver", "Ottawa", "Montreal"],
+      "options": [
+        "Toronto",
+        "Vancouver",
+        "Ottawa",
+        "Montreal"
+      ],
       "answer": 2,
       "category": "geography"
     },
     {
       "question": "In which year did humans first land on the Moon?",
-      "options": ["1967", "1969", "1971", "1973"],
+      "options": [
+        "1967",
+        "1969",
+        "1971",
+        "1973"
+      ],
       "answer": 1,
       "category": "history"
     },
     {
       "question": "What is the primary ingredient in bread?",
-      "options": ["Sugar", "Flour", "Eggs", "Butter"],
+      "options": [
+        "Sugar",
+        "Flour",
+        "Eggs",
+        "Butter"
+      ],
       "answer": 1,
       "category": "food"
     },
     {
       "question": "Which band sang 'Bohemian Rhapsody'?",
-      "options": ["The Beatles", "Queen", "Led Zeppelin", "Pink Floyd"],
+      "options": [
+        "The Beatles",
+        "Queen",
+        "Led Zeppelin",
+        "Pink Floyd"
+      ],
       "answer": 1,
       "category": "music"
     },
     {
       "question": "What is the largest continent by land area?",
-      "options": ["Africa", "North America", "Asia", "Europe"],
+      "options": [
+        "Africa",
+        "North America",
+        "Asia",
+        "Europe"
+      ],
       "answer": 2,
       "category": "geography"
     },
     {
       "question": "Which fruit is known for keeping the doctor away?",
-      "options": ["Banana", "Orange", "Apple", "Grape"],
+      "options": [
+        "Banana",
+        "Orange",
+        "Apple",
+        "Grape"
+      ],
       "answer": 2,
       "category": "food"
     },
     {
       "question": "What is the square root of 64?",
-      "options": ["6", "7", "8", "9"],
+      "options": [
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
       "answer": 2,
       "category": "math"
     },
     {
       "question": "Which country is famous for the Eiffel Tower?",
-      "options": ["Italy", "Spain", "France", "Germany"],
+      "options": [
+        "Italy",
+        "Spain",
+        "France",
+        "Germany"
+      ],
       "answer": 2,
       "category": "geography"
     },
     {
       "question": "What is the freezing point of water in Celsius?",
-      "options": ["-10°C", "0°C", "10°C", "32°C"],
+      "options": [
+        "-10°C",
+        "0°C",
+        "10°C",
+        "32°C"
+      ],
       "answer": 1,
       "category": "science"
     },
     {
       "question": "Who directed the movie 'Inception'?",
-      "options": ["Steven Spielberg", "Christopher Nolan", "Quentin Tarantino", "Martin Scorsese"],
+      "options": [
+        "Steven Spielberg",
+        "Christopher Nolan",
+        "Quentin Tarantino",
+        "Martin Scorsese"
+      ],
       "answer": 1,
       "category": "movies"
     },
     {
       "question": "What is the longest bone in the human body?",
-      "options": ["Humerus", "Tibia", "Femur", "Radius"],
+      "options": [
+        "Humerus",
+        "Tibia",
+        "Femur",
+        "Radius"
+      ],
       "answer": 2,
       "category": "science"
     },
     {
       "question": "Which city is known as the 'Big Apple'?",
-      "options": ["Chicago", "Los Angeles", "New York City", "Boston"],
+      "options": [
+        "Chicago",
+        "Los Angeles",
+        "New York City",
+        "Boston"
+      ],
       "answer": 2,
       "category": "culture"
     },
     {
       "question": "What is the chemical symbol for iron?",
-      "options": ["Ir", "In", "Fe", "Fr"],
+      "options": [
+        "Ir",
+        "In",
+        "Fe",
+        "Fr"
+      ],
       "answer": 2,
       "category": "science"
     },
     {
       "question": "Which ocean is between America and Europe?",
-      "options": ["Pacific Ocean", "Indian Ocean", "Arctic Ocean", "Atlantic Ocean"],
+      "options": [
+        "Pacific Ocean",
+        "Indian Ocean",
+        "Arctic Ocean",
+        "Atlantic Ocean"
+      ],
       "answer": 3,
       "category": "geography"
     },
     {
       "question": "What is the most popular social media platform?",
-      "options": ["Twitter", "Facebook", "Instagram", "TikTok"],
+      "options": [
+        "Twitter",
+        "Facebook",
+        "Instagram",
+        "TikTok"
+      ],
       "answer": 1,
       "category": "tech"
     },
     {
       "question": "Which season comes after winter?",
-      "options": ["Spring", "Summer", "Fall", "Winter again"],
+      "options": [
+        "Spring",
+        "Summer",
+        "Fall",
+        "Winter again"
+      ],
       "answer": 0,
       "category": "general"
     },
     {
       "question": "What is the capital of Brazil?",
-      "options": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"],
+      "options": [
+        "Rio de Janeiro",
+        "São Paulo",
+        "Brasília",
+        "Salvador"
+      ],
       "answer": 2,
       "category": "geography"
     },
     {
       "question": "Which instrument has 88 keys?",
-      "options": ["Organ", "Piano", "Harpsichord", "Synthesizer"],
+      "options": [
+        "Organ",
+        "Piano",
+        "Harpsichord",
+        "Synthesizer"
+      ],
       "answer": 1,
       "category": "music"
     },
     {
       "question": "What is the largest internal organ in the human body?",
-      "options": ["Heart", "Liver", "Lung", "Brain"],
+      "options": [
+        "Heart",
+        "Liver",
+        "Lung",
+        "Brain"
+      ],
       "answer": 1,
       "category": "science"
     },
     {
       "question": "In which year was the first Super Bowl played?",
-      "options": ["1965", "1967", "1969", "1971"],
+      "options": [
+        "1965",
+        "1967",
+        "1969",
+        "1971"
+      ],
       "answer": 1,
       "category": "sports"
     },
     {
       "question": "Which movie features the line 'I'll be back'?",
-      "options": ["Die Hard", "The Terminator", "Rocky", "Top Gun"],
+      "options": [
+        "Die Hard",
+        "The Terminator",
+        "Rocky",
+        "Top Gun"
+      ],
       "answer": 1,
       "category": "movies"
     },
     {
       "question": "Which movie is about a clownfish searching for his son?",
-      "options": ["Shark Tale", "Finding Nemo", "Moana", "Surf's Up"],
+      "options": [
+        "Shark Tale",
+        "Finding Nemo",
+        "Moana",
+        "Surf's Up"
+      ],
       "answer": 1,
       "category": "movies"
     },
     {
       "question": "Who plays Jack in the movie 'Titanic'?",
-      "options": ["Brad Pitt", "Matt Damon", "Leonardo DiCaprio", "Tom Cruise"],
+      "options": [
+        "Brad Pitt",
+        "Matt Damon",
+        "Leonardo DiCaprio",
+        "Tom Cruise"
+      ],
       "answer": 2,
       "category": "movies"
     },
     {
       "question": "Which wizarding school does Harry Potter attend?",
-      "options": ["Beauxbatons", "Durmstrang", "Ilvermorny", "Hogwarts"],
+      "options": [
+        "Beauxbatons",
+        "Durmstrang",
+        "Ilvermorny",
+        "Hogwarts"
+      ],
       "answer": 3,
       "category": "movies"
     },
     {
       "question": "Which superhero is known as the Caped Crusader?",
-      "options": ["Spider-Man", "Batman", "Iron Man", "Superman"],
+      "options": [
+        "Spider-Man",
+        "Batman",
+        "Iron Man",
+        "Superman"
+      ],
       "answer": 1,
       "category": "movies"
     },
     {
       "question": "In 'Frozen,' what is the name of Elsa's sister?",
-      "options": ["Anna", "Olaf", "Moana", "Belle"],
+      "options": [
+        "Anna",
+        "Olaf",
+        "Moana",
+        "Belle"
+      ],
       "answer": 0,
       "category": "movies"
     },
     {
       "question": "Which movie series features the character Lightning McQueen?",
-      "options": ["Toy Story", "Cars", "Planes", "Turbo"],
+      "options": [
+        "Toy Story",
+        "Cars",
+        "Planes",
+        "Turbo"
+      ],
       "answer": 1,
       "category": "movies"
     },
     {
       "question": "What is the name of the kingdom in 'Black Panther'?",
-      "options": ["Zamunda", "Genovia", "Wakanda", "Asgard"],
+      "options": [
+        "Zamunda",
+        "Genovia",
+        "Wakanda",
+        "Asgard"
+      ],
       "answer": 2,
       "category": "movies"
     },
     {
       "question": "Which movie follows a family with superpowers?",
-      "options": ["Big Hero 6", "The Incredibles", "Inside Out", "Up"],
+      "options": [
+        "Big Hero 6",
+        "The Incredibles",
+        "Inside Out",
+        "Up"
+      ],
       "answer": 1,
       "category": "movies"
     },
     {
       "question": "Who is the cowboy toy in 'Toy Story'?",
-      "options": ["Buzz", "Woody", "Rex", "Slinky Dog"],
+      "options": [
+        "Buzz",
+        "Woody",
+        "Rex",
+        "Slinky Dog"
+      ],
       "answer": 1,
       "category": "movies"
     },
     {
       "question": "Which city is famous for the Hollywood sign?",
-      "options": ["Miami", "Seattle", "Los Angeles", "Las Vegas"],
+      "options": [
+        "Miami",
+        "Seattle",
+        "Los Angeles",
+        "Las Vegas"
+      ],
       "answer": 2,
       "category": "culture"
     },
     {
       "question": "What do people usually use to eat sushi?",
-      "options": ["Tongs", "Chopsticks", "Wooden spoons", "Hands only"],
+      "options": [
+        "Tongs",
+        "Chopsticks",
+        "Wooden spoons",
+        "Hands only"
+      ],
       "answer": 1,
       "category": "culture"
     },
     {
       "question": "Which holiday is known for costumes and trick-or-treating?",
-      "options": ["Easter", "Thanksgiving", "Halloween", "Valentine's Day"],
+      "options": [
+        "Easter",
+        "Thanksgiving",
+        "Halloween",
+        "Valentine's Day"
+      ],
       "answer": 2,
       "category": "culture"
     },
     {
       "question": "What is the traditional color of school buses in the United States?",
-      "options": ["Blue", "Yellow", "Green", "White"],
+      "options": [
+        "Blue",
+        "Yellow",
+        "Green",
+        "White"
+      ],
       "answer": 1,
       "category": "culture"
     },
     {
       "question": "Which board game uses properties like Boardwalk and Park Place?",
-      "options": ["Clue", "Life", "Monopoly", "Sorry!"],
+      "options": [
+        "Clue",
+        "Life",
+        "Monopoly",
+        "Sorry!"
+      ],
       "answer": 2,
       "category": "culture"
     },
     {
       "question": "Which fast-food chain is known for the Big Mac?",
-      "options": ["Burger King", "McDonald's", "Wendy's", "In-N-Out"],
+      "options": [
+        "Burger King",
+        "McDonald's",
+        "Wendy's",
+        "In-N-Out"
+      ],
       "answer": 1,
       "category": "culture"
     },
     {
       "question": "Which city is famous for Times Square?",
-      "options": ["Chicago", "New York City", "Boston", "San Francisco"],
+      "options": [
+        "Chicago",
+        "New York City",
+        "Boston",
+        "San Francisco"
+      ],
       "answer": 1,
       "category": "culture"
     },
     {
       "question": "Which game is commonly described with the phrase 'bingo' when you win?",
-      "options": ["Dominoes", "Yahtzee", "Bingo", "Checkers"],
+      "options": [
+        "Dominoes",
+        "Yahtzee",
+        "Bingo",
+        "Checkers"
+      ],
       "answer": 2,
       "category": "culture"
     },
     {
       "question": "What color are the stars on the flag of the United States?",
-      "options": ["Red", "Blue", "White", "Gold"],
+      "options": [
+        "Red",
+        "Blue",
+        "White",
+        "Gold"
+      ],
       "answer": 2,
       "category": "culture"
     },
     {
       "question": "Which city is known as the 'Windy City'?",
-      "options": ["Chicago", "Denver", "Boston", "Dallas"],
+      "options": [
+        "Chicago",
+        "Denver",
+        "Boston",
+        "Dallas"
+      ],
       "answer": 0,
       "category": "culture"
     },
     {
       "question": "Which singer is known for the song 'Shake It Off'?",
-      "options": ["Ariana Grande", "Taylor Swift", "Beyonce", "Olivia Rodrigo"],
+      "options": [
+        "Ariana Grande",
+        "Taylor Swift",
+        "Beyonce",
+        "Olivia Rodrigo"
+      ],
       "answer": 1,
       "category": "music"
     },
     {
       "question": "Which instrument does a drummer play?",
-      "options": ["Violin", "Trumpet", "Drums", "Flute"],
+      "options": [
+        "Violin",
+        "Trumpet",
+        "Drums",
+        "Flute"
+      ],
       "answer": 2,
       "category": "music"
     },
     {
       "question": "Which artist is known for the album '25'?",
-      "options": ["Adele", "Rihanna", "Lady Gaga", "Katy Perry"],
+      "options": [
+        "Adele",
+        "Rihanna",
+        "Lady Gaga",
+        "Katy Perry"
+      ],
       "answer": 0,
       "category": "music"
     },
     {
       "question": "How many strings does a standard guitar usually have?",
-      "options": ["4", "5", "6", "7"],
+      "options": [
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "answer": 2,
       "category": "music"
     },
     {
       "question": "What food is guacamole usually served with?",
-      "options": ["Tortilla chips", "Pretzels", "Crackers", "Breadsticks"],
+      "options": [
+        "Tortilla chips",
+        "Pretzels",
+        "Crackers",
+        "Breadsticks"
+      ],
       "answer": 0,
       "category": "food"
     },
     {
       "question": "Which breakfast food is often served with syrup?",
-      "options": ["Pancakes", "Scrambled eggs", "Toast", "Oatmeal"],
+      "options": [
+        "Pancakes",
+        "Scrambled eggs",
+        "Toast",
+        "Oatmeal"
+      ],
       "answer": 0,
       "category": "food"
     },
     {
       "question": "In basketball, how many points is a free throw worth?",
-      "options": ["1", "2", "3", "4"],
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "answer": 0,
       "category": "sports"
     },
     {
       "question": "How many players are on the field for one soccer team during play?",
-      "options": ["9", "10", "11", "12"],
+      "options": [
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
       "answer": 2,
       "category": "sports"
     },
     {
       "question": "What does 'WWW' stand for in a website address?",
-      "options": ["World Wide Web", "Web World Wire", "World Web Window", "Wide World Web"],
+      "options": [
+        "World Wide Web",
+        "Web World Wire",
+        "World Web Window",
+        "Wide World Web"
+      ],
       "answer": 0,
       "category": "tech"
     },
     {
       "question": "Which company makes the PlayStation?",
-      "options": ["Nintendo", "Microsoft", "Sony", "Sega"],
+      "options": [
+        "Nintendo",
+        "Microsoft",
+        "Sony",
+        "Sega"
+      ],
       "answer": 2,
       "category": "tech"
     }
   ],
   "memory": {
-    "emojis": ["🎸", "🎺", "🎹", "🥁", "🎤", "🎧", "🎼", "🎵"],
-    "animals": ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼"],
-    "food": ["🍎", "🍌", "🍊", "🍇", "🍓", "🍑", "🥝", "🍉"],
-    "sports": ["⚽", "🏀", "🏈", "⚾", "🎾", "🏐", "🏓", "🏸"],
-    "nature": ["🌲", "🌳", "🌴", "🌵", "🌾", "🌿", "🍀", "🌱"],
-    "vehicles": ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑"],
-    "faces": ["😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣"],
-    "hearts": ["❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍"]
+    "emojis": [
+      "🎸",
+      "🎺",
+      "🎹",
+      "🥁",
+      "🎤",
+      "🎧",
+      "🎼",
+      "🎵",
+      "🎷",
+      "🎻",
+      "🪕",
+      "🪗"
+    ],
+    "animals": [
+      "🐶",
+      "🐱",
+      "🐘",
+      "🦒",
+      "🐧",
+      "🐸",
+      "🦋",
+      "🐙",
+      "🦁",
+      "🐼",
+      "🦆",
+      "🦏"
+    ],
+    "food": [
+      "🍎",
+      "🍌",
+      "🍊",
+      "🍇",
+      "🍓",
+      "🍑",
+      "🥝",
+      "🍉",
+      "🍒",
+      "🍍",
+      "🫐",
+      "🥭"
+    ],
+    "sports": [
+      "⚽",
+      "🏀",
+      "🏈",
+      "⚾",
+      "🎾",
+      "🏐",
+      "🏓",
+      "🏸",
+      "🏒",
+      "🥊",
+      "🏋️",
+      "🤿"
+    ],
+    "nature": [
+      "🌲",
+      "🌵",
+      "🌺",
+      "🍄",
+      "🌻",
+      "🌷",
+      "🌴",
+      "☘️",
+      "🌼",
+      "🌹",
+      "🪵",
+      "🌰"
+    ],
+    "vehicles": [
+      "🚗",
+      "🚲",
+      "🛵",
+      "🚁",
+      "🛶",
+      "🚂",
+      "✈️",
+      "🛳️",
+      "🚜",
+      "🚛",
+      "🛴",
+      "🛹"
+    ],
+    "faces": [
+      "😀",
+      "😢",
+      "😡",
+      "🤢",
+      "🥶",
+      "😱",
+      "🤡",
+      "👻",
+      "🤑",
+      "😇",
+      "🤯",
+      "🥴"
+    ],
+    "buildings": [
+      "🏠",
+      "🏡",
+      "🏘️",
+      "🏚️",
+      "🏢",
+      "🏛️",
+      "🕌",
+      "⛪",
+      "🕍",
+      "🛕",
+      "🗼",
+      "🏟️"
+    ],
+    "travel": [
+      "🌍",
+      "✈️",
+      "🗺️",
+      "🧳",
+      "🏖️",
+      "🏔️",
+      "🛫",
+      "🚂",
+      "🚢",
+      "⛩️",
+      "🎡",
+      "🎢"
+    ],
+    "space": [
+      "🚀",
+      "🛸",
+      "🌙",
+      "⭐",
+      "🪐",
+      "☄️",
+      "🌌",
+      "👽",
+      "🌑",
+      "🌕",
+      "🛰️",
+      "🌠"
+    ],
+    "ocean": [
+      "🐙",
+      "🐳",
+      "🐬",
+      "🦈",
+      "🐠",
+      "🦪",
+      "🏖️",
+      "🌊",
+      "🦀",
+      "🐚",
+      "🐡",
+      "🪼"
+    ],
+    "weather": [
+      "☀️",
+      "☁️",
+      "⛈️",
+      "🌈",
+      "❄️",
+      "💨",
+      "🌪️",
+      "🌤️",
+      "🌦️",
+      "🌨️",
+      "☔",
+      "🌫️"
+    ],
+    "celebration": [
+      "🎉",
+      "🎊",
+      "🥳",
+      "🎈",
+      "🎁",
+      "🍾",
+      "✨",
+      "🎆",
+      "🎇",
+      "🎪",
+      "🎭",
+      "🎫"
+    ],
+    "expressions": [
+      "😴",
+      "😵",
+      "🤠",
+      "🥵",
+      "🥸",
+      "🤖",
+      "👽",
+      "💀",
+      "🤪",
+      "🧐",
+      "🫠",
+      "🫡"
+    ],
+    "tools": [
+      "🔨",
+      "🪓",
+      "🔧",
+      "🪛",
+      "⚙️",
+      "🗜️",
+      "🔩",
+      "🪚",
+      "⛏️",
+      "🪜",
+      "🧲",
+      "🔗"
+    ],
+    "desserts": [
+      "🍰",
+      "🍩",
+      "🍪",
+      "🧁",
+      "🍫",
+      "🍮",
+      "🎂",
+      "🍦",
+      "🍭",
+      "🍬",
+      "🍿",
+      "🧋"
+    ],
+    "games": [
+      "🎮",
+      "🕹️",
+      "🎲",
+      "🃏",
+      "🀄",
+      "🎯",
+      "🎳",
+      "🎰",
+      "🧩",
+      "🪀",
+      "🏓",
+      "♟️"
+    ],
+    "fantasy": [
+      "🏰",
+      "🐉",
+      "🧙",
+      "🧝",
+      "🪄",
+      "🗡️",
+      "🛡️",
+      "👑",
+      "🧚",
+      "🐲",
+      "🔮",
+      "🏹"
+    ],
+    "clothing": [
+      "👕",
+      "👔",
+      "👗",
+      "👘",
+      "🧥",
+      "👒",
+      "👟",
+      "🧦",
+      "🧣",
+      "🧤",
+      "🎩",
+      "🎒"
+    ],
+    "science": [
+      "🔬",
+      "🧪",
+      "🧫",
+      "🧬",
+      "⚗️",
+      "🛰️",
+      "🔭",
+      "⚛️",
+      "🧲",
+      "📡",
+      "🔋",
+      "🧯"
+    ]
   }
 }
