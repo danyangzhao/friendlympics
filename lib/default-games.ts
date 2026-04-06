@@ -38,7 +38,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     name: 'Trivia Quiz',
     type: 'score',
     rules:
-      'Answer trivia questions! First team to buzz in gets to answer. +1 point for correct answers.',
+      'One player per round: answer as many questions as you can in 60 seconds. Points = number correct (wrong answers are tracked but do not add points).',
     team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
