@@ -584,8 +584,8 @@ function TriviaGame({
 
 // YouTube embed (plain iframe — avoids IFrame API + React Strict Mode races in dev)
 
-type SongGamePhase = 'idle' | 'playing';
-type GameType = 'charades' | 'song' | 'typing' | 'trivia' | 'memory' | 'manual' | 'speed_drawing' | null;
+type SongGamePhase = 'idle' | 'playing' | 'buzzing' | 'guessing' | 'stealing' | 'revealing';
+type GameType = 'charades' | 'song' | 'typing' | 'trivia' | 'memory' | 'manual' | 'speed_drawing' | 'beer_pong' | null;
 
 /** Shuffle and take up to `count` unique words from pool. */
 function pickRandomWords(pool: string[], count: number): string[] {
@@ -985,9 +985,14 @@ export default function PlayGame() {
     userId: '' as string,
     points: '',
     timeSeconds: '',
-    notes: '',
   });
   const [isSavingScore, setIsSavingScore] = useState(false);
+
+  // Beer Pong 2v2 state
+  const [beerPongPhase, setBeerPongPhase] = useState<'select' | 'playing' | 'done'>('select');
+  const [beerPongBoys, setBeerPongBoys] = useState<number[]>([]);
+  const [beerPongGirls, setBeerPongGirls] = useState<number[]>([]);
+  const [beerPongRounds, setBeerPongRounds] = useState<Array<'boys' | 'girls'>>([]);
   /** Who this round's score is saved under (charades, memory). */
   const [sessionScoreUserId, setSessionScoreUserId] = useState<number | null>(null);
   /** DB user id to attach team boys score rows (song, trivia). */
@@ -1028,7 +1033,7 @@ export default function PlayGame() {
   useEffect(() => {
     let interval: NodeJS.Timeout;
     // Song game handles its own timing via YouTube player
-    if (isRunning && timeLeft > 0 && gameType !== 'typing' && gameType !== 'memory' && gameType !== 'song' && gameType !== 'speed_drawing') {
+    if (isRunning && timeLeft > 0 && gameType !== 'typing' && gameType !== 'memory' && gameType !== 'song' && gameType !== 'speed_drawing' && gameType !== 'beer_pong') {
       interval = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
@@ -1076,9 +1081,10 @@ export default function PlayGame() {
           setGameType('trivia');
         } else if (name.includes('memory') || name.includes('match')) {
           setGameType('memory');
+        } else if (name.includes('beer pong') || name.includes('pong')) {
+          setGameType('beer_pong');
         } else if (name.includes('relay') || name.includes('4x400') || 
                    name.includes('puzzle') || 
-                   name.includes('beer pong') || name.includes('pong') ||
                    (name.includes('egg') && name.includes('carton'))) {
           setGameType('manual');
         }
@@ -1275,7 +1281,6 @@ export default function PlayGame() {
           userId: userIdNum,
           points,
           timeMs,
-          notes: manualScore.notes || null,
         }),
       });
 
@@ -1284,11 +1289,45 @@ export default function PlayGame() {
           ...prev,
           points: '',
           timeSeconds: '',
-          notes: '',
         }));
       }
     } catch (error) {
       console.error('Failed to save score:', error);
+    } finally {
+      setIsSavingScore(false);
+    }
+  };
+
+  const handleSaveBeerPongScores = async () => {
+    if (!eventId || !game || beerPongRounds.length === 0) return;
+
+    const boysWins = beerPongRounds.filter(r => r === 'boys').length;
+    const girlsWins = beerPongRounds.filter(r => r === 'girls').length;
+
+    setIsSavingScore(true);
+    try {
+      const allPlayerIds = [...beerPongBoys, ...beerPongGirls];
+      for (const userId of allPlayerIds) {
+        const user = users.find(u => u.id === userId);
+        const isBoys = user?.team === 'boys';
+        const wins = isBoys ? boysWins : girlsWins;
+
+        await fetch('/api/scores', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            eventId,
+            gameId: game.id,
+            userId,
+            points: wins,
+            notes: `Beer Pong 2v2 — ${boysWins} boys vs ${girlsWins} girls (${beerPongRounds.length} rounds)`,
+          }),
+        });
+      }
+
+      setBeerPongPhase('done');
+    } catch (error) {
+      console.error('Failed to save beer pong scores:', error);
     } finally {
       setIsSavingScore(false);
     }
@@ -1473,6 +1512,8 @@ export default function PlayGame() {
         return '5×5 grid — 12 pairs; free space stays in the center. match them all! 🧩';
       case 'manual':
         return 'play this game outside the app and record scores here! 📝';
+      case 'beer_pong':
+        return '2v2 beer pong — pick your teams, play rounds, and record who won each one! 🍺';
       case 'speed_drawing':
         return '25 numbered words — sketch to remember, then guess which number was what! ✏️';
       default:
@@ -1522,14 +1563,6 @@ export default function PlayGame() {
         'Each team bounces ping pong balls into an egg carton — count how many land in the slots',
         'Agree on scoring (e.g. 1 point per ball, or total balls in the carton)',
         'Highest score wins — enter each player\'s points below'
-      ];
-    }
-    if (name.includes('pong') || name.includes('beer')) {
-      return [
-        'Standard beer pong rules apply',
-        'Teams compete head-to-head',
-        'Winner gets the points',
-        'Record cups remaining or final score'
       ];
     }
     return ['Play the game outside the app', 'Record scores when finished'];
@@ -2326,7 +2359,265 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
           </>
         )}
 
-        {/* Manual Score Entry Games (relay, puzzle, beer pong) */}
+        {/* Beer Pong 2v2 */}
+        {gameType === 'beer_pong' && game && (
+          <>
+            {/* Header */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-6 border border-cream-200 text-center">
+              <div className="text-5xl mb-3">🍺</div>
+              <h2 className="text-2xl font-bold text-warm-700 lowercase">{game.name}</h2>
+              <p className="text-warm-500 mt-2">{getGameDescription()}</p>
+            </div>
+
+            {/* Phase 1: Team Selection */}
+            {beerPongPhase === 'select' && (
+              <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-soft-xl p-6 border-2 border-butter-200 space-y-6">
+                <h3 className="text-lg font-bold text-warm-700 lowercase text-center">pick your 2v2 teams</h3>
+
+                {/* Boys Selection */}
+                <div>
+                  <h4 className="text-sm font-bold text-sky-600 mb-3 lowercase flex items-center gap-2">
+                    <span>💙</span> team boys — pick 2
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {users.filter(u => u.team === 'boys').map(u => {
+                      const selected = beerPongBoys.includes(u.id);
+                      return (
+                        <button
+                          key={u.id}
+                          type="button"
+                          onClick={() => {
+                            if (selected) {
+                              setBeerPongBoys(prev => prev.filter(id => id !== u.id));
+                            } else if (beerPongBoys.length < 2) {
+                              setBeerPongBoys(prev => [...prev, u.id]);
+                            }
+                          }}
+                          className={`p-3 rounded-2xl border-2 text-sm font-medium lowercase transition-all ${
+                            selected
+                              ? 'border-sky-400 bg-sky-100 text-sky-700'
+                              : 'border-cream-200 bg-cream-50 text-warm-600 hover:border-sky-300'
+                          }`}
+                        >
+                          {selected && <span className="mr-1">✓</span>}
+                          {u.nickname || u.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {users.filter(u => u.team === 'boys').length < 2 && (
+                    <p className="text-xs text-peach-600 mt-2">need at least 2 boys players. add them from the dashboard first.</p>
+                  )}
+                </div>
+
+                {/* Girls Selection */}
+                <div>
+                  <h4 className="text-sm font-bold text-peach-600 mb-3 lowercase flex items-center gap-2">
+                    <span>💗</span> team girls — pick 2
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {users.filter(u => u.team === 'girls').map(u => {
+                      const selected = beerPongGirls.includes(u.id);
+                      return (
+                        <button
+                          key={u.id}
+                          type="button"
+                          onClick={() => {
+                            if (selected) {
+                              setBeerPongGirls(prev => prev.filter(id => id !== u.id));
+                            } else if (beerPongGirls.length < 2) {
+                              setBeerPongGirls(prev => [...prev, u.id]);
+                            }
+                          }}
+                          className={`p-3 rounded-2xl border-2 text-sm font-medium lowercase transition-all ${
+                            selected
+                              ? 'border-peach-400 bg-peach-100 text-peach-700'
+                              : 'border-cream-200 bg-cream-50 text-warm-600 hover:border-peach-300'
+                          }`}
+                        >
+                          {selected && <span className="mr-1">✓</span>}
+                          {u.nickname || u.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {users.filter(u => u.team === 'girls').length < 2 && (
+                    <p className="text-xs text-peach-600 mt-2">need at least 2 girls players. add them from the dashboard first.</p>
+                  )}
+                </div>
+
+                {/* Start Button */}
+                <button
+                  type="button"
+                  onClick={() => setBeerPongPhase('playing')}
+                  disabled={beerPongBoys.length !== 2 || beerPongGirls.length !== 2}
+                  className="w-full btn-butter text-lg py-4 lowercase disabled:opacity-40"
+                >
+                  start game 🏓
+                </button>
+              </div>
+            )}
+
+            {/* Phase 2: Round Tracker */}
+            {beerPongPhase === 'playing' && (
+              <div className="space-y-4">
+                {/* Scoreboard */}
+                <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-soft-xl p-6 border-2 border-butter-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-center flex-1">
+                      <div className="text-sm font-bold text-sky-600 lowercase mb-1">💙 boys</div>
+                      <div className="text-4xl font-bold text-sky-700">
+                        {beerPongRounds.filter(r => r === 'boys').length}
+                      </div>
+                      <div className="text-xs text-warm-400 mt-1 lowercase">
+                        {beerPongBoys.map(id => {
+                          const u = users.find(u => u.id === id);
+                          return u?.nickname || u?.name || '?';
+                        }).join(' & ')}
+                      </div>
+                    </div>
+                    <div className="text-center px-4">
+                      <div className="text-2xl font-bold text-warm-400">vs</div>
+                      <div className="text-xs text-warm-400 mt-1">round {beerPongRounds.length + 1}</div>
+                    </div>
+                    <div className="text-center flex-1">
+                      <div className="text-sm font-bold text-peach-600 lowercase mb-1">💗 girls</div>
+                      <div className="text-4xl font-bold text-peach-700">
+                        {beerPongRounds.filter(r => r === 'girls').length}
+                      </div>
+                      <div className="text-xs text-warm-400 mt-1 lowercase">
+                        {beerPongGirls.map(id => {
+                          const u = users.find(u => u.id === id);
+                          return u?.nickname || u?.name || '?';
+                        }).join(' & ')}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Round History */}
+                  {beerPongRounds.length > 0 && (
+                    <div className="border-t border-cream-200 pt-3 mt-3">
+                      <div className="flex flex-wrap gap-2 justify-center">
+                        {beerPongRounds.map((winner, i) => (
+                          <span
+                            key={i}
+                            className={`text-xs px-2 py-1 rounded-full ${
+                              winner === 'boys'
+                                ? 'bg-sky-100 text-sky-700'
+                                : 'bg-peach-100 text-peach-700'
+                            }`}
+                          >
+                            r{i + 1}: {winner === 'boys' ? '💙' : '💗'}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Who Won This Round */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-6 border border-cream-200">
+                  <h3 className="text-center text-sm font-bold text-warm-600 mb-4 lowercase">who won this round?</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setBeerPongRounds(prev => [...prev, 'boys'])}
+                      className="p-4 rounded-2xl border-2 border-sky-300 bg-sky-50 text-sky-700 font-bold text-lg lowercase hover:bg-sky-100 active:scale-95 transition-all"
+                    >
+                      💙 boys won
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBeerPongRounds(prev => [...prev, 'girls'])}
+                      className="p-4 rounded-2xl border-2 border-peach-300 bg-peach-50 text-peach-700 font-bold text-lg lowercase hover:bg-peach-100 active:scale-95 transition-all"
+                    >
+                      💗 girls won
+                    </button>
+                  </div>
+                </div>
+
+                {/* Undo Last Round + End Game */}
+                <div className="flex gap-3 justify-center">
+                  {beerPongRounds.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setBeerPongRounds(prev => prev.slice(0, -1))}
+                      className="btn-spring bg-cream-200 text-warm-600 lowercase text-sm"
+                    >
+                      undo last round
+                    </button>
+                  )}
+                  {beerPongRounds.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={handleSaveBeerPongScores}
+                      disabled={isSavingScore}
+                      className="btn-butter lowercase text-sm"
+                    >
+                      {isSavingScore ? 'saving...' : 'end game & save 🏆'}
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Phase 3: Results */}
+            {beerPongPhase === 'done' && (
+              <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-soft-xl p-6 border-2 border-butter-200 text-center space-y-4">
+                <div className="text-4xl">🏆</div>
+                <h3 className="text-xl font-bold text-warm-700 lowercase">game over!</h3>
+
+                {(() => {
+                  const boysWins = beerPongRounds.filter(r => r === 'boys').length;
+                  const girlsWins = beerPongRounds.filter(r => r === 'girls').length;
+                  const isTie = boysWins === girlsWins;
+                  return (
+                    <>
+                      <div className="flex items-center justify-center gap-6 text-3xl font-bold">
+                        <span className="text-sky-600">💙 {boysWins}</span>
+                        <span className="text-warm-400">—</span>
+                        <span className="text-peach-600">💗 {girlsWins}</span>
+                      </div>
+                      <p className="text-warm-600 lowercase">
+                        {isTie
+                          ? "it's a tie!"
+                          : boysWins > girlsWins
+                            ? '💙 team boys wins!'
+                            : '💗 team girls wins!'}
+                      </p>
+                      <p className="text-warm-400 text-sm lowercase">
+                        {beerPongRounds.length} round{beerPongRounds.length !== 1 ? 's' : ''} played — scores saved
+                      </p>
+                    </>
+                  );
+                })()}
+
+                <div className="flex gap-4 justify-center pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBeerPongPhase('select');
+                      setBeerPongBoys([]);
+                      setBeerPongGirls([]);
+                      setBeerPongRounds([]);
+                    }}
+                    className="btn-butter lowercase"
+                  >
+                    play again 🔄
+                  </button>
+                  <Link
+                    href={`/games/${gameId}`}
+                    className="btn-spring bg-cream-200 text-warm-600 lowercase"
+                  >
+                    back to game
+                  </Link>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Manual Score Entry Games (relay, puzzle) */}
         {gameType === 'manual' && (
           <>
             {/* Game Info & Instructions */}
@@ -2422,20 +2713,6 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                     )}
                   </div>
                 )}
-
-                {/* Notes */}
-                <div>
-                  <label className="block text-sm text-warm-500 mb-2 lowercase">
-                    notes (optional)
-                  </label>
-                  <textarea
-                    placeholder="add any notes about this score..."
-                    value={manualScore.notes}
-                    onChange={(e) => setManualScore({ ...manualScore, notes: e.target.value })}
-                    className="input-spring"
-                    rows={2}
-                  />
-                </div>
 
                 {/* Submit Button */}
                 <button
@@ -2546,6 +2823,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
           gameType !== 'typing' &&
           gameType !== 'manual' &&
           gameType !== 'speed_drawing' &&
+          gameType !== 'beer_pong' &&
           !isRunning &&
           timeLeft === 60 &&
           !typingScore &&
@@ -2657,7 +2935,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
         )}
 
         {/* Game Running - for non-typing, non-manual games */}
-        {isRunning && gameType !== 'typing' && gameType !== 'manual' && (
+        {isRunning && gameType !== 'typing' && gameType !== 'manual' && gameType !== 'beer_pong' && (
           <>
             {/* Timer & Score - charades + trivia (song game is untimed) */}
             {(gameType === 'charades' || gameType === 'trivia') && (
@@ -2937,7 +3215,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
         )}
 
         {/* Manual Score Entry - hidden for typing game (automatic) and manual games (has dedicated UI above) */}
-        {gameType !== 'typing' && gameType !== 'manual' && gameType !== 'speed_drawing' && (
+        {gameType !== 'typing' && gameType !== 'manual' && gameType !== 'speed_drawing' && gameType !== 'beer_pong' && (
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft p-6 border border-cream-200">
             <h2 className="text-lg font-bold text-warm-700 mb-4 lowercase flex items-center gap-2">
               <span>📝</span> manual score entry
@@ -2987,14 +3265,6 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                   className="input-spring text-sm"
                 />
               )}
-
-              <textarea
-                placeholder="notes (optional)"
-                value={manualScore.notes}
-                onChange={(e) => setManualScore({ ...manualScore, notes: e.target.value })}
-                className="input-spring text-sm"
-                rows={2}
-              />
 
               <button
                 type="submit"
