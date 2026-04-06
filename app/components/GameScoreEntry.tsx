@@ -2,12 +2,6 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-const PlusIcon = () => (
-  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-  </svg>
-);
-
 interface User {
   id: number;
   name: string;
@@ -15,44 +9,29 @@ interface User {
   team?: 'boys' | 'girls';
 }
 
-interface Score {
-  id: number;
-  game_id: number;
-  user_id: number;
-  name: string;
-  nickname?: string;
-  team?: 'boys' | 'girls';
-  points?: number;
-  time_ms?: number;
-  notes?: string;
-}
-
 export type GameScoreEntryProps = {
   eventId: number;
   gameId: number;
   gameType: string;
+  gameName?: string;
   onSaved?: () => void;
 };
 
-export function GameScoreEntry({ eventId, gameId, gameType, onSaved }: GameScoreEntryProps) {
+export function GameScoreEntry({ eventId, gameId, gameType, gameName, onSaved }: GameScoreEntryProps) {
   const [users, setUsers] = useState<User[]>([]);
-  const [gameScores, setGameScores] = useState<Score[]>([]);
-  const [scoresLoading, setScoresLoading] = useState(true);
-  const [showAdd, setShowAdd] = useState(false);
-  const [editingScoreId, setEditingScoreId] = useState<number | null>(null);
-
   const [newScore, setNewScore] = useState({
     userId: '',
     points: '',
     timeMs: '',
-    notes: '',
   });
-  const [scoreDraft, setScoreDraft] = useState({
-    userId: '',
-    points: '',
-    timeSeconds: '',
-    notes: '',
-  });
+
+  // Beer Pong 2v2 state
+  const isBeerPong = (gameName?.toLowerCase() || '').includes('beer pong') || (gameName?.toLowerCase() || '').includes('pong');
+  const [bpBoys, setBpBoys] = useState<number[]>([]);
+  const [bpGirls, setBpGirls] = useState<number[]>([]);
+  const [bpRounds, setBpRounds] = useState<Array<'boys' | 'girls'>>([]);
+  const [bpPhase, setBpPhase] = useState<'select' | 'playing' | 'done'>('select');
+  const [bpSaving, setBpSaving] = useState(false);
 
   const loadUsers = useCallback(async () => {
     const res = await fetch(`/api/users?eventId=${eventId}`);
@@ -62,31 +41,9 @@ export function GameScoreEntry({ eventId, gameId, gameType, onSaved }: GameScore
     }
   }, [eventId]);
 
-  const loadScores = useCallback(async () => {
-    setScoresLoading(true);
-    try {
-      const res = await fetch(`/api/scores?gameId=${gameId}`);
-      if (res.ok) {
-        const data = await res.json();
-        setGameScores(data);
-      }
-    } finally {
-      setScoresLoading(false);
-    }
-  }, [gameId]);
-
   useEffect(() => {
     loadUsers();
   }, [loadUsers]);
-
-  useEffect(() => {
-    loadScores();
-  }, [loadScores]);
-
-  const notify = () => {
-    onSaved?.();
-    loadScores();
-  };
 
   const handleAddScore = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,374 +61,331 @@ export function GameScoreEntry({ eventId, gameId, gameType, onSaved }: GameScore
           userId: uid,
           points: newScore.points ? parseFloat(newScore.points) : null,
           timeMs: newScore.timeMs ? parseFloat(newScore.timeMs) * 1000 : null,
-          notes: newScore.notes || null,
         }),
       });
 
       if (res.ok) {
-        setNewScore({ userId: '', points: '', timeMs: '', notes: '' });
-        setShowAdd(false);
-        notify();
+        setNewScore({ userId: '', points: '', timeMs: '' });
+        onSaved?.();
       }
     } catch (error) {
       console.error('Failed to add score:', error);
     }
   };
 
-  const handleStartEditScore = (score: Score) => {
-    setEditingScoreId(score.id);
-    setScoreDraft({
-      userId: String(score.user_id),
-      points: score.points !== undefined && score.points !== null ? String(score.points) : '',
-      timeSeconds: score.time_ms ? String(score.time_ms / 1000) : '',
-      notes: score.notes || '',
-    });
-  };
+  const handleSaveBeerPong = async () => {
+    if (bpRounds.length === 0) return;
+    const boysWins = bpRounds.filter(r => r === 'boys').length;
+    const girlsWins = bpRounds.filter(r => r === 'girls').length;
 
-  const handleSaveScore = async (scoreId: number) => {
-    if (!scoreDraft.userId) return;
-    const uid = parseInt(scoreDraft.userId, 10);
-    if (!users.some((u) => u.id === uid)) return;
-
+    setBpSaving(true);
     try {
-      const res = await fetch('/api/scores', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id: scoreId,
-          userId: uid,
-          points: scoreDraft.points ? parseFloat(scoreDraft.points) : null,
-          timeMs: scoreDraft.timeSeconds ? parseFloat(scoreDraft.timeSeconds) * 1000 : null,
-          notes: scoreDraft.notes || null,
-        }),
-      });
-
-      if (res.ok) {
-        setEditingScoreId(null);
-        notify();
+      for (const userId of [...bpBoys, ...bpGirls]) {
+        const user = users.find(u => u.id === userId);
+        const wins = user?.team === 'boys' ? boysWins : girlsWins;
+        await fetch('/api/scores', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            eventId,
+            gameId,
+            userId,
+            points: wins,
+            notes: `Beer Pong 2v2 — ${boysWins} boys vs ${girlsWins} girls (${bpRounds.length} rounds)`,
+          }),
+        });
       }
+      setBpPhase('done');
+      onSaved?.();
     } catch (error) {
-      console.error('Failed to update score:', error);
-    }
-  };
-
-  const handleDeleteScore = async (scoreId: number) => {
-    if (!confirm('Delete this score?')) return;
-    try {
-      const res = await fetch(`/api/scores?id=${scoreId}`, { method: 'DELETE' });
-      if (res.ok) {
-        notify();
-      }
-    } catch (error) {
-      console.error('Failed to delete score:', error);
+      console.error('Failed to save beer pong scores:', error);
+    } finally {
+      setBpSaving(false);
     }
   };
 
   const showPoints = gameType !== 'time';
   const showTime = gameType !== 'score';
 
-  return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-soft border border-cream-200">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">✏️</span>
-          <h2 className="text-lg font-bold text-warm-700 lowercase">log scores</h2>
-        </div>
-        <button
-          type="button"
-          onClick={() => setShowAdd(!showAdd)}
-          className="btn-butter flex items-center gap-2 text-sm py-2 px-4"
-        >
-          <PlusIcon />
-          <span className="lowercase">new score</span>
-        </button>
-      </div>
+  if (isBeerPong) {
+    const boysUsers = users.filter(u => u.team === 'boys');
+    const girlsUsers = users.filter(u => u.team === 'girls');
+    const boysWins = bpRounds.filter(r => r === 'boys').length;
+    const girlsWins = bpRounds.filter(r => r === 'girls').length;
 
-      <p className="text-sm text-warm-500 mb-4 lowercase">
-        anyone can add or edit scores for any player. updates apply to the standings below.
-      </p>
+    return (
+      <div className="space-y-5">
+        <p className="text-sm text-warm-500 lowercase">pick 2 players per team, then record who wins each round.</p>
 
-      {showAdd && (
-        <form onSubmit={handleAddScore} className="p-4 bg-butter-50 rounded-2xl border border-butter-200 space-y-3 mb-6">
-          <select
-            value={newScore.userId}
-            onChange={(e) => setNewScore({ ...newScore, userId: e.target.value })}
-            className="input-spring text-sm"
-            required
-          >
-            <option value="">select player...</option>
-            <optgroup label="team boys 💙">
-              {users
-                .filter((u) => u.team === 'boys')
-                .map((u) => (
-                  <option key={u.id} value={u.id}>
-                    {u.nickname || u.name}
-                    {u.nickname && u.name !== u.nickname ? ` (${u.name})` : ''}
-                  </option>
-                ))}
-            </optgroup>
-            <optgroup label="team girls 💗">
-              {users
-                .filter((u) => u.team === 'girls')
-                .map((u) => (
-                  <option key={u.id} value={u.id}>
-                    {u.nickname || u.name}
-                    {u.nickname && u.name !== u.nickname ? ` (${u.name})` : ''}
-                  </option>
-                ))}
-            </optgroup>
-            {users.filter((u) => !u.team).length > 0 && (
-              <optgroup label="no team">
-                {users
-                  .filter((u) => !u.team)
-                  .map((u) => (
-                    <option key={u.id} value={u.id}>
+        {/* Phase: Team Selection */}
+        {bpPhase === 'select' && (
+          <div className="space-y-5">
+            <div>
+              <h4 className="text-sm font-bold text-sky-600 mb-2 lowercase flex items-center gap-2">
+                <span>💙</span> team boys — pick 2
+              </h4>
+              <div className="grid grid-cols-2 gap-2">
+                {boysUsers.map(u => {
+                  const sel = bpBoys.includes(u.id);
+                  return (
+                    <button
+                      key={u.id}
+                      type="button"
+                      onClick={() => {
+                        if (sel) setBpBoys(prev => prev.filter(id => id !== u.id));
+                        else if (bpBoys.length < 2) setBpBoys(prev => [...prev, u.id]);
+                      }}
+                      className={`p-3 rounded-2xl border-2 text-sm font-medium lowercase transition-all ${
+                        sel
+                          ? 'border-sky-400 bg-sky-100 text-sky-700'
+                          : 'border-cream-200 bg-cream-50 text-warm-600 hover:border-sky-300'
+                      }`}
+                    >
+                      {sel && <span className="mr-1">✓</span>}
                       {u.nickname || u.name}
-                    </option>
-                  ))}
-              </optgroup>
-            )}
-          </select>
+                    </button>
+                  );
+                })}
+              </div>
+              {boysUsers.length < 2 && (
+                <p className="text-xs text-peach-600 mt-2">need at least 2 boys players.</p>
+              )}
+            </div>
 
-          {users.length === 0 && (
-            <p className="text-sm text-peach-600">add players in host view first.</p>
-          )}
+            <div>
+              <h4 className="text-sm font-bold text-peach-600 mb-2 lowercase flex items-center gap-2">
+                <span>💗</span> team girls — pick 2
+              </h4>
+              <div className="grid grid-cols-2 gap-2">
+                {girlsUsers.map(u => {
+                  const sel = bpGirls.includes(u.id);
+                  return (
+                    <button
+                      key={u.id}
+                      type="button"
+                      onClick={() => {
+                        if (sel) setBpGirls(prev => prev.filter(id => id !== u.id));
+                        else if (bpGirls.length < 2) setBpGirls(prev => [...prev, u.id]);
+                      }}
+                      className={`p-3 rounded-2xl border-2 text-sm font-medium lowercase transition-all ${
+                        sel
+                          ? 'border-peach-400 bg-peach-100 text-peach-700'
+                          : 'border-cream-200 bg-cream-50 text-warm-600 hover:border-peach-300'
+                      }`}
+                    >
+                      {sel && <span className="mr-1">✓</span>}
+                      {u.nickname || u.name}
+                    </button>
+                  );
+                })}
+              </div>
+              {girlsUsers.length < 2 && (
+                <p className="text-xs text-peach-600 mt-2">need at least 2 girls players.</p>
+              )}
+            </div>
 
-          {showPoints && (
-            <input
-              type="number"
-              placeholder="points"
-              value={newScore.points}
-              onChange={(e) => setNewScore({ ...newScore, points: e.target.value })}
-              className="input-spring text-sm"
-              step="0.1"
-            />
-          )}
-
-          {showTime && (
-            <input
-              type="number"
-              placeholder="time (seconds)"
-              value={newScore.timeMs}
-              onChange={(e) => setNewScore({ ...newScore, timeMs: e.target.value })}
-              className="input-spring text-sm"
-            />
-          )}
-
-          <textarea
-            placeholder="notes (optional)"
-            value={newScore.notes}
-            onChange={(e) => setNewScore({ ...newScore, notes: e.target.value })}
-            className="input-spring text-sm"
-            rows={2}
-          />
-
-          <div className="flex gap-2">
-            <button
-              type="submit"
-              className="flex-1 btn-butter text-sm py-2 disabled:opacity-50"
-              disabled={!newScore.userId || users.length === 0}
-            >
-              add score
-            </button>
             <button
               type="button"
-              onClick={() => {
-                setShowAdd(false);
-                setNewScore({ userId: '', points: '', timeMs: '', notes: '' });
-              }}
-              className="flex-1 btn-spring bg-cream-200 text-warm-600 text-sm py-2"
+              onClick={() => setBpPhase('playing')}
+              disabled={bpBoys.length !== 2 || bpGirls.length !== 2}
+              className="w-full btn-butter text-sm py-3 lowercase disabled:opacity-40"
             >
-              cancel
+              start game 🏓
             </button>
           </div>
-        </form>
-      )}
+        )}
 
-      <div className="space-y-3">
-        {!scoresLoading && users.length > 0 && (() => {
-          const boysCount = users.filter((u) => u.team === 'boys').length;
-          const girlsCount = users.filter((u) => u.team === 'girls').length;
-          const maxSlots = Math.max(boysCount, girlsCount);
-          const boysEntries = gameScores.filter((s) => s.team === 'boys').length;
-          const girlsEntries = gameScores.filter((s) => s.team === 'girls').length;
-          const smallerTeam = boysCount < girlsCount ? 'boys' : girlsCount < boysCount ? 'girls' : null;
-          const boysSlots = smallerTeam === 'boys' ? maxSlots : boysCount;
-          const girlsSlots = smallerTeam === 'girls' ? maxSlots : girlsCount;
-          return (
-            <div className="p-3 bg-cream-50 rounded-2xl border border-cream-200 space-y-2 mb-4">
-              <h4 className="text-xs font-bold text-warm-500 uppercase tracking-wider">entries per team</h4>
-              <div className="flex gap-4 text-sm">
-                <div
-                  className={`flex-1 p-2 rounded-xl ${
-                    boysEntries >= boysSlots ? 'bg-sky-100 border border-sky-200' : 'bg-sky-50 border border-sky-200'
-                  }`}
-                >
-                  <span className="font-semibold text-warm-700">💙 boys</span>
-                  <span className="ml-2 text-warm-600">
-                    {boysEntries}/{boysSlots}
-                  </span>
-                  {smallerTeam === 'boys' && boysSlots > boysCount && (
-                    <span className="block text-xs text-sky-600 mt-0.5">
-                      {boysEntries >= boysSlots
-                        ? 'extra slot used ✓'
-                        : `${boysSlots - boysCount} extra slot(s) available`}
-                    </span>
-                  )}
+        {/* Phase: Round Tracker */}
+        {bpPhase === 'playing' && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="text-center flex-1">
+                <div className="text-xs font-bold text-sky-600 lowercase mb-1">💙 boys</div>
+                <div className="text-3xl font-bold text-sky-700">{boysWins}</div>
+                <div className="text-xs text-warm-400 mt-1 lowercase">
+                  {bpBoys.map(id => users.find(u => u.id === id)).map(u => u?.nickname || u?.name || '?').join(' & ')}
                 </div>
-                <div
-                  className={`flex-1 p-2 rounded-xl ${
-                    girlsEntries >= girlsSlots ? 'bg-peach-100 border border-peach-200' : 'bg-peach-50 border border-peach-200'
-                  }`}
-                >
-                  <span className="font-semibold text-warm-700">💗 girls</span>
-                  <span className="ml-2 text-warm-600">
-                    {girlsEntries}/{girlsSlots}
-                  </span>
-                  {smallerTeam === 'girls' && girlsSlots > girlsCount && (
-                    <span className="block text-xs text-peach-600 mt-0.5">
-                      {girlsEntries >= girlsSlots
-                        ? 'extra slot used ✓'
-                        : `${girlsSlots - girlsCount} extra slot(s) available`}
-                    </span>
-                  )}
+              </div>
+              <div className="text-center px-3">
+                <div className="text-lg font-bold text-warm-400">vs</div>
+                <div className="text-xs text-warm-400">r{bpRounds.length + 1}</div>
+              </div>
+              <div className="text-center flex-1">
+                <div className="text-xs font-bold text-peach-600 lowercase mb-1">💗 girls</div>
+                <div className="text-3xl font-bold text-peach-700">{girlsWins}</div>
+                <div className="text-xs text-warm-400 mt-1 lowercase">
+                  {bpGirls.map(id => users.find(u => u.id === id)).map(u => u?.nickname || u?.name || '?').join(' & ')}
                 </div>
               </div>
             </div>
-          );
-        })()}
 
-        <h3 className="text-sm font-bold text-warm-700 lowercase">all entries</h3>
-        {scoresLoading && <p className="text-sm text-warm-400">loading scores...</p>}
-        {!scoresLoading && gameScores.length === 0 && <p className="text-sm text-warm-400">no scores yet.</p>}
-        {!scoresLoading &&
-          gameScores.length > 0 &&
-          gameScores.map((score) => {
-            const isEditing = editingScoreId === score.id;
-            return (
-              <div key={score.id} className="p-3 bg-cream-50 rounded-2xl border border-cream-200">
-                {isEditing ? (
-                  <div className="space-y-3">
-                    <select
-                      value={scoreDraft.userId}
-                      onChange={(e) => setScoreDraft({ ...scoreDraft, userId: e.target.value })}
-                      className="input-spring text-sm"
-                    >
-                      <option value="">select player...</option>
-                      <optgroup label="team boys 💙">
-                        {users
-                          .filter((u) => u.team === 'boys')
-                          .map((u) => (
-                            <option key={u.id} value={u.id}>
-                              {u.nickname || u.name}
-                              {u.nickname && u.name !== u.nickname ? ` (${u.name})` : ''}
-                            </option>
-                          ))}
-                      </optgroup>
-                      <optgroup label="team girls 💗">
-                        {users
-                          .filter((u) => u.team === 'girls')
-                          .map((u) => (
-                            <option key={u.id} value={u.id}>
-                              {u.nickname || u.name}
-                              {u.nickname && u.name !== u.nickname ? ` (${u.name})` : ''}
-                            </option>
-                          ))}
-                      </optgroup>
-                      {users.filter((u) => !u.team).length > 0 && (
-                        <optgroup label="no team">
-                          {users
-                            .filter((u) => !u.team)
-                            .map((u) => (
-                              <option key={u.id} value={u.id}>
-                                {u.nickname || u.name}
-                              </option>
-                            ))}
-                        </optgroup>
-                      )}
-                    </select>
-                    {showPoints && (
-                      <input
-                        type="number"
-                        placeholder="points"
-                        value={scoreDraft.points}
-                        onChange={(e) => setScoreDraft({ ...scoreDraft, points: e.target.value })}
-                        className="input-spring text-sm"
-                        step="0.1"
-                      />
-                    )}
-                    {showTime && (
-                      <input
-                        type="number"
-                        placeholder="time (seconds)"
-                        value={scoreDraft.timeSeconds}
-                        onChange={(e) => setScoreDraft({ ...scoreDraft, timeSeconds: e.target.value })}
-                        className="input-spring text-sm"
-                      />
-                    )}
-                    <textarea
-                      placeholder="notes (optional)"
-                      value={scoreDraft.notes}
-                      onChange={(e) => setScoreDraft({ ...scoreDraft, notes: e.target.value })}
-                      className="input-spring text-sm"
-                      rows={2}
-                    />
-                    <div className="flex gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleSaveScore(score.id)}
-                        className="flex-1 btn-butter text-sm py-2"
-                      >
-                        save
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setEditingScoreId(null)}
-                        className="flex-1 btn-spring bg-cream-200 text-warm-600 text-sm py-2"
-                      >
-                        cancel
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-warm-700">
-                      <div className="font-semibold flex items-center gap-2">
-                        {score.team === 'boys' && '💙 '}
-                        {score.team === 'girls' && '💗 '}
-                        {score.nickname || score.name}
-                        {score.nickname && score.name !== score.nickname ? (
-                          <span className="text-warm-500 font-normal text-xs">({score.name})</span>
-                        ) : null}
-                      </div>
-                      <div className="text-xs text-warm-400 lowercase">{score.notes || 'no notes'}</div>
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-warm-700">
-                      {showPoints && <span className="font-semibold">{score.points ?? 0} pts</span>}
-                      {showTime && score.time_ms && (
-                        <span className="font-semibold">{(score.time_ms / 1000).toFixed(2)}s</span>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => handleStartEditScore(score)}
-                        className="text-butter-600 hover:text-butter-700 font-semibold lowercase"
-                      >
-                        edit
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteScore(score.id)}
-                        className="text-peach-500 hover:text-peach-600 font-semibold lowercase"
-                      >
-                        delete
-                      </button>
-                    </div>
-                  </div>
-                )}
+            {bpRounds.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 justify-center pt-1">
+                {bpRounds.map((winner, i) => (
+                  <span
+                    key={i}
+                    className={`text-xs px-2 py-0.5 rounded-full ${
+                      winner === 'boys' ? 'bg-sky-100 text-sky-700' : 'bg-peach-100 text-peach-700'
+                    }`}
+                  >
+                    r{i + 1}: {winner === 'boys' ? '💙' : '💗'}
+                  </span>
+                ))}
               </div>
-            );
-          })}
+            )}
+
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setBpRounds(prev => [...prev, 'boys'])}
+                className="p-3 rounded-2xl border-2 border-sky-300 bg-sky-50 text-sky-700 font-bold text-sm lowercase hover:bg-sky-100 active:scale-95 transition-all"
+              >
+                💙 boys won
+              </button>
+              <button
+                type="button"
+                onClick={() => setBpRounds(prev => [...prev, 'girls'])}
+                className="p-3 rounded-2xl border-2 border-peach-300 bg-peach-50 text-peach-700 font-bold text-sm lowercase hover:bg-peach-100 active:scale-95 transition-all"
+              >
+                💗 girls won
+              </button>
+            </div>
+
+            <div className="flex gap-2 justify-center">
+              {bpRounds.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setBpRounds(prev => prev.slice(0, -1))}
+                  className="btn-spring bg-cream-200 text-warm-600 lowercase text-xs py-2 px-3"
+                >
+                  undo last
+                </button>
+              )}
+              {bpRounds.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleSaveBeerPong}
+                  disabled={bpSaving}
+                  className="btn-butter lowercase text-xs py-2 px-3"
+                >
+                  {bpSaving ? 'saving...' : 'end game & save 🏆'}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Phase: Done */}
+        {bpPhase === 'done' && (
+          <div className="text-center space-y-3">
+            <div className="text-3xl">🏆</div>
+            <div className="flex items-center justify-center gap-4 text-2xl font-bold">
+              <span className="text-sky-600">💙 {boysWins}</span>
+              <span className="text-warm-400">—</span>
+              <span className="text-peach-600">💗 {girlsWins}</span>
+            </div>
+            <p className="text-warm-600 text-sm lowercase">
+              {boysWins === girlsWins
+                ? "it's a tie!"
+                : boysWins > girlsWins
+                  ? '💙 team boys wins!'
+                  : '💗 team girls wins!'}
+            </p>
+            <p className="text-warm-400 text-xs lowercase">
+              {bpRounds.length} round{bpRounds.length !== 1 ? 's' : ''} — scores saved
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setBpPhase('select');
+                setBpBoys([]);
+                setBpGirls([]);
+                setBpRounds([]);
+              }}
+              className="btn-butter lowercase text-sm"
+            >
+              new game 🔄
+            </button>
+          </div>
+        )}
       </div>
-    </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleAddScore} className="space-y-3">
+      <select
+        value={newScore.userId}
+        onChange={(e) => setNewScore({ ...newScore, userId: e.target.value })}
+        className="input-spring text-sm"
+        required
+      >
+        <option value="">select player...</option>
+        <optgroup label="team boys 💙">
+          {users
+            .filter((u) => u.team === 'boys')
+            .map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.nickname || u.name}
+                {u.nickname && u.name !== u.nickname ? ` (${u.name})` : ''}
+              </option>
+            ))}
+        </optgroup>
+        <optgroup label="team girls 💗">
+          {users
+            .filter((u) => u.team === 'girls')
+            .map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.nickname || u.name}
+                {u.nickname && u.name !== u.nickname ? ` (${u.name})` : ''}
+              </option>
+            ))}
+        </optgroup>
+        {users.filter((u) => !u.team).length > 0 && (
+          <optgroup label="no team">
+            {users
+              .filter((u) => !u.team)
+              .map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.nickname || u.name}
+                </option>
+              ))}
+          </optgroup>
+        )}
+      </select>
+
+      {users.length === 0 && (
+        <p className="text-sm text-peach-600">add players in host view first.</p>
+      )}
+
+      {showPoints && (
+        <input
+          type="number"
+          placeholder="points"
+          value={newScore.points}
+          onChange={(e) => setNewScore({ ...newScore, points: e.target.value })}
+          className="input-spring text-sm"
+          step="0.1"
+        />
+      )}
+
+      {showTime && (
+        <input
+          type="number"
+          placeholder="time (seconds)"
+          value={newScore.timeMs}
+          onChange={(e) => setNewScore({ ...newScore, timeMs: e.target.value })}
+          className="input-spring text-sm"
+        />
+      )}
+
+      <button
+        type="submit"
+        className="w-full btn-butter text-sm py-2 disabled:opacity-50"
+        disabled={!newScore.userId || users.length === 0}
+      >
+        add score
+      </button>
+    </form>
   );
 }
