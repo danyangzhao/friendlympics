@@ -1554,7 +1554,7 @@ export default function PlayGame() {
     }
     if (name.includes('puzzle')) {
       return [
-        'Each team works together to complete a 250-piece puzzle',
+        'Each team works together to complete a 500-piece puzzle',
         'Start the timer when you begin',
         'Stop when the puzzle is complete',
         'Record the completion time for each team'
