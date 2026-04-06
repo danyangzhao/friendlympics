@@ -228,6 +228,57 @@ export function calculateLeaderboard(eventId: number): LeaderboardEntry[] {
   return leaderboard;
 }
 
+export interface GameTeamSummary {
+  boys: { metric: number | null; count: number };
+  girls: { metric: number | null; count: number };
+  winner: 'boys' | 'girls' | 'tie' | null;
+  rule: string;
+  timeDirection: string;
+  label: string;
+}
+
+function teamWinRuleLabel(rule: string): string {
+  switch (rule) {
+    case 'avg_points': return 'avg pts';
+    case 'sum_points': return 'total pts';
+    case 'avg_time_ms': return 'avg time';
+    case 'sum_time_ms': return 'total time';
+    default: return rule;
+  }
+}
+
+export function getGameTeamSummary(gameId: number): GameTeamSummary | null {
+  const game = getGameById(gameId);
+  if (!game) return null;
+
+  const rows = getScoresByGame(gameId);
+  const boysRows = rows.filter((s) => s.team === 'boys');
+  const girlsRows = rows.filter((s) => s.team === 'girls');
+
+  const rule = resolveTeamWinRule(game);
+  const direction = resolveTimeDirection(game);
+
+  const metricBoys = aggregateTeamMetric(boysRows, rule);
+  const metricGirls = aggregateTeamMetric(girlsRows, rule);
+
+  let winner: 'boys' | 'girls' | 'tie' | null = null;
+  if (metricBoys !== null && metricGirls !== null) {
+    const cmp = compareTeamMetrics(metricBoys, metricGirls, rule, direction);
+    if (Math.abs(cmp) < 1e-9) winner = 'tie';
+    else if (cmp > 0) winner = 'boys';
+    else winner = 'girls';
+  }
+
+  return {
+    boys: { metric: metricBoys, count: boysRows.length },
+    girls: { metric: metricGirls, count: girlsRows.length },
+    winner,
+    rule,
+    timeDirection: direction,
+    label: teamWinRuleLabel(rule),
+  };
+}
+
 export function getGameLeaderboard(gameId: number) {
   const game = getGameById(gameId);
   if (!game) {
