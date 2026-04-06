@@ -27,6 +27,7 @@ db.exec(`
     event_code TEXT UNIQUE NOT NULL,
     start_at TEXT NOT NULL,
     end_at TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active', 'completed')),
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
   );
 
