@@ -71,6 +71,127 @@ interface TypingPlayerResult {
 
 type TypingGamePhase = 'setup' | 'playing' | 'results';
 
+/** Visual styles for memory cards — picked randomly each round (face-down glyph, colors, shape). */
+const MEMORY_CARD_VARIANTS = [
+  {
+    faceDown: '?',
+    back: 'bg-cream-200 border-cream-300 hover:bg-cream-300',
+    flipped: 'bg-butter-200 border-butter-400',
+    matched: 'bg-mint-200 border-mint-500',
+    card: 'rounded-xl',
+    emoji: 'text-3xl',
+  },
+  {
+    faceDown: '✦',
+    back: 'bg-gradient-to-br from-lavender-100 to-lavender-200 border-lavender-300/80 hover:from-lavender-200',
+    flipped: 'bg-butter-100 border-butter-400',
+    matched: 'bg-mint-100 border-mint-500 ring-2 ring-mint-400/40',
+    card: 'rounded-xl',
+    emoji: 'text-3xl',
+  },
+  {
+    faceDown: '···',
+    back: 'bg-slate-100 border-slate-300 hover:bg-slate-200',
+    flipped: 'bg-amber-50 border-amber-300',
+    matched: 'bg-emerald-100 border-emerald-500',
+    card: 'rounded-xl',
+    emoji: 'text-3xl',
+  },
+  {
+    faceDown: '✧',
+    back: 'bg-gradient-to-br from-sky-100 to-cyan-100 border-sky-200 hover:from-sky-200',
+    flipped: 'bg-white border-sky-300',
+    matched: 'bg-teal-100 border-teal-500',
+    card: 'rounded-2xl',
+    emoji: 'text-4xl',
+  },
+  {
+    faceDown: '♡',
+    back: 'bg-gradient-to-br from-peach-100 to-peach-200 border-peach-300 hover:from-peach-200',
+    flipped: 'bg-butter-50 border-peach-400',
+    matched: 'bg-mint-200 border-mint-500',
+    card: 'rounded-full',
+    emoji: 'text-3xl',
+  },
+  {
+    faceDown: '◆',
+    back: 'bg-gradient-to-br from-lavender-50 via-cream-100 to-butter-100 border-butter-300',
+    flipped: 'bg-white/90 border-butter-400',
+    matched: 'bg-mint-200 border-mint-600',
+    card: 'rounded-lg',
+    emoji: 'text-3xl',
+  },
+  {
+    faceDown: '★',
+    back: 'bg-gradient-to-br from-indigo-100 to-violet-100 border-indigo-200',
+    flipped: 'bg-butter-200 border-indigo-300',
+    matched: 'bg-mint-200 border-mint-500',
+    card: 'rounded-xl',
+    emoji: 'text-3xl',
+  },
+  {
+    faceDown: '◎',
+    back: 'bg-cream-100 border-2 border-dashed border-warm-300 hover:border-warm-400',
+    flipped: 'bg-butter-200 border-butter-400 border-solid',
+    matched: 'bg-mint-200 border-mint-500 border-solid',
+    card: 'rounded-xl',
+    emoji: 'text-3xl',
+  },
+] as const;
+
+/** Memory scoring (Option A): move-based points plus bounded exponential time bonus. */
+const MEMORY_TIME_BONUS_MAX = 150;
+const MEMORY_TIME_BONUS_TAU_MS = 90_000;
+const MEMORY_SCORE_CAP = 1200;
+
+function memoryScoreBreakdown(moves: number, timeMs: number) {
+  const movePts = Math.max(0, 1000 - 10 * moves);
+  const timeBonus = Math.round(
+    MEMORY_TIME_BONUS_MAX * Math.exp(-timeMs / MEMORY_TIME_BONUS_TAU_MS)
+  );
+  const total = Math.min(MEMORY_SCORE_CAP, movePts + timeBonus);
+  return { total, movePts, timeBonus };
+}
+
+/** 5×5 grid: 12 pairs + one empty tile (25 cells). Free space is always center (index 12). */
+const MEMORY_PAIR_COUNT = 12;
+const MEMORY_EMPTY_INDEX = 12;
+/** Face-up flash of the full board before play; timer starts after this. */
+const MEMORY_PREVIEW_MS = 2200;
+
+type MemoryCell =
+  | { kind: 'card'; emoji: string; flipped: boolean; matched: boolean }
+  | { kind: 'empty' };
+
+function shuffleMemoryDeck(emojis: string[]): MemoryCell[] {
+  if (emojis.length < MEMORY_PAIR_COUNT) {
+    console.warn(
+      `memory theme has ${emojis.length} emojis; need ${MEMORY_PAIR_COUNT}. Update data/prompts.json.`
+    );
+    return [];
+  }
+  const pairEmojis = emojis.slice(0, MEMORY_PAIR_COUNT);
+  const cards: MemoryCell[] = [];
+  for (const emoji of pairEmojis) {
+    cards.push({ kind: 'card', emoji, flipped: false, matched: false });
+    cards.push({ kind: 'card', emoji, flipped: false, matched: false });
+  }
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  const deck: MemoryCell[] = new Array(25);
+  let ci = 0;
+  for (let i = 0; i < 25; i++) {
+    if (i === MEMORY_EMPTY_INDEX) {
+      deck[i] = { kind: 'empty' };
+    } else {
+      deck[i] = cards[ci++];
+    }
+  }
+  return deck;
+}
+
 /** Partial credit for a wrong word: counts matching prefix chars toward accuracy (denominator is full target length). */
 function longestCommonPrefixLength(a: string, b: string): number {
   let i = 0;
@@ -659,106 +780,172 @@ function SongGame({
 // Memory Game Component
 function MemoryGame({
   theme,
-  onComplete
+  themeLabel,
+  visualVariantIndex,
+  roundKey,
+  onComplete,
 }: {
   theme: string[];
+  themeLabel?: string;
+  visualVariantIndex: number;
+  roundKey: number;
   onComplete: (moves: number, timeMs: number) => void;
 }) {
-  const [cards, setCards] = useState<Array<{ id: number; emoji: string; flipped: boolean; matched: boolean }>>([]);
+  const [cards, setCards] = useState<MemoryCell[]>([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
-  const [startTime] = useState(Date.now());
+  const [startTime, setStartTime] = useState<number | null>(null);
   const [isComplete, setIsComplete] = useState(false);
+  const [isPreviewFlash, setIsPreviewFlash] = useState(true);
+
+  const variant = MEMORY_CARD_VARIANTS[visualVariantIndex % MEMORY_CARD_VARIANTS.length];
 
   useEffect(() => {
-    // Create pairs from theme
-    const pairs = [...theme, ...theme].map((emoji, i) => ({
-      id: i,
-      emoji,
-      flipped: false,
-      matched: false,
-    }));
-    // Shuffle
-    for (let i = pairs.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
+    const deck = shuffleMemoryDeck(theme);
+    setCards(deck);
+    setFlippedCards([]);
+    setMoves(0);
+    setIsComplete(false);
+    setStartTime(null);
+    setIsPreviewFlash(true);
+
+    const t = window.setTimeout(() => {
+      setIsPreviewFlash(false);
+      setStartTime(Date.now());
+    }, MEMORY_PREVIEW_MS);
+
+    return () => window.clearTimeout(t);
+  }, [theme, roundKey]);
+
+  useEffect(() => {
+    if (isPreviewFlash || flippedCards.length !== 2) return;
+    const [first, second] = flippedCards;
+    const a = cards[first];
+    const b = cards[second];
+    if (!(a && b && a.kind === 'card' && b.kind === 'card')) {
+      setFlippedCards([]);
+      return;
     }
-    setCards(pairs);
-  }, [theme]);
-
-  useEffect(() => {
-    if (flippedCards.length === 2) {
-      const [first, second] = flippedCards;
-      if (cards[first].emoji === cards[second].emoji) {
-        // Match!
-        setCards(prev => prev.map((card, i) =>
-          i === first || i === second ? { ...card, matched: true, flipped: false } : card
-        ));
-        setMoves(prev => prev + 1);
+    if (a.emoji === b.emoji) {
+      setCards((prev) =>
+        prev.map((cell, i) =>
+          i === first || i === second
+            ? cell.kind === 'card'
+              ? { ...cell, matched: true, flipped: false }
+              : cell
+            : cell
+        )
+      );
+      setMoves((prev) => prev + 1);
+      setFlippedCards([]);
+    } else {
+      setTimeout(() => {
+        setCards((prev) =>
+          prev.map((cell, i) =>
+            flippedCards.includes(i) && cell.kind === 'card'
+              ? { ...cell, flipped: false }
+              : cell
+          )
+        );
         setFlippedCards([]);
-      } else {
-        // No match, flip back
-        setTimeout(() => {
-          setCards(prev => prev.map((card, i) =>
-            flippedCards.includes(i) ? { ...card, flipped: false } : card
-          ));
-          setFlippedCards([]);
-          setMoves(prev => prev + 1);
-        }, 1000);
-      }
+        setMoves((prev) => prev + 1);
+      }, 1000);
     }
-  }, [flippedCards, cards]);
+  }, [flippedCards, cards, isPreviewFlash]);
 
-  // Check for completion when cards change
   useEffect(() => {
-    if (cards.length > 0 && cards.every(card => card.matched) && !isComplete) {
+    if (isPreviewFlash || startTime === null) return;
+    const playing = cards.filter((c) => c.kind === 'card');
+    if (
+      cards.length > 0 &&
+      playing.length > 0 &&
+      playing.every((c) => c.matched) &&
+      !isComplete
+    ) {
       setIsComplete(true);
       const timeMs = Date.now() - startTime;
       onComplete(moves, timeMs);
     }
-  }, [cards, moves, startTime, onComplete, isComplete]);
+  }, [cards, moves, startTime, onComplete, isComplete, isPreviewFlash]);
 
   const handleCardClick = (index: number) => {
-    if (cards[index].flipped || cards[index].matched || flippedCards.length === 2 || isComplete) return;
-    
-    setCards(prev => prev.map((card, i) =>
-      i === index ? { ...card, flipped: true } : card
-    ));
-    setFlippedCards(prev => [...prev, index]);
-  };
+    const cell = cards[index];
+    if (!cell || cell.kind === 'empty') return;
+    if (isPreviewFlash) return;
+    if (cell.flipped || cell.matched || flippedCards.length === 2 || isComplete) return;
 
-  const gridSize = Math.ceil(Math.sqrt(cards.length));
-  const cols = gridSize === 4 ? 4 : gridSize === 6 ? 6 : 4;
+    setCards((prev) =>
+      prev.map((c, i) =>
+        i === index && c.kind === 'card' ? { ...c, flipped: true } : c
+      )
+    );
+    setFlippedCards((prev) => [...prev, index]);
+  };
 
   return (
     <div className="space-y-6">
       <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-soft-xl p-6 border-2 border-butter-200">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
           <div className="text-sm text-warm-500 lowercase">
             moves: <span className="font-bold text-warm-700">{moves}</span>
           </div>
+          {themeLabel ? (
+            <div className="text-xs font-medium text-warm-500 lowercase px-2 py-1 rounded-full bg-cream-100 border border-cream-200">
+              deck: {themeLabel}
+            </div>
+          ) : null}
+          {isPreviewFlash && (
+            <div className="text-xs font-semibold text-lavender-600 lowercase animate-pulse">
+              peek! full board shows, then cards hide…
+            </div>
+          )}
           {isComplete && (
             <div className="text-mint-600 font-bold">🎉 Complete!</div>
           )}
         </div>
-        <div className={`grid gap-3 ${cols === 4 ? 'grid-cols-4' : 'grid-cols-6'}`}>
-          {cards.map((card, index) => (
-            <button
-              key={index}
-              onClick={() => handleCardClick(index)}
-              disabled={card.matched || isComplete}
-              className={`aspect-square rounded-xl text-3xl flex items-center justify-center transition-all ${
-                card.matched
-                  ? 'bg-mint-200 border-2 border-mint-500'
-                  : card.flipped
-                  ? 'bg-butter-200 border-2 border-butter-400'
-                  : 'bg-cream-200 border-2 border-cream-300 hover:bg-cream-300'
-              }`}
-            >
-              {card.flipped || card.matched ? card.emoji : '?'}
-            </button>
-          ))}
-        </div>
+        {cards.length === 0 ? (
+          <p className="text-peach-600 text-sm text-center">
+            each memory deck needs at least {MEMORY_PAIR_COUNT} emojis in data/prompts.json.
+          </p>
+        ) : (
+          <div className="grid grid-cols-5 gap-2 sm:gap-3 w-full max-w-md mx-auto">
+            {cards.map((cell, index) =>
+              cell.kind === 'empty' ? (
+                <div
+                  key={index}
+                  className="aspect-square rounded-xl border-2 border-dashed border-cream-300 bg-cream-50/80 pointer-events-none flex items-center justify-center text-cream-400 text-lg"
+                  aria-hidden
+                >
+                  ·
+                </div>
+              ) : (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => handleCardClick(index)}
+                  disabled={cell.matched || isComplete || isPreviewFlash}
+                  className={`aspect-square border-2 flex items-center justify-center transition-all text-2xl sm:text-3xl ${variant.card} ${
+                    cell.matched
+                      ? variant.matched
+                      : isPreviewFlash || cell.flipped
+                        ? variant.flipped
+                        : variant.back
+                  }`}
+                >
+                  <span
+                    className={
+                      isPreviewFlash || cell.flipped || cell.matched
+                        ? 'leading-none'
+                        : 'text-warm-500 font-semibold text-lg sm:text-xl'
+                    }
+                  >
+                    {isPreviewFlash || cell.flipped || cell.matched ? cell.emoji : variant.faceDown}
+                  </span>
+                </button>
+              )
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -777,6 +964,9 @@ export default function PlayGame() {
   const [currentTrivia, setCurrentTrivia] = useState<TriviaQuestion | null>(null);
   const [currentTypingText, setCurrentTypingText] = useState<string>('');
   const [currentMemoryTheme, setCurrentMemoryTheme] = useState<string[]>([]);
+  const [currentMemoryThemeLabel, setCurrentMemoryThemeLabel] = useState<string | null>(null);
+  const [memoryVisualVariant, setMemoryVisualVariant] = useState(0);
+  const [memoryRoundKey, setMemoryRoundKey] = useState(0);
   const [gameType, setGameType] = useState<GameType>(null);
   const [timeLeft, setTimeLeft] = useState(60);
   const [isRunning, setIsRunning] = useState(false);
@@ -1022,7 +1212,12 @@ export default function PlayGame() {
       if (question) setCurrentTrivia(question as TriviaQuestion);
     } else if (gameType === 'memory') {
       const result = getRandomPrompt();
-      if (result && typeof result === 'object' && 'emojis' in result) {
+      if (result && typeof result === 'object' && 'emojis' in result && 'theme' in result) {
+        setCurrentMemoryThemeLabel(
+          String(result.theme).replace(/_/g, ' ').toLowerCase()
+        );
+        setMemoryVisualVariant(Math.floor(Math.random() * MEMORY_CARD_VARIANTS.length));
+        setMemoryRoundKey((k) => k + 1);
         setCurrentMemoryTheme(result.emojis as string[]);
       }
     }
@@ -1104,6 +1299,10 @@ export default function PlayGame() {
 
     setIsSavingScore(true);
     try {
+      const { total, movePts, timeBonus } = memoryScoreBreakdown(
+        memoryScore.moves,
+        memoryScore.timeMs
+      );
       const res = await fetch('/api/scores', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1111,9 +1310,9 @@ export default function PlayGame() {
           eventId,
           gameId: game.id,
           userId: sessionScoreUserId,
-          points: 1000 - memoryScore.moves * 10, // Score based on moves
+          points: total,
           timeMs: memoryScore.timeMs,
-          notes: `${memoryScore.moves} moves`,
+          notes: `${memoryScore.moves} moves · ${(memoryScore.timeMs / 1000).toFixed(1)}s · ${movePts} + ${timeBonus} speed`,
         }),
       });
 
@@ -1271,7 +1470,7 @@ export default function PlayGame() {
       case 'trivia':
         return 'answer trivia questions! first team to buzz in wins! 🧠';
       case 'memory':
-        return 'match all the pairs! 🧩';
+        return '5×5 grid — 12 pairs; free space stays in the center. match them all! 🧩';
       case 'manual':
         return 'play this game outside the app and record scores here! 📝';
       case 'speed_drawing':
@@ -1515,6 +1714,10 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
       </div>
     );
   }
+
+  const memoryBreakdown = memoryScore
+    ? memoryScoreBreakdown(memoryScore.moves, memoryScore.timeMs)
+    : null;
 
   return (
     <div className="min-h-screen bg-[#FDF6E9] pb-20 relative overflow-hidden">
@@ -2538,6 +2741,9 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
             {gameType === 'memory' && currentMemoryTheme.length > 0 && (
               <MemoryGame
                 theme={currentMemoryTheme}
+                themeLabel={currentMemoryThemeLabel ?? undefined}
+                visualVariantIndex={memoryVisualVariant}
+                roundKey={memoryRoundKey}
                 onComplete={handleMemoryComplete}
               />
             )}
@@ -2552,7 +2758,17 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
             <div className="space-y-3 mb-6">
               <div className="text-4xl font-bold text-butter-500">{memoryScore.moves} moves</div>
               <div className="text-xl text-warm-600">time: {(memoryScore.timeMs / 1000).toFixed(1)}s</div>
-              <div className="text-lg text-warm-500">score: {1000 - memoryScore.moves * 10} points</div>
+              {memoryBreakdown && (
+                <>
+                  <div className="text-lg text-warm-500">
+                    score: <span className="font-semibold text-warm-700">{memoryBreakdown.total}</span> points
+                  </div>
+                  <div className="text-sm text-warm-400">
+                    {memoryBreakdown.movePts} from moves + {memoryBreakdown.timeBonus} speed bonus (max{' '}
+                    {MEMORY_TIME_BONUS_MAX})
+                  </div>
+                </>
+              )}
             </div>
             <div className="flex gap-4 justify-center">
               <button
