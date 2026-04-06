@@ -1707,6 +1707,4835 @@
       ],
       "answer": 2,
       "category": "tech"
+    },
+    {
+      "question": "What is the capital of Argentina?",
+      "category": "geography",
+      "options": [
+        "Santiago",
+        "Montevideo",
+        "Buenos Aires",
+        "Lima"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Chile?",
+      "category": "geography",
+      "options": [
+        "Lima",
+        "Quito",
+        "Bogotá",
+        "Santiago"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Colombia?",
+      "category": "geography",
+      "options": [
+        "Caracas",
+        "Bogotá",
+        "Quito",
+        "Lima"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Peru?",
+      "category": "geography",
+      "options": [
+        "Quito",
+        "Lima",
+        "Bogotá",
+        "La Paz"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Venezuela?",
+      "category": "geography",
+      "options": [
+        "Lima",
+        "Caracas",
+        "Bogotá",
+        "Quito"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Cuba?",
+      "category": "geography",
+      "options": [
+        "Nassau",
+        "Havana",
+        "San Juan",
+        "Kingston"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Jamaica?",
+      "category": "geography",
+      "options": [
+        "Havana",
+        "Port-au-Prince",
+        "Bridgetown",
+        "Kingston"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Ireland?",
+      "category": "geography",
+      "options": [
+        "Belfast",
+        "Dublin",
+        "Edinburgh",
+        "Cardiff"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Portugal?",
+      "category": "geography",
+      "options": [
+        "Barcelona",
+        "Lisbon",
+        "Seville",
+        "Madrid"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Greece?",
+      "category": "geography",
+      "options": [
+        "Sofia",
+        "Bucharest",
+        "Istanbul",
+        "Athens"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Norway?",
+      "category": "geography",
+      "options": [
+        "Stockholm",
+        "Oslo",
+        "Helsinki",
+        "Copenhagen"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Sweden?",
+      "category": "geography",
+      "options": [
+        "Bergen",
+        "Stockholm",
+        "Oslo",
+        "Reykjavik"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Denmark?",
+      "category": "geography",
+      "options": [
+        "Copenhagen",
+        "Hamburg",
+        "Aarhus",
+        "Oslo"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Finland?",
+      "category": "geography",
+      "options": [
+        "Tallinn",
+        "Riga",
+        "Helsinki",
+        "Oslo"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Poland?",
+      "category": "geography",
+      "options": [
+        "Vienna",
+        "Prague",
+        "Warsaw",
+        "Budapest"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Austria?",
+      "category": "geography",
+      "options": [
+        "Vienna",
+        "Zurich",
+        "Munich",
+        "Prague"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Switzerland?",
+      "category": "geography",
+      "options": [
+        "Bern",
+        "Zurich",
+        "Geneva",
+        "Vienna"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Belgium?",
+      "category": "geography",
+      "options": [
+        "Luxembourg",
+        "Paris",
+        "Brussels",
+        "Amsterdam"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Netherlands?",
+      "category": "geography",
+      "options": [
+        "Rotterdam",
+        "Brussels",
+        "The Hague",
+        "Amsterdam"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Czech Republic?",
+      "category": "geography",
+      "options": [
+        "Warsaw",
+        "Prague",
+        "Budapest",
+        "Bratislava"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Hungary?",
+      "category": "geography",
+      "options": [
+        "Vienna",
+        "Bucharest",
+        "Budapest",
+        "Belgrade"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Romania?",
+      "category": "geography",
+      "options": [
+        "Belgrade",
+        "Sofia",
+        "Bucharest",
+        "Budapest"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Bulgaria?",
+      "category": "geography",
+      "options": [
+        "Athens",
+        "Sofia",
+        "Belgrade",
+        "Bucharest"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Serbia?",
+      "category": "geography",
+      "options": [
+        "Skopje",
+        "Sarajevo",
+        "Zagreb",
+        "Belgrade"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Croatia?",
+      "category": "geography",
+      "options": [
+        "Belgrade",
+        "Zagreb",
+        "Ljubljana",
+        "Podgorica"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Ukraine?",
+      "category": "geography",
+      "options": [
+        "Warsaw",
+        "Kyiv",
+        "Odessa",
+        "Minsk"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Turkey?",
+      "category": "geography",
+      "options": [
+        "Istanbul",
+        "Ankara",
+        "Athens",
+        "Izmir"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Iran?",
+      "category": "geography",
+      "options": [
+        "Baghdad",
+        "Kabul",
+        "Tehran",
+        "Riyadh"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Iraq?",
+      "category": "geography",
+      "options": [
+        "Damascus",
+        "Tehran",
+        "Riyadh",
+        "Baghdad"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Saudi Arabia?",
+      "category": "geography",
+      "options": [
+        "Cairo",
+        "Riyadh",
+        "Dubai",
+        "Doha"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of United Arab Emirates?",
+      "category": "geography",
+      "options": [
+        "Doha",
+        "Muscat",
+        "Dubai",
+        "Abu Dhabi"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Israel?",
+      "category": "geography",
+      "options": [
+        "Beirut",
+        "Tel Aviv",
+        "Jerusalem",
+        "Amman"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Egypt?",
+      "category": "geography",
+      "options": [
+        "Tripoli",
+        "Cairo",
+        "Khartoum",
+        "Alexandria"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of South Africa?",
+      "category": "geography",
+      "options": [
+        "Cape Town",
+        "Johannesburg",
+        "Pretoria",
+        "Durban"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Kenya?",
+      "category": "geography",
+      "options": [
+        "Dar es Salaam",
+        "Nairobi",
+        "Kampala",
+        "Addis Ababa"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Nigeria?",
+      "category": "geography",
+      "options": [
+        "Accra",
+        "Lagos",
+        "Dakar",
+        "Abuja"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Morocco?",
+      "category": "geography",
+      "options": [
+        "Tunis",
+        "Casablanca",
+        "Rabat",
+        "Algiers"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Algeria?",
+      "category": "geography",
+      "options": [
+        "Tunis",
+        "Tripoli",
+        "Algiers",
+        "Rabat"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Ethiopia?",
+      "category": "geography",
+      "options": [
+        "Asmara",
+        "Nairobi",
+        "Addis Ababa",
+        "Khartoum"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Ghana?",
+      "category": "geography",
+      "options": [
+        "Lagos",
+        "Abidjan",
+        "Dakar",
+        "Accra"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Vietnam?",
+      "category": "geography",
+      "options": [
+        "Bangkok",
+        "Phnom Penh",
+        "Hanoi",
+        "Ho Chi Minh City"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Thailand?",
+      "category": "geography",
+      "options": [
+        "Vientiane",
+        "Hanoi",
+        "Phnom Penh",
+        "Bangkok"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Indonesia?",
+      "category": "geography",
+      "options": [
+        "Manila",
+        "Singapore",
+        "Jakarta",
+        "Kuala Lumpur"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Malaysia?",
+      "category": "geography",
+      "options": [
+        "Kuala Lumpur",
+        "Singapore",
+        "Bangkok",
+        "Jakarta"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Philippines?",
+      "category": "geography",
+      "options": [
+        "Taipei",
+        "Manila",
+        "Jakarta",
+        "Hanoi"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Pakistan?",
+      "category": "geography",
+      "options": [
+        "Karachi",
+        "Islamabad",
+        "Kabul",
+        "Lahore"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Bangladesh?",
+      "category": "geography",
+      "options": [
+        "Colombo",
+        "Dhaka",
+        "Karachi",
+        "Kolkata"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Nepal?",
+      "category": "geography",
+      "options": [
+        "Dhaka",
+        "Lhasa",
+        "Kathmandu",
+        "Thimphu"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Sri Lanka?",
+      "category": "geography",
+      "options": [
+        "Dhaka",
+        "Male",
+        "Colombo",
+        "Chennai"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Myanmar?",
+      "category": "geography",
+      "options": [
+        "Naypyidaw",
+        "Yangon",
+        "Hanoi",
+        "Bangkok"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Afghanistan?",
+      "category": "geography",
+      "options": [
+        "Tashkent",
+        "Islamabad",
+        "Tehran",
+        "Kabul"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Kazakhstan?",
+      "category": "geography",
+      "options": [
+        "Almaty",
+        "Astana",
+        "Tashkent",
+        "Bishkek"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Uzbekistan?",
+      "category": "geography",
+      "options": [
+        "Tashkent",
+        "Dushanbe",
+        "Almaty",
+        "Ashgabat"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Alabama?",
+      "category": "geography",
+      "options": [
+        "Mobile",
+        "Huntsville",
+        "Birmingham",
+        "Montgomery"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of Alaska?",
+      "category": "geography",
+      "options": [
+        "Fairbanks",
+        "Juneau",
+        "Sitka",
+        "Anchorage"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of the U.S. state of Arizona?",
+      "category": "geography",
+      "options": [
+        "Tucson",
+        "Phoenix",
+        "Flagstaff",
+        "Mesa"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of the U.S. state of Arkansas?",
+      "category": "geography",
+      "options": [
+        "Fayetteville",
+        "Hot Springs",
+        "Fort Smith",
+        "Little Rock"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of California?",
+      "category": "geography",
+      "options": [
+        "Sacramento",
+        "San Diego",
+        "Los Angeles",
+        "San Francisco"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Colorado?",
+      "category": "geography",
+      "options": [
+        "Aspen",
+        "Boulder",
+        "Colorado Springs",
+        "Denver"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of Connecticut?",
+      "category": "geography",
+      "options": [
+        "New Haven",
+        "Bridgeport",
+        "Hartford",
+        "Stamford"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of the U.S. state of Delaware?",
+      "category": "geography",
+      "options": [
+        "Dover",
+        "Newark",
+        "Rehoboth Beach",
+        "Wilmington"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Florida?",
+      "category": "geography",
+      "options": [
+        "Tallahassee",
+        "Orlando",
+        "Tampa",
+        "Miami"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Georgia?",
+      "category": "geography",
+      "options": [
+        "Savannah",
+        "Atlanta",
+        "Augusta",
+        "Macon"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of the U.S. state of Hawaii?",
+      "category": "geography",
+      "options": [
+        "Honolulu",
+        "Maui",
+        "Kona",
+        "Hilo"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Idaho?",
+      "category": "geography",
+      "options": [
+        "Boise",
+        "Idaho Falls",
+        "Coeur d'Alene",
+        "Twin Falls"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Illinois?",
+      "category": "geography",
+      "options": [
+        "Chicago",
+        "Springfield",
+        "Peoria",
+        "Rockford"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of the U.S. state of Indiana?",
+      "category": "geography",
+      "options": [
+        "Fort Wayne",
+        "South Bend",
+        "Evansville",
+        "Indianapolis"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of Iowa?",
+      "category": "geography",
+      "options": [
+        "Davenport",
+        "Des Moines",
+        "Cedar Rapids",
+        "Sioux City"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of the U.S. state of Kansas?",
+      "category": "geography",
+      "options": [
+        "Lawrence",
+        "Wichita",
+        "Kansas City",
+        "Topeka"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of Kentucky?",
+      "category": "geography",
+      "options": [
+        "Frankfort",
+        "Louisville",
+        "Lexington",
+        "Bowling Green"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Louisiana?",
+      "category": "geography",
+      "options": [
+        "Shreveport",
+        "New Orleans",
+        "Lafayette",
+        "Baton Rouge"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of Maine?",
+      "category": "geography",
+      "options": [
+        "Bar Harbor",
+        "Augusta",
+        "Portland",
+        "Bangor"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of the U.S. state of Maryland?",
+      "category": "geography",
+      "options": [
+        "Annapolis",
+        "Baltimore",
+        "Rockville",
+        "Frederick"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Massachusetts?",
+      "category": "geography",
+      "options": [
+        "Worcester",
+        "Boston",
+        "Cambridge",
+        "Springfield"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of the U.S. state of Michigan?",
+      "category": "geography",
+      "options": [
+        "Lansing",
+        "Detroit",
+        "Grand Rapids",
+        "Ann Arbor"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Minnesota?",
+      "category": "geography",
+      "options": [
+        "Duluth",
+        "Minneapolis",
+        "Rochester",
+        "Saint Paul"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of Mississippi?",
+      "category": "geography",
+      "options": [
+        "Oxford",
+        "Jackson",
+        "Gulfport",
+        "Biloxi"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of the U.S. state of Missouri?",
+      "category": "geography",
+      "options": [
+        "Springfield",
+        "Kansas City",
+        "Jefferson City",
+        "St. Louis"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of the U.S. state of Montana?",
+      "category": "geography",
+      "options": [
+        "Missoula",
+        "Billings",
+        "Bozeman",
+        "Helena"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of Nebraska?",
+      "category": "geography",
+      "options": [
+        "Grand Island",
+        "Omaha",
+        "Kearney",
+        "Lincoln"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of Nevada?",
+      "category": "geography",
+      "options": [
+        "Las Vegas",
+        "Carson City",
+        "Elko",
+        "Reno"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of the U.S. state of New Hampshire?",
+      "category": "geography",
+      "options": [
+        "Portsmouth",
+        "Manchester",
+        "Nashua",
+        "Concord"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of New Jersey?",
+      "category": "geography",
+      "options": [
+        "Jersey City",
+        "Trenton",
+        "Newark",
+        "Atlantic City"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of the U.S. state of New Mexico?",
+      "category": "geography",
+      "options": [
+        "Albuquerque",
+        "Taos",
+        "Santa Fe",
+        "Las Cruces"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of the U.S. state of New York?",
+      "category": "geography",
+      "options": [
+        "Rochester",
+        "Buffalo",
+        "New York City",
+        "Albany"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of North Carolina?",
+      "category": "geography",
+      "options": [
+        "Raleigh",
+        "Asheville",
+        "Charlotte",
+        "Durham"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of North Dakota?",
+      "category": "geography",
+      "options": [
+        "Bismarck",
+        "Grand Forks",
+        "Minot",
+        "Fargo"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Ohio?",
+      "category": "geography",
+      "options": [
+        "Cleveland",
+        "Toledo",
+        "Cincinnati",
+        "Columbus"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of Oklahoma?",
+      "category": "geography",
+      "options": [
+        "Norman",
+        "Stillwater",
+        "Tulsa",
+        "Oklahoma City"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of Oregon?",
+      "category": "geography",
+      "options": [
+        "Portland",
+        "Bend",
+        "Salem",
+        "Eugene"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of the U.S. state of Pennsylvania?",
+      "category": "geography",
+      "options": [
+        "Pittsburgh",
+        "Philadelphia",
+        "Harrisburg",
+        "Erie"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of the U.S. state of Rhode Island?",
+      "category": "geography",
+      "options": [
+        "Newport",
+        "Cranston",
+        "Providence",
+        "Warwick"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of the U.S. state of South Carolina?",
+      "category": "geography",
+      "options": [
+        "Columbia",
+        "Greenville",
+        "Myrtle Beach",
+        "Charleston"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of South Dakota?",
+      "category": "geography",
+      "options": [
+        "Pierre",
+        "Sioux Falls",
+        "Rapid City",
+        "Deadwood"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Tennessee?",
+      "category": "geography",
+      "options": [
+        "Chattanooga",
+        "Knoxville",
+        "Nashville",
+        "Memphis"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of the U.S. state of Texas?",
+      "category": "geography",
+      "options": [
+        "Dallas",
+        "Houston",
+        "Austin",
+        "San Antonio"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of the U.S. state of Utah?",
+      "category": "geography",
+      "options": [
+        "Provo",
+        "Moab",
+        "Salt Lake City",
+        "Park City"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of the U.S. state of Vermont?",
+      "category": "geography",
+      "options": [
+        "Montpelier",
+        "Rutland",
+        "Burlington",
+        "Brattleboro"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Virginia?",
+      "category": "geography",
+      "options": [
+        "Richmond",
+        "Roanoke",
+        "Virginia Beach",
+        "Norfolk"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Washington?",
+      "category": "geography",
+      "options": [
+        "Spokane",
+        "Seattle",
+        "Tacoma",
+        "Olympia"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of the U.S. state of West Virginia?",
+      "category": "geography",
+      "options": [
+        "Huntington",
+        "Morgantown",
+        "Charleston",
+        "Wheeling"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of the U.S. state of Wisconsin?",
+      "category": "geography",
+      "options": [
+        "Madison",
+        "Kenosha",
+        "Milwaukee",
+        "Green Bay"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of the U.S. state of Wyoming?",
+      "category": "geography",
+      "options": [
+        "Cheyenne",
+        "Jackson",
+        "Casper",
+        "Laramie"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the chemical symbol for Hydrogen?",
+      "category": "science",
+      "options": [
+        "He",
+        "H",
+        "Li",
+        "O"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the chemical symbol for Helium?",
+      "category": "science",
+      "options": [
+        "H",
+        "Ar",
+        "He",
+        "Ne"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the chemical symbol for Carbon?",
+      "category": "science",
+      "options": [
+        "Cu",
+        "C",
+        "Co",
+        "Ca"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the chemical symbol for Nitrogen?",
+      "category": "science",
+      "options": [
+        "N",
+        "Na",
+        "Ne",
+        "Ni"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the chemical symbol for Oxygen?",
+      "category": "science",
+      "options": [
+        "O",
+        "Og",
+        "P",
+        "Os"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the chemical symbol for Sodium?",
+      "category": "science",
+      "options": [
+        "S",
+        "Na",
+        "Ni",
+        "Nb"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the chemical symbol for Magnesium?",
+      "category": "science",
+      "options": [
+        "Mg",
+        "Mo",
+        "Hg",
+        "Mn"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the chemical symbol for Aluminum?",
+      "category": "science",
+      "options": [
+        "Ar",
+        "Am",
+        "Ag",
+        "Al"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the chemical symbol for Silicon?",
+      "category": "science",
+      "options": [
+        "Sn",
+        "Si",
+        "S",
+        "Se"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the chemical symbol for Phosphorus?",
+      "category": "science",
+      "options": [
+        "P",
+        "Po",
+        "Pt",
+        "Pb"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the chemical symbol for Sulfur?",
+      "category": "science",
+      "options": [
+        "Si",
+        "S",
+        "Se",
+        "Sb"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the chemical symbol for Chlorine?",
+      "category": "science",
+      "options": [
+        "Cl",
+        "Cr",
+        "C",
+        "Ca"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the chemical symbol for Potassium?",
+      "category": "science",
+      "options": [
+        "Ka",
+        "Kr",
+        "P",
+        "K"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the chemical symbol for Calcium?",
+      "category": "science",
+      "options": [
+        "Cl",
+        "Cd",
+        "C",
+        "Ca"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the chemical symbol for Copper?",
+      "category": "science",
+      "options": [
+        "Cr",
+        "Cu",
+        "Co",
+        "Ca"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the chemical symbol for Zinc?",
+      "category": "science",
+      "options": [
+        "Z",
+        "Zr",
+        "Si",
+        "Zn"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the chemical symbol for Silver?",
+      "category": "science",
+      "options": [
+        "Al",
+        "As",
+        "Ag",
+        "Au"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the chemical symbol for Gold?",
+      "category": "science",
+      "options": [
+        "Al",
+        "Ac",
+        "Ag",
+        "Au"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the chemical symbol for Lead?",
+      "category": "science",
+      "options": [
+        "Pd",
+        "Pb",
+        "Po",
+        "Pt"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the chemical symbol for Mercury?",
+      "category": "science",
+      "options": [
+        "Hf",
+        "He",
+        "Ho",
+        "Hg"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the chemical symbol for Tin?",
+      "category": "science",
+      "options": [
+        "Sn",
+        "Sr",
+        "Sb",
+        "Si"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the chemical symbol for Uranium?",
+      "category": "science",
+      "options": [
+        "Un",
+        "U",
+        "Ub",
+        "Ur"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "How many bones are in an adult human body?",
+      "category": "science",
+      "options": [
+        "256",
+        "226",
+        "186",
+        "206"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Roughly how long does Earth take to orbit the Sun?",
+      "category": "science",
+      "options": [
+        "400 days",
+        "30 days",
+        "365 days",
+        "360 days"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What gas do plants absorb from the air for photosynthesis?",
+      "category": "science",
+      "options": [
+        "Oxygen",
+        "Carbon dioxide",
+        "Nitrogen",
+        "Helium"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the center of an atom called?",
+      "category": "science",
+      "options": [
+        "Neutron",
+        "Electron shell",
+        "Nucleus",
+        "Proton cloud"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What force keeps us on the ground?",
+      "category": "science",
+      "options": [
+        "Friction",
+        "Magnetism",
+        "Tension",
+        "Gravity"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the boiling point of water at sea level (°C)?",
+      "category": "science",
+      "options": [
+        "90",
+        "80",
+        "212",
+        "100"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What planet is known for its rings?",
+      "category": "science",
+      "options": [
+        "Saturn",
+        "Neptune",
+        "Jupiter",
+        "Mars"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the closest star to Earth?",
+      "category": "science",
+      "options": [
+        "Proxima Centauri",
+        "The Sun",
+        "Sirius",
+        "Polaris"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What part of the cell contains DNA?",
+      "category": "science",
+      "options": [
+        "Ribosome",
+        "Membrane",
+        "Nucleus",
+        "Mitochondria"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What blood type is known as the universal donor?",
+      "category": "science",
+      "options": [
+        "O negative",
+        "B negative",
+        "A positive",
+        "AB positive"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What organ pumps blood through the body?",
+      "category": "science",
+      "options": [
+        "Liver",
+        "Heart",
+        "Kidney",
+        "Lung"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is H2SO4 commonly known as?",
+      "category": "science",
+      "options": [
+        "Nitric acid",
+        "Sulfuric acid",
+        "Hydrochloric acid",
+        "Acetic acid"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the hardest mineral on the Mohs scale?",
+      "category": "science",
+      "options": [
+        "Steel",
+        "Topaz",
+        "Quartz",
+        "Diamond"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the largest organ in the human body?",
+      "category": "science",
+      "options": [
+        "Lung",
+        "Skin",
+        "Liver",
+        "Brain"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What gas makes up most of Earth's atmosphere?",
+      "category": "science",
+      "options": [
+        "Argon",
+        "Carbon dioxide",
+        "Nitrogen",
+        "Oxygen"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the study of fossils called?",
+      "category": "science",
+      "options": [
+        "Biology",
+        "Archaeology",
+        "Paleontology",
+        "Geology"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the powerhouse of the cell?",
+      "category": "science",
+      "options": [
+        "Nucleus",
+        "Mitochondria",
+        "Golgi",
+        "Ribosome"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the normal human body temperature in °C?",
+      "category": "science",
+      "options": [
+        "38",
+        "37",
+        "36",
+        "40"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What vitamin is produced when skin is exposed to sunlight?",
+      "category": "science",
+      "options": [
+        "Vitamin B12",
+        "Vitamin A",
+        "Vitamin C",
+        "Vitamin D"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the smallest unit of life?",
+      "category": "science",
+      "options": [
+        "Atom",
+        "Tissue",
+        "Cell",
+        "Molecule"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What type of animal is a frog?",
+      "category": "science",
+      "options": [
+        "Amphibian",
+        "Fish",
+        "Reptile",
+        "Mammal"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the largest land animal?",
+      "category": "science",
+      "options": [
+        "Blue whale",
+        "African elephant",
+        "Hippo",
+        "Giraffe"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the chemical formula for table salt?",
+      "category": "science",
+      "options": [
+        "KCl",
+        "NaCl",
+        "NaOH",
+        "HCl"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What planet is the hottest in the solar system?",
+      "category": "science",
+      "options": [
+        "Venus",
+        "Mars",
+        "Jupiter",
+        "Mercury"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the study of weather called?",
+      "category": "science",
+      "options": [
+        "Oceanography",
+        "Meteorology",
+        "Geology",
+        "Astronomy"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the speed of sound in air (approx, m/s)?",
+      "category": "science",
+      "options": [
+        "150",
+        "343",
+        "1000",
+        "500"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the main gas in the Sun?",
+      "category": "science",
+      "options": [
+        "Helium",
+        "Hydrogen",
+        "Carbon",
+        "Oxygen"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the process by which plants make food?",
+      "category": "science",
+      "options": [
+        "Respiration",
+        "Digestion",
+        "Fermentation",
+        "Photosynthesis"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the nearest galaxy to the Milky Way?",
+      "category": "science",
+      "options": [
+        "Triangulum",
+        "Sombrero",
+        "Andromeda",
+        "Whirlpool"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "How many chromosomes do humans typically have?",
+      "category": "science",
+      "options": [
+        "46",
+        "48",
+        "23",
+        "44"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "In what year did World War I begin?",
+      "category": "history",
+      "options": [
+        "1914",
+        "1912",
+        "1916",
+        "1918"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who was the first President of the United States?",
+      "category": "history",
+      "options": [
+        "George Washington",
+        "Benjamin Franklin",
+        "John Adams",
+        "Thomas Jefferson"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "The ancient city of Pompeii was destroyed by which volcano?",
+      "category": "history",
+      "options": [
+        "Krakatoa",
+        "Mount Vesuvius",
+        "Stromboli",
+        "Etna"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Who painted the ceiling of the Sistine Chapel?",
+      "category": "history",
+      "options": [
+        "Michelangelo",
+        "Leonardo da Vinci",
+        "Raphael",
+        "Donatello"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What wall fell in 1989, symbolizing the Cold War's end?",
+      "category": "history",
+      "options": [
+        "Great Wall",
+        "Western Wall",
+        "Berlin Wall",
+        "Hadrian's Wall"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Who was known as the Maid of Orléans?",
+      "category": "history",
+      "options": [
+        "Catherine de Medici",
+        "Eleanor of Aquitaine",
+        "Joan of Arc",
+        "Marie Antoinette"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What ship sank in 1912 after hitting an iceberg?",
+      "category": "history",
+      "options": [
+        "Olympic",
+        "Lusitania",
+        "Titanic",
+        "Britannic"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Who wrote the Declaration of Independence (primary author)?",
+      "category": "history",
+      "options": [
+        "Benjamin Franklin",
+        "John Adams",
+        "Thomas Jefferson",
+        "George Washington"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What empire was ruled by Julius Caesar?",
+      "category": "history",
+      "options": [
+        "Persian",
+        "Byzantine",
+        "Roman",
+        "Ottoman"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "In what year did the American Revolutionary War end?",
+      "category": "history",
+      "options": [
+        "1783",
+        "1799",
+        "1812",
+        "1776"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who was British Prime Minister during most of World War II?",
+      "category": "history",
+      "options": [
+        "Neville Chamberlain",
+        "Winston Churchill",
+        "Clement Attlee",
+        "Anthony Eden"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What ancient wonder was located in Alexandria?",
+      "category": "history",
+      "options": [
+        "Lighthouse (Pharos)",
+        "Colossus",
+        "Temple of Artemis",
+        "Hanging Gardens"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who was the first emperor of China's Qin dynasty?",
+      "category": "history",
+      "options": [
+        "Qin Shi Huang",
+        "Wu Zetian",
+        "Kublai Khan",
+        "Liu Bang"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What year did the Titanic sink?",
+      "category": "history",
+      "options": [
+        "1912",
+        "1905",
+        "1910",
+        "1914"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who discovered penicillin?",
+      "category": "history",
+      "options": [
+        "Alexander Fleming",
+        "Marie Curie",
+        "Robert Koch",
+        "Louis Pasteur"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What year did the Berlin Wall fall?",
+      "category": "history",
+      "options": [
+        "1985",
+        "1989",
+        "1991",
+        "1987"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Who was the first woman to fly solo across the Atlantic?",
+      "category": "history",
+      "options": [
+        "Amelia Earhart",
+        "Harriet Quimby",
+        "Bessie Coleman",
+        "Sally Ride"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What was the first country to give women the right to vote (1893)?",
+      "category": "history",
+      "options": [
+        "USA",
+        "New Zealand",
+        "UK",
+        "France"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Who was the longest-reigning British monarch before Elizabeth II?",
+      "category": "history",
+      "options": [
+        "James I",
+        "Queen Victoria",
+        "Henry VIII",
+        "George III"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What war was fought between the North and South in the United States?",
+      "category": "history",
+      "options": [
+        "Spanish-American War",
+        "Revolutionary War",
+        "War of 1812",
+        "Civil War"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is 7 × 8?",
+      "category": "math",
+      "options": [
+        "63",
+        "56",
+        "49",
+        "54"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the value of π to two decimal places?",
+      "category": "math",
+      "options": [
+        "2.71",
+        "3.41",
+        "3.14",
+        "1.62"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is 12 squared?",
+      "category": "math",
+      "options": [
+        "132",
+        "144",
+        "156",
+        "121"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the sum of angles in a triangle (degrees)?",
+      "category": "math",
+      "options": [
+        "270",
+        "180",
+        "360",
+        "90"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is 15% of 200?",
+      "category": "math",
+      "options": [
+        "25",
+        "35",
+        "40",
+        "30"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "How many sides does a hexagon have?",
+      "category": "math",
+      "options": [
+        "5",
+        "8",
+        "6",
+        "7"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is 2^10?",
+      "category": "math",
+      "options": [
+        "1024",
+        "512",
+        "1000",
+        "2048"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the square root of 81?",
+      "category": "math",
+      "options": [
+        "8",
+        "10",
+        "7",
+        "9"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "If x + 3 = 10, what is x?",
+      "category": "math",
+      "options": [
+        "3",
+        "13",
+        "7",
+        "6"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "How many degrees in a right angle?",
+      "category": "math",
+      "options": [
+        "90",
+        "360",
+        "45",
+        "180"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is 100 ÷ 4?",
+      "category": "math",
+      "options": [
+        "25",
+        "20",
+        "24",
+        "30"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the perimeter of a square with side 5?",
+      "category": "math",
+      "options": [
+        "10",
+        "20",
+        "25",
+        "15"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is 0.5 as a fraction?",
+      "category": "math",
+      "options": [
+        "1/4",
+        "2/3",
+        "1/3",
+        "1/2"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "How many millimeters in a centimeter?",
+      "category": "math",
+      "options": [
+        "1",
+        "100",
+        "10",
+        "1000"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the next prime number after 7?",
+      "category": "math",
+      "options": [
+        "9",
+        "11",
+        "10",
+        "13"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "How many innings are in a standard MLB baseball game (regulation)?",
+      "category": "sports",
+      "options": [
+        "7",
+        "10",
+        "8",
+        "9"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "In tennis, what is zero called?",
+      "category": "sports",
+      "options": [
+        "Love",
+        "Zero",
+        "Duck",
+        "Nil"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "How many players on a basketball team on the court?",
+      "category": "sports",
+      "options": [
+        "4",
+        "7",
+        "6",
+        "5"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What sport uses a puck?",
+      "category": "sports",
+      "options": [
+        "Polo",
+        "Lacrosse",
+        "Ice hockey",
+        "Field hockey"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "How long is a marathon (approximate miles)?",
+      "category": "sports",
+      "options": [
+        "26.2",
+        "24",
+        "25",
+        "30"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "In football (American), how many points for a touchdown?",
+      "category": "sports",
+      "options": [
+        "2",
+        "7",
+        "3",
+        "6"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What color flag is waved for a clean lap in motorsport (F1)?",
+      "category": "sports",
+      "options": [
+        "Green",
+        "Yellow",
+        "Red",
+        "Checkered"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "How many holes in a standard round of golf?",
+      "category": "sports",
+      "options": [
+        "12",
+        "9",
+        "18",
+        "36"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What sport is Wimbledon associated with?",
+      "category": "sports",
+      "options": [
+        "Cricket",
+        "Tennis",
+        "Polo",
+        "Badminton"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "In baseball, how many strikes for a strikeout?",
+      "category": "sports",
+      "options": [
+        "3",
+        "5",
+        "2",
+        "4"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the national summer sport of Canada?",
+      "category": "sports",
+      "options": [
+        "Soccer",
+        "Hockey",
+        "Curling",
+        "Lacrosse"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "How many periods in a standard NHL hockey game?",
+      "category": "sports",
+      "options": [
+        "4",
+        "1",
+        "3",
+        "2"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What do you call three strikes in a row in bowling?",
+      "category": "sports",
+      "options": [
+        "Spare",
+        "Eagle",
+        "Turkey",
+        "Birdie"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "In soccer, what card means ejection?",
+      "category": "sports",
+      "options": [
+        "Blue",
+        "Red",
+        "Green",
+        "Yellow"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "How many bases are on a baseball diamond?",
+      "category": "sports",
+      "options": [
+        "4",
+        "3",
+        "2",
+        "5"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who wrote \"Pride and Prejudice\"?",
+      "category": "literature",
+      "options": [
+        "Jane Austen",
+        "Charlotte Brontë",
+        "Emily Dickinson",
+        "Mary Shelley"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who wrote \"Moby-Dick\"?",
+      "category": "literature",
+      "options": [
+        "Nathaniel Hawthorne",
+        "Herman Melville",
+        "Edgar Allan Poe",
+        "Mark Twain"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the first book of the Bible?",
+      "category": "literature",
+      "options": [
+        "Exodus",
+        "Matthew",
+        "Genesis",
+        "Psalms"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Who wrote \"The Great Gatsby\"?",
+      "category": "literature",
+      "options": [
+        "William Faulkner",
+        "Ernest Hemingway",
+        "F. Scott Fitzgerald",
+        "John Steinbeck"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is a group of crows called?",
+      "category": "literature",
+      "options": [
+        "Gaggle",
+        "Murder",
+        "Pack",
+        "Flock"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the past tense of \"go\"?",
+      "category": "literature",
+      "options": [
+        "Gone",
+        "Went",
+        "Goed",
+        "Goes"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "How many syllables in \"beautiful\"?",
+      "category": "literature",
+      "options": [
+        "2",
+        "1",
+        "4",
+        "3"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the plural of \"child\"?",
+      "category": "literature",
+      "options": [
+        "Childs",
+        "Childes",
+        "Childrens",
+        "Children"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Who wrote \"Hamlet\"?",
+      "category": "literature",
+      "options": [
+        "Ben Jonson",
+        "William Shakespeare",
+        "John Milton",
+        "Christopher Marlowe"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What figure of speech compares using \"like\" or \"as\"?",
+      "category": "literature",
+      "options": [
+        "Simile",
+        "Hyperbole",
+        "Alliteration",
+        "Metaphor"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who played Jack Sparrow in \"Pirates of the Caribbean\"?",
+      "category": "movies",
+      "options": [
+        "Tom Hanks",
+        "Orlando Bloom",
+        "Brad Pitt",
+        "Johnny Depp"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the name of the kingdom in \"Frozen\"?",
+      "category": "movies",
+      "options": [
+        "Corona",
+        "Arendelle",
+        "DunBroch",
+        "Atlantica"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is Darth Vader's real name?",
+      "category": "movies",
+      "options": [
+        "Han Solo",
+        "Anakin Skywalker",
+        "Luke Skywalker",
+        "Obi-Wan Kenobi"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Which studio made \"Toy Story\"?",
+      "category": "movies",
+      "options": [
+        "Disney Animation",
+        "DreamWorks",
+        "Pixar",
+        "Blue Sky"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the highest-grossing film franchise (often cited)?",
+      "category": "movies",
+      "options": [
+        "Marvel Cinematic Universe",
+        "James Bond",
+        "Star Wars",
+        "Harry Potter"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who directed \"Jaws\"?",
+      "category": "movies",
+      "options": [
+        "Steven Spielberg",
+        "George Lucas",
+        "Alfred Hitchcock",
+        "Martin Scorsese"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the name of the hobbit played by Elijah Wood in LOTR?",
+      "category": "movies",
+      "options": [
+        "Sam",
+        "Frodo",
+        "Pippin",
+        "Bilbo"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "In \"The Matrix,\" what color pill does Neo take?",
+      "category": "movies",
+      "options": [
+        "Blue",
+        "Red",
+        "Green",
+        "Yellow"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the name of Simba's father in \"The Lion King\"?",
+      "category": "movies",
+      "options": [
+        "Zazu",
+        "Mufasa",
+        "Timon",
+        "Scar"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Which film features the quote \"May the Force be with you\"?",
+      "category": "movies",
+      "options": [
+        "Dune",
+        "Star Wars",
+        "Star Trek",
+        "Blade Runner"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Who is known as \"The King of Rock and Roll\"?",
+      "category": "music",
+      "options": [
+        "Buddy Holly",
+        "Little Richard",
+        "Elvis Presley",
+        "Chuck Berry"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What instrument did Jimi Hendrix famously play?",
+      "category": "music",
+      "options": [
+        "Drums",
+        "Piano",
+        "Guitar",
+        "Saxophone"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Who composed \"The Four Seasons\"?",
+      "category": "music",
+      "options": [
+        "Antonio Vivaldi",
+        "Ludwig van Beethoven",
+        "Wolfgang Amadeus Mozart",
+        "Johann Sebastian Bach"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the term for a musical speed?",
+      "category": "music",
+      "options": [
+        "Tempo",
+        "Scale",
+        "Pitch",
+        "Tone"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "How many keys on a standard piano?",
+      "category": "music",
+      "options": [
+        "76",
+        "96",
+        "66",
+        "88"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Who sang \"Like a Rolling Stone\"?",
+      "category": "music",
+      "options": [
+        "Tom Petty",
+        "Neil Young",
+        "Bruce Springsteen",
+        "Bob Dylan"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What family do violin, viola, and cello belong to?",
+      "category": "music",
+      "options": [
+        "Woodwind",
+        "String",
+        "Brass",
+        "Percussion"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What does \"forte\" mean in music?",
+      "category": "music",
+      "options": [
+        "Loud",
+        "Fast",
+        "Slow",
+        "Soft"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who is known as \"The Boss\" in rock?",
+      "category": "music",
+      "options": [
+        "Bono",
+        "Mick Jagger",
+        "Bruce Springsteen",
+        "Bob Dylan"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What note is middle C?",
+      "category": "music",
+      "options": [
+        "C2",
+        "C5",
+        "C4",
+        "C3"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is sushi traditionally wrapped with?",
+      "category": "food",
+      "options": [
+        "Lettuce",
+        "Nori",
+        "Rice paper",
+        "Tortilla"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the main ingredient in hummus?",
+      "category": "food",
+      "options": [
+        "Black beans",
+        "Peas",
+        "Lentils",
+        "Chickpeas"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What type of pasta means \"little worms\"?",
+      "category": "food",
+      "options": [
+        "Penne",
+        "Fusilli",
+        "Rigatoni",
+        "Vermicelli"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What spirit is in a traditional mojito?",
+      "category": "food",
+      "options": [
+        "Gin",
+        "Rum",
+        "Vodka",
+        "Whiskey"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Which fruit has its seeds on the outside?",
+      "category": "food",
+      "options": [
+        "Raspberry",
+        "Strawberry",
+        "Blackberry",
+        "Blueberry"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the national dish of Spain often associated with saffron rice?",
+      "category": "food",
+      "options": [
+        "Tapas",
+        "Tortilla",
+        "Gazpacho",
+        "Paella"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What cheese is traditionally on a Greek salad?",
+      "category": "food",
+      "options": [
+        "Feta",
+        "Cheddar",
+        "Mozzarella",
+        "Parmesan"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the main protein in traditional pad thai?",
+      "category": "food",
+      "options": [
+        "Shrimp or chicken",
+        "Beef",
+        "Tofu only",
+        "Pork"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Borscht is a soup most associated with which region?",
+      "category": "food",
+      "options": [
+        "Japan",
+        "Mexico",
+        "Eastern Europe",
+        "Italy"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What gives kimchi its spicy flavor?",
+      "category": "food",
+      "options": [
+        "Horseradish",
+        "Wasabi",
+        "Paprika only",
+        "Chili paste"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What does CPU stand for?",
+      "category": "tech",
+      "options": [
+        "Computer Personal Unit",
+        "Central Program Unit",
+        "Central Processing Unit",
+        "Core Processing Utility"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What does HTML stand for?",
+      "category": "tech",
+      "options": [
+        "Home Tool Markup Language",
+        "HyperText Markup Language",
+        "HighText Machine Language",
+        "HyperTransfer Markup Language"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What company makes Android?",
+      "category": "tech",
+      "options": [
+        "Google",
+        "Samsung",
+        "Microsoft",
+        "Apple"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What does URL stand for?",
+      "category": "tech",
+      "options": [
+        "Uniform Reference Locator",
+        "Uniform Resource Locator",
+        "Universal Reference Link",
+        "Unified Resource Link"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What year was the World Wide Web invented (approx)?",
+      "category": "tech",
+      "options": [
+        "1979",
+        "1995",
+        "1985",
+        "1989"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What does PDF stand for?",
+      "category": "tech",
+      "options": [
+        "Portable Data File",
+        "Public Document File",
+        "Printed Document Format",
+        "Portable Document Format"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the name of Apple's voice assistant?",
+      "category": "tech",
+      "options": [
+        "Cortana",
+        "Google Assistant",
+        "Siri",
+        "Alexa"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What does USB stand for?",
+      "category": "tech",
+      "options": [
+        "Universal Serial Bus",
+        "United System Bus",
+        "Ultra Serial Bus",
+        "Universal System Bridge"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What does VPN stand for?",
+      "category": "tech",
+      "options": [
+        "Verified Public Network",
+        "Virtual Private Network",
+        "Visual Private Network",
+        "Virtual Protected Node"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Who founded Microsoft with Paul Allen?",
+      "category": "tech",
+      "options": [
+        "Steve Wozniak",
+        "Steve Jobs",
+        "Bill Gates",
+        "Mark Zuckerberg"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "How many continents are there (commonly taught)?",
+      "category": "general",
+      "options": [
+        "7",
+        "8",
+        "5",
+        "6"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the largest country by area?",
+      "category": "general",
+      "options": [
+        "Russia",
+        "China",
+        "Canada",
+        "USA"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the smallest ocean?",
+      "category": "general",
+      "options": [
+        "Arctic Ocean",
+        "Indian Ocean",
+        "Atlantic Ocean",
+        "Southern Ocean"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "How many sides does a stop sign have (US)?",
+      "category": "general",
+      "options": [
+        "4",
+        "10",
+        "8",
+        "6"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the main language spoken in Brazil?",
+      "category": "general",
+      "options": [
+        "French",
+        "English",
+        "Spanish",
+        "Portuguese"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the currency of Japan?",
+      "category": "general",
+      "options": [
+        "Yuan",
+        "Yen",
+        "Won",
+        "Ringgit"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the tallest animal?",
+      "category": "general",
+      "options": [
+        "Ostrich",
+        "Giraffe",
+        "Elephant",
+        "Camel"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "How many legs does a spider have?",
+      "category": "general",
+      "options": [
+        "4",
+        "8",
+        "6",
+        "10"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the largest bird by wingspan?",
+      "category": "general",
+      "options": [
+        "Condor",
+        "Pelican",
+        "Eagle",
+        "Wandering albatross"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of New Zealand?",
+      "category": "general",
+      "options": [
+        "Queenstown",
+        "Christchurch",
+        "Wellington",
+        "Auckland"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What ocean is Bermuda in?",
+      "category": "general",
+      "options": [
+        "Indian Ocean",
+        "Arctic Ocean",
+        "Atlantic Ocean",
+        "Pacific Ocean"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the longest river in South America?",
+      "category": "general",
+      "options": [
+        "Orinoco",
+        "Amazon River",
+        "Uruguay",
+        "Paraná"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the smallest US state by area?",
+      "category": "general",
+      "options": [
+        "Delaware",
+        "Hawaii",
+        "Connecticut",
+        "Rhode Island"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the largest US state by area?",
+      "category": "general",
+      "options": [
+        "Montana",
+        "Alaska",
+        "California",
+        "Texas"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the national flower of Japan?",
+      "category": "general",
+      "options": [
+        "Cherry blossom",
+        "Lotus",
+        "Chrysanthemum",
+        "Rose"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the official language of Egypt?",
+      "category": "general",
+      "options": [
+        "Arabic",
+        "French",
+        "English",
+        "Coptic"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the hottest desert in the world?",
+      "category": "general",
+      "options": [
+        "Sahara Desert",
+        "Atacama Desert",
+        "Mojave Desert",
+        "Gobi Desert"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the coldest continent?",
+      "category": "general",
+      "options": [
+        "Asia",
+        "Antarctica",
+        "North America",
+        "Europe"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "How many time zones does Russia span (approx)?",
+      "category": "general",
+      "options": [
+        "5",
+        "11",
+        "3",
+        "8"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the most spoken language in the world by native speakers?",
+      "category": "general",
+      "options": [
+        "Mandarin Chinese",
+        "English",
+        "Spanish",
+        "Hindi"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Mongolia?",
+      "category": "geography",
+      "options": [
+        "Irkutsk",
+        "Urumqi",
+        "Ulaanbaatar",
+        "Astana"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Cambodia?",
+      "category": "geography",
+      "options": [
+        "Hanoi",
+        "Phnom Penh",
+        "Vientiane",
+        "Yangon"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Laos?",
+      "category": "geography",
+      "options": [
+        "Hanoi",
+        "Vientiane",
+        "Phnom Penh",
+        "Bangkok"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Brunei?",
+      "category": "geography",
+      "options": [
+        "Jakarta",
+        "Bandar Seri Begawan",
+        "Manila",
+        "Kuala Lumpur"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Timor-Leste?",
+      "category": "geography",
+      "options": [
+        "Jakarta",
+        "Honiara",
+        "Port Moresby",
+        "Dili"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Fiji?",
+      "category": "geography",
+      "options": [
+        "Apia",
+        "Nukuʻalofa",
+        "Suva",
+        "Port Moresby"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Papua New Guinea?",
+      "category": "geography",
+      "options": [
+        "Honiara",
+        "Port Moresby",
+        "Dili",
+        "Suva"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Madagascar?",
+      "category": "geography",
+      "options": [
+        "Harare",
+        "Antananarivo",
+        "Maputo",
+        "Nairobi"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Rwanda?",
+      "category": "geography",
+      "options": [
+        "Kampala",
+        "Kigali",
+        "Dodoma",
+        "Bujumbura"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Uganda?",
+      "category": "geography",
+      "options": [
+        "Nairobi",
+        "Dar es Salaam",
+        "Kigali",
+        "Kampala"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Tanzania?",
+      "category": "geography",
+      "options": [
+        "Kampala",
+        "Dodoma",
+        "Dar es Salaam",
+        "Nairobi"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Sudan?",
+      "category": "geography",
+      "options": [
+        "Juba",
+        "Cairo",
+        "Khartoum",
+        "Addis Ababa"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of South Sudan?",
+      "category": "geography",
+      "options": [
+        "Kampala",
+        "Juba",
+        "Nairobi",
+        "Khartoum"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Libya?",
+      "category": "geography",
+      "options": [
+        "Tunis",
+        "Benghazi",
+        "Tripoli",
+        "Algiers"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Tunisia?",
+      "category": "geography",
+      "options": [
+        "Rabat",
+        "Algiers",
+        "Tunis",
+        "Tripoli"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Cameroon?",
+      "category": "geography",
+      "options": [
+        "Kinshasa",
+        "Libreville",
+        "Douala",
+        "Yaoundé"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Angola?",
+      "category": "geography",
+      "options": [
+        "Kinshasa",
+        "Lusaka",
+        "Maputo",
+        "Luanda"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Zambia?",
+      "category": "geography",
+      "options": [
+        "Gaborone",
+        "Harare",
+        "Windhoek",
+        "Lusaka"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Zimbabwe?",
+      "category": "geography",
+      "options": [
+        "Harare",
+        "Pretoria",
+        "Lusaka",
+        "Gaborone"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Botswana?",
+      "category": "geography",
+      "options": [
+        "Windhoek",
+        "Gaborone",
+        "Lusaka",
+        "Harare"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Namibia?",
+      "category": "geography",
+      "options": [
+        "Gaborone",
+        "Luanda",
+        "Windhoek",
+        "Pretoria"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Mozambique?",
+      "category": "geography",
+      "options": [
+        "Harare",
+        "Maputo",
+        "Antananarivo",
+        "Lusaka"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Senegal?",
+      "category": "geography",
+      "options": [
+        "Abidjan",
+        "Bamako",
+        "Conakry",
+        "Dakar"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Ivory Coast?",
+      "category": "geography",
+      "options": [
+        "Abidjan",
+        "Accra",
+        "Yamoussoukro",
+        "Lomé"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Mali?",
+      "category": "geography",
+      "options": [
+        "Ouagadougou",
+        "Bamako",
+        "Niamey",
+        "Dakar"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Burkina Faso?",
+      "category": "geography",
+      "options": [
+        "Ouagadougou",
+        "Lomé",
+        "Bamako",
+        "Accra"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Chad?",
+      "category": "geography",
+      "options": [
+        "Yaoundé",
+        "Niamey",
+        "Khartoum",
+        "N'Djamena"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Democratic Republic of the Congo?",
+      "category": "geography",
+      "options": [
+        "Kigali",
+        "Brazzaville",
+        "Kinshasa",
+        "Luanda"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Republic of the Congo?",
+      "category": "geography",
+      "options": [
+        "Libreville",
+        "Luanda",
+        "Kinshasa",
+        "Brazzaville"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Gabon?",
+      "category": "geography",
+      "options": [
+        "Libreville",
+        "Luanda",
+        "Brazzaville",
+        "Yaoundé"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Ecuador?",
+      "category": "geography",
+      "options": [
+        "Quito",
+        "Guayaquil",
+        "Lima",
+        "Bogotá"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Bolivia?",
+      "category": "geography",
+      "options": [
+        "Asunción",
+        "Sucre",
+        "La Paz",
+        "Lima"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Paraguay?",
+      "category": "geography",
+      "options": [
+        "Montevideo",
+        "La Paz",
+        "Asunción",
+        "Buenos Aires"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Uruguay?",
+      "category": "geography",
+      "options": [
+        "Montevideo",
+        "Asunción",
+        "Buenos Aires",
+        "Santiago"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Guatemala?",
+      "category": "geography",
+      "options": [
+        "San Salvador",
+        "Guatemala City",
+        "Tegucigalpa",
+        "Managua"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Honduras?",
+      "category": "geography",
+      "options": [
+        "San Salvador",
+        "Tegucigalpa",
+        "Managua",
+        "Belmopan"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of El Salvador?",
+      "category": "geography",
+      "options": [
+        "Managua",
+        "Guatemala City",
+        "San Salvador",
+        "Tegucigalpa"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Nicaragua?",
+      "category": "geography",
+      "options": [
+        "San José",
+        "Panama City",
+        "Tegucigalpa",
+        "Managua"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Costa Rica?",
+      "category": "geography",
+      "options": [
+        "Belmopan",
+        "Managua",
+        "Panama City",
+        "San José"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Panama?",
+      "category": "geography",
+      "options": [
+        "San José",
+        "Caracas",
+        "Bogotá",
+        "Panama City"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Belize?",
+      "category": "geography",
+      "options": [
+        "Mexico City",
+        "Belmopan",
+        "San Salvador",
+        "Guatemala City"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Bahamas?",
+      "category": "geography",
+      "options": [
+        "Kingston",
+        "San Juan",
+        "Nassau",
+        "Havana"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Barbados?",
+      "category": "geography",
+      "options": [
+        "Kingston",
+        "Castries",
+        "Port of Spain",
+        "Bridgetown"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Trinidad and Tobago?",
+      "category": "geography",
+      "options": [
+        "Bridgetown",
+        "Georgetown",
+        "Port of Spain",
+        "Paramaribo"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Iceland?",
+      "category": "geography",
+      "options": [
+        "Oslo",
+        "Reykjavik",
+        "Helsinki",
+        "Copenhagen"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Luxembourg?",
+      "category": "geography",
+      "options": [
+        "Brussels",
+        "Luxembourg City",
+        "Amsterdam",
+        "Bern"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Malta?",
+      "category": "geography",
+      "options": [
+        "Valletta",
+        "Palermo",
+        "Athens",
+        "Naples"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Cyprus?",
+      "category": "geography",
+      "options": [
+        "Ankara",
+        "Beirut",
+        "Nicosia",
+        "Athens"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the capital of Lebanon?",
+      "category": "geography",
+      "options": [
+        "Beirut",
+        "Jerusalem",
+        "Amman",
+        "Damascus"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Jordan?",
+      "category": "geography",
+      "options": [
+        "Amman",
+        "Damascus",
+        "Baghdad",
+        "Beirut"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Oman?",
+      "category": "geography",
+      "options": [
+        "Abu Dhabi",
+        "Riyadh",
+        "Doha",
+        "Muscat"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Yemen?",
+      "category": "geography",
+      "options": [
+        "Sana'a",
+        "Muscat",
+        "Riyadh",
+        "Aden"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the capital of Qatar?",
+      "category": "geography",
+      "options": [
+        "Abu Dhabi",
+        "Manama",
+        "Kuwait City",
+        "Doha"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Kuwait?",
+      "category": "geography",
+      "options": [
+        "Baghdad",
+        "Kuwait City",
+        "Doha",
+        "Manama"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the capital of Bahrain?",
+      "category": "geography",
+      "options": [
+        "Kuwait City",
+        "Doha",
+        "Abu Dhabi",
+        "Manama"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Syria?",
+      "category": "geography",
+      "options": [
+        "Damascus",
+        "Baghdad",
+        "Amman",
+        "Beirut"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the fastest land animal?",
+      "category": "science",
+      "options": [
+        "Cheetah",
+        "Gazelle",
+        "Lion",
+        "Horse"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is a group of lions called?",
+      "category": "science",
+      "options": [
+        "Pack",
+        "Colony",
+        "Herd",
+        "Pride"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the largest species of shark?",
+      "category": "science",
+      "options": [
+        "Hammerhead",
+        "Tiger shark",
+        "Whale shark",
+        "Great white shark"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "How many hearts does an octopus have?",
+      "category": "science",
+      "options": [
+        "4",
+        "2",
+        "3",
+        "1"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the only mammal capable of true flight?",
+      "category": "science",
+      "options": [
+        "Flying squirrel",
+        "Colugo",
+        "Bat",
+        "Sugar glider"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the largest species of bear?",
+      "category": "science",
+      "options": [
+        "Panda",
+        "Black bear",
+        "Polar bear",
+        "Grizzly bear"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What bird is known for mimicking sounds?",
+      "category": "science",
+      "options": [
+        "Crow",
+        "Parrot",
+        "Mockingbird",
+        "Nightingale"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is a baby kangaroo called?",
+      "category": "science",
+      "options": [
+        "Calf",
+        "Cub",
+        "Joey",
+        "Pup"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the largest living reptile?",
+      "category": "science",
+      "options": [
+        "Komodo dragon",
+        "Galápagos tortoise",
+        "Anaconda",
+        "Saltwater crocodile"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What do bees make?",
+      "category": "science",
+      "options": [
+        "Honey",
+        "Pollen",
+        "Nectar",
+        "Wax only"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the tallest tree species (commonly cited)?",
+      "category": "science",
+      "options": [
+        "Coast redwood",
+        "Pine",
+        "Baobab",
+        "Oak"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the largest living structure on Earth?",
+      "category": "science",
+      "options": [
+        "Himalayas",
+        "Grand Canyon",
+        "Amazon rainforest",
+        "Great Barrier Reef"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is a female deer called?",
+      "category": "science",
+      "options": [
+        "Doe",
+        "Fawn",
+        "Ewe",
+        "Stag"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the national bird of the United States?",
+      "category": "science",
+      "options": [
+        "Bald eagle",
+        "Turkey",
+        "Blue jay",
+        "Robin"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the slowest mammal?",
+      "category": "science",
+      "options": [
+        "Koala",
+        "Three-toed sloth",
+        "Manatee",
+        "Panda"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the largest living bird by weight?",
+      "category": "science",
+      "options": [
+        "Emu",
+        "Condor",
+        "Albatross",
+        "Ostrich"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is a group of fish called?",
+      "category": "science",
+      "options": [
+        "Pack",
+        "Flock",
+        "School",
+        "Pod"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the only continent with no reptiles?",
+      "category": "science",
+      "options": [
+        "Antarctica",
+        "South America",
+        "Australia",
+        "Europe"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the largest big cat by weight?",
+      "category": "science",
+      "options": [
+        "Leopard",
+        "Jaguar",
+        "Tiger",
+        "Lion"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the study of plants called?",
+      "category": "science",
+      "options": [
+        "Botany",
+        "Geology",
+        "Ecology",
+        "Zoology"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the smallest planet in our solar system?",
+      "category": "science",
+      "options": [
+        "Venus",
+        "Mars",
+        "Mercury",
+        "Pluto"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What galaxy is Earth in?",
+      "category": "science",
+      "options": [
+        "Milky Way",
+        "Andromeda",
+        "Sombrero",
+        "Triangulum"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is a shooting star?",
+      "category": "science",
+      "options": [
+        "Meteor",
+        "Satellite",
+        "Asteroid",
+        "Comet"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the name of the first human in space?",
+      "category": "science",
+      "options": [
+        "John Glenn",
+        "Yuri Gagarin",
+        "Buzz Aldrin",
+        "Neil Armstrong"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Who was the first person to walk on the Moon?",
+      "category": "science",
+      "options": [
+        "Michael Collins",
+        "Yuri Gagarin",
+        "Buzz Aldrin",
+        "Neil Armstrong"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the Great Red Spot on Jupiter?",
+      "category": "science",
+      "options": [
+        "A storm",
+        "A crater",
+        "A moon",
+        "A volcano"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "How long does Earth take to rotate once on its axis?",
+      "category": "science",
+      "options": [
+        "12 hours",
+        "24 hours",
+        "30 days",
+        "365 days"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the name of Earth's natural satellite?",
+      "category": "science",
+      "options": [
+        "Moon",
+        "Europa",
+        "Luna II",
+        "Titan"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What color is the sun (as seen from space)?",
+      "category": "science",
+      "options": [
+        "Orange",
+        "White",
+        "Red",
+        "Yellow"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the hottest planet in the solar system?",
+      "category": "science",
+      "options": [
+        "Mercury",
+        "Venus",
+        "Mars",
+        "Jupiter"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What planet has the most moons (as of common knowledge)?",
+      "category": "science",
+      "options": [
+        "Uranus",
+        "Jupiter",
+        "Neptune",
+        "Saturn"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is a light-year a measure of?",
+      "category": "science",
+      "options": [
+        "Mass",
+        "Distance",
+        "Brightness",
+        "Time"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What force holds planets in orbit?",
+      "category": "science",
+      "options": [
+        "Gravity",
+        "Inertia",
+        "Friction",
+        "Magnetism"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the second planet from the Sun?",
+      "category": "science",
+      "options": [
+        "Venus",
+        "Mercury",
+        "Mars",
+        "Earth"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Where is the Eiffel Tower located?",
+      "category": "geography",
+      "options": [
+        "London",
+        "Berlin",
+        "Paris",
+        "Rome"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Where is the Statue of Liberty located?",
+      "category": "geography",
+      "options": [
+        "Philadelphia",
+        "Washington D.C.",
+        "Boston Harbor",
+        "New York Harbor"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Where is Machu Picchu?",
+      "category": "geography",
+      "options": [
+        "Colombia",
+        "Peru",
+        "Bolivia",
+        "Mexico"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Where is the ancient city of Petra?",
+      "category": "geography",
+      "options": [
+        "Jordan",
+        "Egypt",
+        "Israel",
+        "Syria"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Where is the Taj Mahal?",
+      "category": "geography",
+      "options": [
+        "Pakistan",
+        "Nepal",
+        "Bangladesh",
+        "India"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Where is the Colosseum?",
+      "category": "geography",
+      "options": [
+        "Istanbul",
+        "Athens",
+        "Rome",
+        "Cairo"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Where is Christ the Redeemer statue?",
+      "category": "geography",
+      "options": [
+        "Buenos Aires",
+        "São Paulo",
+        "Rio de Janeiro",
+        "Lima"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Where is the Great Wall mainly located?",
+      "category": "geography",
+      "options": [
+        "Japan",
+        "Mongolia",
+        "China",
+        "Korea"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Where is Stonehenge?",
+      "category": "geography",
+      "options": [
+        "Scotland",
+        "Wales",
+        "Ireland",
+        "England"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Where is the Acropolis?",
+      "category": "geography",
+      "options": [
+        "Cairo",
+        "Istanbul",
+        "Rome",
+        "Athens"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the longest mountain range in the world?",
+      "category": "geography",
+      "options": [
+        "Alps",
+        "Himalayas",
+        "Andes",
+        "Rockies"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the deepest ocean trench (well-known)?",
+      "category": "geography",
+      "options": [
+        "Java Trench",
+        "Tonga Trench",
+        "Puerto Rico Trench",
+        "Mariana Trench"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the largest island in the world?",
+      "category": "geography",
+      "options": [
+        "Borneo",
+        "New Guinea",
+        "Madagascar",
+        "Greenland"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the largest freshwater lake by surface area?",
+      "category": "geography",
+      "options": [
+        "Lake Superior",
+        "Lake Baikal",
+        "Lake Victoria",
+        "Lake Michigan"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What desert covers much of northern Africa?",
+      "category": "geography",
+      "options": [
+        "Sahara Desert",
+        "Mojave Desert",
+        "Kalahari Desert",
+        "Gobi Desert"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What strait separates Europe and Africa at Gibraltar?",
+      "category": "geography",
+      "options": [
+        "Dardanelles",
+        "Strait of Gibraltar",
+        "English Channel",
+        "Bosporus"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the largest country in South America?",
+      "category": "geography",
+      "options": [
+        "Argentina",
+        "Brazil",
+        "Peru",
+        "Colombia"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What river runs through London?",
+      "category": "geography",
+      "options": [
+        "Danube",
+        "Rhine",
+        "Thames",
+        "Seine"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What river runs through Paris?",
+      "category": "geography",
+      "options": [
+        "Loire",
+        "Thames",
+        "Rhine",
+        "Seine"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the capital of Scotland?",
+      "category": "geography",
+      "options": [
+        "Glasgow",
+        "Dundee",
+        "Aberdeen",
+        "Edinburgh"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Who is credited with inventing the light bulb (practical incandescent)?",
+      "category": "history",
+      "options": [
+        "James Watt",
+        "Alexander Graham Bell",
+        "Thomas Edison",
+        "Nikola Tesla"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Who developed the theory of general relativity?",
+      "category": "history",
+      "options": [
+        "Stephen Hawking",
+        "Niels Bohr",
+        "Isaac Newton",
+        "Albert Einstein"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Who invented the telephone?",
+      "category": "history",
+      "options": [
+        "Guglielmo Marconi",
+        "Thomas Edison",
+        "Nikola Tesla",
+        "Alexander Graham Bell"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Who proposed natural selection?",
+      "category": "history",
+      "options": [
+        "Gregor Mendel",
+        "Charles Darwin",
+        "Louis Pasteur",
+        "Alfred Russel Wallace"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Who discovered radium with her husband?",
+      "category": "history",
+      "options": [
+        "Lise Meitner",
+        "Marie Curie",
+        "Rosalind Franklin",
+        "Dorothy Hodgkin"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Who invented the World Wide Web?",
+      "category": "history",
+      "options": [
+        "Vint Cerf",
+        "Steve Jobs",
+        "Tim Berners-Lee",
+        "Bill Gates"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Who invented the printing press (movable type, European)?",
+      "category": "history",
+      "options": [
+        "Johannes Gutenberg",
+        "William Caxton",
+        "Galileo",
+        "Benjamin Franklin"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who flew first in a powered airplane (1903)?",
+      "category": "history",
+      "options": [
+        "Wright brothers",
+        "Alberto Santos-Dumont",
+        "Louis Blériot",
+        "Glenn Curtiss"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who invented pasteurization?",
+      "category": "history",
+      "options": [
+        "Robert Koch",
+        "Alexander Fleming",
+        "Louis Pasteur",
+        "Joseph Lister"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Who is the king of the gods in Greek mythology?",
+      "category": "culture",
+      "options": [
+        "Apollo",
+        "Hades",
+        "Zeus",
+        "Poseidon"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Who is the goddess of wisdom in Greek mythology?",
+      "category": "culture",
+      "options": [
+        "Artemis",
+        "Aphrodite",
+        "Athena",
+        "Hera"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the name of Thor's hammer in Norse mythology?",
+      "category": "culture",
+      "options": [
+        "Mjolnir",
+        "Gungnir",
+        "Gram",
+        "Durendal"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who stole fire from the gods in Greek myth?",
+      "category": "culture",
+      "options": [
+        "Perseus",
+        "Prometheus",
+        "Hercules",
+        "Odysseus"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "In Greek myth, who opened a box releasing troubles?",
+      "category": "culture",
+      "options": [
+        "Helen",
+        "Cassandra",
+        "Medusa",
+        "Pandora"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Who is the Roman equivalent of Zeus?",
+      "category": "culture",
+      "options": [
+        "Neptune",
+        "Saturn",
+        "Mars",
+        "Jupiter"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What creature has snakes for hair?",
+      "category": "culture",
+      "options": [
+        "Siren",
+        "Harpy",
+        "Chimera",
+        "Medusa"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is Achilles' famous weak spot?",
+      "category": "culture",
+      "options": [
+        "Heel",
+        "Knee",
+        "Back",
+        "Shoulder"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who is the Norse god of thunder?",
+      "category": "culture",
+      "options": [
+        "Odin",
+        "Thor",
+        "Loki",
+        "Freyja"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the underworld river in Greek myth?",
+      "category": "culture",
+      "options": [
+        "Nile",
+        "Lethe",
+        "Styx",
+        "Acheron"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the maximum score in ten-pin bowling in one game?",
+      "category": "sports",
+      "options": [
+        "200",
+        "300",
+        "100",
+        "250"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "In volleyball, how many hits per side is typical before returning?",
+      "category": "sports",
+      "options": [
+        "4",
+        "2",
+        "5",
+        "3"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What country hosted the 2016 Summer Olympics?",
+      "category": "sports",
+      "options": [
+        "UK",
+        "Brazil",
+        "China",
+        "Japan"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the national sport of Japan (martial art)?",
+      "category": "sports",
+      "options": [
+        "Karate",
+        "Sumo",
+        "Judo",
+        "Kendo"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "How many players on a rugby union team on the field?",
+      "category": "sports",
+      "options": [
+        "15",
+        "11",
+        "13",
+        "12"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the distance of a marathon in kilometers (approx)?",
+      "category": "sports",
+      "options": [
+        "42.2 km",
+        "40 km",
+        "35 km",
+        "50 km"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "In which sport might you do an ollie?",
+      "category": "sports",
+      "options": [
+        "Skateboarding",
+        "Skiing",
+        "Diving",
+        "Surfing"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the term for zero in tennis?",
+      "category": "sports",
+      "options": [
+        "Deuce",
+        "Ace",
+        "Advantage",
+        "Love"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What sport uses a shuttlecock?",
+      "category": "sports",
+      "options": [
+        "Badminton",
+        "Racquetball",
+        "Squash",
+        "Tennis"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the name of the NFL championship game?",
+      "category": "sports",
+      "options": [
+        "World Series",
+        "NBA Finals",
+        "Super Bowl",
+        "Stanley Cup"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What are the primary colors of light (additive)?",
+      "category": "art",
+      "options": [
+        "Red, green, blue",
+        "Black, white, gray",
+        "Red, yellow, blue",
+        "Cyan, magenta, yellow"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who cut off part of his own ear?",
+      "category": "art",
+      "options": [
+        "Salvador Dalí",
+        "Pablo Picasso",
+        "Claude Monet",
+        "Vincent van Gogh"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What art movement is Salvador Dalí associated with?",
+      "category": "art",
+      "options": [
+        "Baroque",
+        "Cubism",
+        "Impressionism",
+        "Surrealism"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the art of paper folding called?",
+      "category": "art",
+      "options": [
+        "Sumi-e",
+        "Origami",
+        "Kirigami",
+        "Ikebana"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Who sculpted \"David\"?",
+      "category": "art",
+      "options": [
+        "Bernini",
+        "Michelangelo",
+        "Donatello",
+        "Rodin"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What museum is home to the Mona Lisa?",
+      "category": "art",
+      "options": [
+        "Uffizi",
+        "Met Museum",
+        "Louvre",
+        "British Museum"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "How many chambers does a human heart have?",
+      "category": "science",
+      "options": [
+        "5",
+        "2",
+        "4",
+        "3"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What part of the brain controls balance?",
+      "category": "science",
+      "options": [
+        "Hypothalamus",
+        "Medulla",
+        "Cerebellum",
+        "Cerebrum"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the largest muscle in the human body?",
+      "category": "science",
+      "options": [
+        "Deltoid",
+        "Biceps",
+        "Gluteus maximus",
+        "Quadriceps"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What vitamin is produced in skin with sunlight?",
+      "category": "science",
+      "options": [
+        "Vitamin C",
+        "Vitamin K",
+        "Vitamin D",
+        "Vitamin E"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What carries oxygen in red blood cells?",
+      "category": "science",
+      "options": [
+        "Plasma",
+        "Hemoglobin",
+        "Platelets",
+        "White blood cells"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "How many amendments are in the US Bill of Rights (first ten)?",
+      "category": "general",
+      "options": [
+        "15",
+        "8",
+        "10",
+        "12"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "How many US Supreme Court justices are there (traditional number)?",
+      "category": "general",
+      "options": [
+        "7",
+        "12",
+        "11",
+        "9"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the first US state alphabetically?",
+      "category": "general",
+      "options": [
+        "Arkansas",
+        "Alabama",
+        "Arizona",
+        "Alaska"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the last US state alphabetically?",
+      "category": "general",
+      "options": [
+        "West Virginia",
+        "Wyoming",
+        "Washington",
+        "Wisconsin"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Who is on the US $1 bill?",
+      "category": "general",
+      "options": [
+        "Thomas Jefferson",
+        "Abraham Lincoln",
+        "Benjamin Franklin",
+        "George Washington"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Who wrote \"To Kill a Mockingbird\"?",
+      "category": "literature",
+      "options": [
+        "John Steinbeck",
+        "Truman Capote",
+        "William Faulkner",
+        "Harper Lee"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Who wrote \"Frankenstein\"?",
+      "category": "literature",
+      "options": [
+        "Mary Shelley",
+        "H.P. Lovecraft",
+        "Bram Stoker",
+        "Edgar Allan Poe"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Who wrote \"The Odyssey\"?",
+      "category": "literature",
+      "options": [
+        "Homer",
+        "Sophocles",
+        "Euripides",
+        "Virgil"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the name of Sherlock Holmes' friend?",
+      "category": "literature",
+      "options": [
+        "Hudson",
+        "Dr. Moriarty",
+        "Lestrade",
+        "Dr. Watson"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Who wrote \"Crime and Punishment\"?",
+      "category": "literature",
+      "options": [
+        "Anton Chekhov",
+        "Ivan Turgenev",
+        "Fyodor Dostoevsky",
+        "Leo Tolstoy"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the atomic number of carbon?",
+      "category": "science",
+      "options": [
+        "8",
+        "12",
+        "6",
+        "14"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What gas do humans exhale more of than they inhale?",
+      "category": "science",
+      "options": [
+        "Carbon dioxide",
+        "Oxygen",
+        "Helium",
+        "Nitrogen"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What particle has a positive charge in an atomic nucleus?",
+      "category": "science",
+      "options": [
+        "Electron",
+        "Proton",
+        "Photon",
+        "Neutron"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What particle has a negative charge?",
+      "category": "science",
+      "options": [
+        "Photon",
+        "Neutron",
+        "Electron",
+        "Proton"
+      ],
+      "answer": 2
     }
   ],
   "memory": {

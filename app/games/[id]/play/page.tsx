@@ -486,28 +486,24 @@ function TypingGame({
   );
 }
 
-// Trivia Game Component
+// Trivia Game Component — one player, 60s round; score = correct answers (like charades / memory flow)
 function TriviaGame({
   question,
   onAnswer,
-  teamScore
 }: {
   question: TriviaQuestion;
-  onAnswer: (correct: boolean, team: 'boys' | 'girls') => void;
-  teamScore: { boys: number; girls: number };
+  onAnswer: (correct: boolean) => void;
 }) {
-  const [selectedTeam, setSelectedTeam] = useState<'boys' | 'girls' | null>(null);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
 
   const handleSelect = (optionIndex: number) => {
-    if (answered || !selectedTeam) return;
+    if (answered) return;
     setSelectedOption(optionIndex);
     setAnswered(true);
     const isCorrect = optionIndex === question.answer;
     setTimeout(() => {
-      onAnswer(isCorrect, selectedTeam);
-      setSelectedTeam(null);
+      onAnswer(isCorrect);
       setSelectedOption(null);
       setAnswered(false);
     }, 2000);
@@ -520,63 +516,38 @@ function TriviaGame({
           <span className="text-xs bg-lavender-200 text-lavender-700 px-3 py-1 rounded-full lowercase">
             {question.category}
           </span>
-          <div className="flex gap-4 text-sm">
-            <span className="text-sky-600 font-bold">💙 {teamScore.boys}</span>
-            <span className="text-peach-600 font-bold">💗 {teamScore.girls}</span>
-          </div>
         </div>
         <h3 className="text-xl font-bold text-warm-700 mb-6">{question.question}</h3>
-        {!selectedTeam && (
-          <div className="mb-4">
-            <p className="text-sm text-warm-500 mb-3 lowercase">which team buzzed in?</p>
-            <div className="flex gap-3">
+        <div className="space-y-3">
+          {question.options.map((option, index) => {
+            const isSelected = selectedOption === index;
+            const isCorrect = index === question.answer;
+            const showResult = answered;
+            return (
               <button
-                onClick={() => setSelectedTeam('boys')}
-                className="flex-1 btn-sky py-3"
+                key={index}
+                onClick={() => handleSelect(index)}
+                disabled={answered}
+                className={`w-full p-4 rounded-xl text-left transition-all ${
+                  showResult && isCorrect
+                    ? 'bg-mint-200 border-2 border-mint-500'
+                    : showResult && isSelected && !isCorrect
+                    ? 'bg-peach-200 border-2 border-peach-500'
+                    : isSelected
+                    ? 'bg-lavender-200 border-2 border-lavender-500'
+                    : 'bg-cream-100 border-2 border-cream-300 hover:border-lavender-400'
+                }`}
               >
-                💙 Team Boys
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-warm-700">{String.fromCharCode(65 + index)}.</span>
+                  <span className="text-warm-700">{option}</span>
+                  {showResult && isCorrect && <span className="ml-auto text-mint-600">✓</span>}
+                  {showResult && isSelected && !isCorrect && <span className="ml-auto text-peach-600">✗</span>}
+                </div>
               </button>
-              <button
-                onClick={() => setSelectedTeam('girls')}
-                className="flex-1 btn-peach py-3"
-              >
-                💗 Team Girls
-              </button>
-            </div>
-          </div>
-        )}
-        {selectedTeam && (
-          <div className="space-y-3">
-            {question.options.map((option, index) => {
-              const isSelected = selectedOption === index;
-              const isCorrect = index === question.answer;
-              const showResult = answered;
-              return (
-                <button
-                  key={index}
-                  onClick={() => handleSelect(index)}
-                  disabled={answered}
-                  className={`w-full p-4 rounded-xl text-left transition-all ${
-                    showResult && isCorrect
-                      ? 'bg-mint-200 border-2 border-mint-500'
-                      : showResult && isSelected && !isCorrect
-                      ? 'bg-peach-200 border-2 border-peach-500'
-                      : isSelected
-                      ? 'bg-lavender-200 border-2 border-lavender-500'
-                      : 'bg-cream-100 border-2 border-cream-300 hover:border-lavender-400'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="font-bold text-warm-700">{String.fromCharCode(65 + index)}.</span>
-                    <span className="text-warm-700">{option}</span>
-                    {showResult && isCorrect && <span className="ml-auto text-mint-600">✓</span>}
-                    {showResult && isSelected && !isCorrect && <span className="ml-auto text-peach-600">✗</span>}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        )}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -976,7 +947,6 @@ export default function PlayGame() {
   const [typingGamePhase, setTypingGamePhase] = useState<TypingGamePhase>('setup');
   const [currentTypingPlayerId, setCurrentTypingPlayerId] = useState<number | null>(null);
   const [typingPlayersCompleted, setTypingPlayersCompleted] = useState<Record<number, TypingPlayerResult>>({});
-  const [triviaScore, setTriviaScore] = useState({ boys: 0, girls: 0 });
   const [songScore, setSongScore] = useState({ boys: 0, girls: 0 });
   /** True after host clicks "finish game" for song mode — avoids showing game-over on initial load. */
   const [songSessionEnded, setSongSessionEnded] = useState(false);
@@ -993,11 +963,11 @@ export default function PlayGame() {
   const [beerPongBoys, setBeerPongBoys] = useState<number[]>([]);
   const [beerPongGirls, setBeerPongGirls] = useState<number[]>([]);
   const [beerPongRounds, setBeerPongRounds] = useState<Array<'boys' | 'girls'>>([]);
-  /** Who this round's score is saved under (charades, memory). */
+  /** Who this round's score is saved under (charades, memory, trivia). */
   const [sessionScoreUserId, setSessionScoreUserId] = useState<number | null>(null);
-  /** DB user id to attach team boys score rows (song, trivia). */
+  /** DB user id for team boys score rows (song). */
   const [sessionBoysUserId, setSessionBoysUserId] = useState<number | null>(null);
-  /** DB user id to attach team girls score rows (song, trivia). */
+  /** DB user id for team girls score rows (song). */
   const [sessionGirlsUserId, setSessionGirlsUserId] = useState<number | null>(null);
   const [prompts, setPrompts] = useState<string[]>([]);
   const [songs, setSongs] = useState<Song[]>([]);
@@ -1180,10 +1150,10 @@ export default function PlayGame() {
   };
 
   const startGame = () => {
-    if (gameType === 'charades' || gameType === 'memory') {
+    if (gameType === 'charades' || gameType === 'memory' || gameType === 'trivia') {
       if (sessionScoreUserId == null) return;
     }
-    if (gameType === 'song' || gameType === 'trivia') {
+    if (gameType === 'song') {
       if (
         sessionBoysUserId == null ||
         sessionGirlsUserId == null ||
@@ -1196,7 +1166,6 @@ export default function PlayGame() {
     setTimeLeft(60);
     setScore({ correct: 0, incorrect: 0 });
     setTypingScore(null);
-    setTriviaScore({ boys: 0, girls: 0 });
     setSongScore({ boys: 0, girls: 0 });
     setSongSessionEnded(false);
     setMemoryScore(null);
@@ -1244,12 +1213,11 @@ export default function PlayGame() {
     setIsRunning(false);
   };
 
-  const handleTriviaAnswer = (correct: boolean, team: 'boys' | 'girls') => {
+  const handleTriviaAnswer = (correct: boolean) => {
     if (correct) {
-      setTriviaScore((prev) => ({
-        ...prev,
-        [team]: prev[team] + 1,
-      }));
+      setScore((prev) => ({ ...prev, correct: prev.correct + 1 }));
+    } else {
+      setScore((prev) => ({ ...prev, incorrect: prev.incorrect + 1 }));
     }
     nextPrompt();
   };
@@ -1400,48 +1368,33 @@ export default function PlayGame() {
     }
   };
 
-  const handleSaveTriviaScores = async () => {
-    if (!eventId || !game || sessionBoysUserId == null || sessionGirlsUserId == null) return;
+  const handleSaveTriviaScore = async () => {
+    if (!eventId || !game || sessionScoreUserId == null) return;
 
     setIsSavingScore(true);
     try {
-      // Save boys team score
-      if (triviaScore.boys > 0) {
-        await fetch('/api/scores', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            eventId,
-            gameId: game.id,
-            userId: sessionBoysUserId,
-            points: triviaScore.boys,
-            timeMs: 60000,
-            notes: `Team Boys: ${triviaScore.boys} correct answers`,
-          }),
-        });
-      }
+      const res = await fetch('/api/scores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          eventId,
+          gameId: game.id,
+          userId: sessionScoreUserId,
+          points: score.correct,
+          timeMs: 60000,
+          notes: `${score.correct} correct, ${score.incorrect} wrong`,
+        }),
+      });
 
-      // Save girls team score
-      if (triviaScore.girls > 0) {
-        await fetch('/api/scores', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            eventId,
-            gameId: game.id,
-            userId: sessionGirlsUserId,
-            points: triviaScore.girls,
-            timeMs: 60000,
-            notes: `Team Girls: ${triviaScore.girls} correct answers`,
-          }),
-        });
+      if (res.ok) {
+        setScore({ correct: 0, incorrect: 0 });
+        setTimeLeft(60);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        console.error('Failed to save trivia score:', err);
       }
-
-      // Reset for next round
-      setTriviaScore({ boys: 0, girls: 0 });
-      setTimeLeft(60);
     } catch (error) {
-      console.error('Failed to save trivia scores:', error);
+      console.error('Failed to save trivia score:', error);
     } finally {
       setIsSavingScore(false);
     }
@@ -1507,7 +1460,7 @@ export default function PlayGame() {
       case 'typing':
         return 'type the paragraph — team winner is highest average WPM (same rule as the leaderboard). ⚡';
       case 'trivia':
-        return 'answer trivia questions! first team to buzz in wins! 🧠';
+        return 'answer as many questions as you can in 60 seconds — your score is how many you get right! 🧠';
       case 'memory':
         return '5×5 grid — 12 pairs; free space stays in the center. match them all! 🧩';
       case 'manual':
@@ -2833,7 +2786,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
             <h2 className="text-2xl font-bold text-warm-700 mb-4 lowercase">ready to play?</h2>
             <p className="text-warm-500 mb-6">{getGameDescription()}</p>
 
-            {(gameType === 'charades' || gameType === 'memory') && (
+            {(gameType === 'charades' || gameType === 'memory' || gameType === 'trivia') && (
               <div className="mb-6 text-left max-w-md mx-auto">
                 <label className="block text-sm font-medium text-warm-600 mb-2 lowercase">
                   who is this round for? (score saves under this player)
@@ -2859,7 +2812,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
               </div>
             )}
 
-            {(gameType === 'song' || gameType === 'trivia') && (
+            {gameType === 'song' && (
               <div className="mb-6 space-y-4 text-left max-w-md mx-auto">
                 <p className="text-sm text-warm-500">
                   Pick one player per side so scores can be saved in the leaderboard (two different people).
@@ -2921,8 +2874,9 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
               className="btn-butter text-xl px-10 py-4 lowercase disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={
                 users.length === 0 ||
-                ((gameType === 'charades' || gameType === 'memory') && sessionScoreUserId == null) ||
-                ((gameType === 'song' || gameType === 'trivia') &&
+                ((gameType === 'charades' || gameType === 'memory' || gameType === 'trivia') &&
+                  sessionScoreUserId == null) ||
+                (gameType === 'song' &&
                   (users.length < 2 ||
                     sessionBoysUserId == null ||
                     sessionGirlsUserId == null ||
@@ -2943,7 +2897,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                 <div className={`text-6xl font-bold mb-4 ${timeLeft <= 10 ? 'text-peach-500 animate-pulse' : 'text-lavender-500'}`}>
                   {formatTime(timeLeft)}
                 </div>
-                {gameType === 'charades' && (
+                {(gameType === 'charades' || gameType === 'trivia') && (
                   <div className="flex justify-center gap-8 mb-4">
                     <div className="text-center">
                       <div className="text-3xl font-bold text-mint-500">{score.correct}</div>
@@ -2951,7 +2905,9 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                     </div>
                     <div className="text-center">
                       <div className="text-3xl font-bold text-peach-400">{score.incorrect}</div>
-                      <div className="text-sm text-warm-400 lowercase">skipped</div>
+                      <div className="text-sm text-warm-400 lowercase">
+                        {gameType === 'trivia' ? 'wrong' : 'skipped'}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -3008,11 +2964,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
 
             {/* Trivia Game */}
             {gameType === 'trivia' && currentTrivia && (
-              <TriviaGame
-                question={currentTrivia}
-                onAnswer={handleTriviaAnswer}
-                teamScore={triviaScore}
-              />
+              <TriviaGame question={currentTrivia} onAnswer={handleTriviaAnswer} />
             )}
 
             {/* Memory Game */}
@@ -3126,37 +3078,23 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
         {!isRunning && timeLeft === 0 && gameType === 'trivia' && (
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-xl p-8 text-center border border-cream-200">
             <div className="text-5xl mb-4">🧠</div>
-            <h2 className="text-3xl font-bold text-warm-700 mb-4 lowercase">time's up!</h2>
-            <div className="flex justify-center gap-8 mb-6">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-sky-500">{triviaScore.boys}</div>
-                <div className="text-warm-500">Team Boys 💙</div>
-              </div>
-              <div className="text-2xl text-warm-300 self-center">vs</div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-peach-500">{triviaScore.girls}</div>
-                <div className="text-warm-500">Team Girls 💗</div>
-              </div>
+            <h2 className="text-3xl font-bold text-warm-700 mb-4 lowercase">time&apos;s up!</h2>
+            <div className="text-5xl font-bold text-lavender-500 mb-4">
+              {score.correct} / {score.correct + score.incorrect}
             </div>
-            <div className="text-xl font-bold text-warm-600 mb-6">
-              {triviaScore.boys > triviaScore.girls 
-                ? '💙 Team Boys wins!' 
-                : triviaScore.girls > triviaScore.boys 
-                ? '💗 Team Girls wins!' 
-                : "🤝 It's a tie!"}
-            </div>
+            <p className="text-warm-500 mb-6">
+              {score.correct + score.incorrect === 0
+                ? 'no questions answered in 60 seconds.'
+                : `${score.correct} correct out of ${score.correct + score.incorrect} answered in 60 seconds.`}{' '}
+              {score.correct > 5 ? ' amazing! 🌟' : score.correct > 2 ? ' great job! 💪' : ' nice try! 🌱'}
+            </p>
             <div className="flex flex-col gap-3 items-center">
               <button
-                onClick={handleSaveTriviaScores}
+                onClick={handleSaveTriviaScore}
                 className="btn-butter lowercase"
-                disabled={
-                  isSavingScore ||
-                  (triviaScore.boys === 0 && triviaScore.girls === 0) ||
-                  sessionBoysUserId == null ||
-                  sessionGirlsUserId == null
-                }
+                disabled={isSavingScore || sessionScoreUserId == null}
               >
-                {isSavingScore ? 'saving...' : 'record scores ✨'}
+                {isSavingScore ? 'saving...' : 'record score ✨'}
               </button>
               <div className="flex gap-4">
                 <button
