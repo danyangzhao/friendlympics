@@ -15,7 +15,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     name: 'Charades',
     type: 'score',
     rules:
-      "Act out the prompts! 60 seconds per round. Your team guesses what you're acting.",
+      "Act out the prompts! 60 seconds per round. Your team guesses what you're acting. You may only skip 1 time.",
     team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
@@ -68,10 +68,10 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     time_direction: 'lower_better',
   },
   {
-    name: 'Plank + Wall Sit Relay',
+    name: 'plank-off',
     type: 'time',
     rules:
-      'Team endurance challenge! Combined time holding plank and wall sit positions.',
+      "Team endurance challenge! We will record every individual's time for overall hold of a plank. We will take the average score across the team. Highest average time wins!",
     team_win_rule: 'avg_time_ms',
     time_direction: 'higher_better',
   },

@@ -461,15 +461,9 @@ function TriviaGame({
   );
 }
 
-// YouTube Player Component
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
+// YouTube embed (plain iframe — avoids IFrame API + React Strict Mode races in dev)
 
-type SongGamePhase = 'idle' | 'playing' | 'buzzing' | 'guessing' | 'stealing' | 'revealing';
+type SongGamePhase = 'idle' | 'playing';
 type GameType = 'charades' | 'song' | 'typing' | 'trivia' | 'memory' | 'manual' | 'speed_drawing' | null;
 
 /** Shuffle and take up to `count` unique words from pool. */
@@ -483,142 +477,65 @@ function pickRandomWords(pool: string[], count: number): string[] {
   return shuffled.slice(0, Math.min(count, shuffled.length));
 }
 
-function YouTubePlayer({
-  videoId,
-  startTime = 0,
-  duration = 15,
-  onEnded,
-  isPlaying,
-  onReady
-}: {
-  videoId: string;
-  startTime?: number;
-  duration?: number;
-  onEnded: () => void;
-  isPlaying: boolean;
-  onReady?: () => void;
-}) {
-  const playerRef = useRef<any>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(duration);
+function YouTubePlayer({ videoId, startTime = 0 }: { videoId: string; startTime?: number }) {
+  const [iframeLoaded, setIframeLoaded] = useState(false);
 
   useEffect(() => {
-    // Load YouTube IFrame API
-    if (!window.YT) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-      
-      window.onYouTubeIframeAPIReady = () => {
-        initPlayer();
-      };
-    } else {
-      initPlayer();
-    }
+    setIframeLoaded(false);
+  }, [videoId, startTime]);
 
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-      if (playerRef.current) {
-        playerRef.current.destroy();
-      }
-    };
-  }, []);
-
-  const initPlayer = () => {
-    if (!containerRef.current) return;
-    
-    playerRef.current = new window.YT.Player(containerRef.current, {
-      height: '200',
-      width: '100%',
-      videoId: videoId,
-      playerVars: {
-        autoplay: 0,
-        controls: 0,
-        disablekb: 1,
-        fs: 0,
-        modestbranding: 1,
-        rel: 0,
-        start: startTime,
-      },
-      events: {
-        onReady: () => {
-          setIsLoaded(true);
-          onReady?.();
-        },
-        onStateChange: (event: any) => {
-          // Video ended naturally
-          if (event.data === window.YT.PlayerState.ENDED) {
-            onEnded();
-          }
-        }
-      }
-    });
-  };
-
-  useEffect(() => {
-    if (!playerRef.current || !isLoaded) return;
-
-    if (isPlaying) {
-      playerRef.current.seekTo(startTime);
-      playerRef.current.playVideo();
-      setTimeRemaining(duration);
-      
-      // Start countdown timer
-      timerRef.current = setInterval(() => {
-        setTimeRemaining(prev => {
-          if (prev <= 1) {
-            if (timerRef.current) clearInterval(timerRef.current);
-            playerRef.current?.pauseVideo();
-            onEnded();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      playerRef.current.pauseVideo();
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    }
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [isPlaying, isLoaded, startTime, duration, onEnded]);
+  const params = new URLSearchParams({
+    rel: '0',
+    modestbranding: '1',
+    playsinline: '1',
+    controls: '1',
+    fs: '1',
+    ...(startTime > 0 ? { start: String(Math.floor(startTime)) } : {}),
+  });
+  const embedSrc = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?${params.toString()}`;
+  const watchUrl = `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`;
 
   return (
-    <div className="relative">
-      <div ref={containerRef} className="rounded-xl overflow-hidden opacity-0 h-0" />
-      {isPlaying && (
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-full bg-cream-200 rounded-full h-3 overflow-hidden">
-            <div 
-              className="bg-lavender-500 h-full transition-all duration-1000 ease-linear"
-              style={{ width: `${(timeRemaining / duration) * 100}%` }}
-            />
+    <div className="relative space-y-4">
+      <div className="w-full max-w-md mx-auto rounded-xl overflow-hidden border border-cream-200 bg-black shadow-soft min-w-0 aspect-video relative">
+        {!iframeLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center text-warm-400 text-sm z-10 pointer-events-none">
+            Loading video…
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-4 h-4 bg-lavender-500 rounded-full animate-pulse" />
-            <span className="text-warm-600 font-medium">{timeRemaining}s remaining</span>
-          </div>
-        </div>
-      )}
-      {!isLoaded && (
-        <div className="text-center py-4 text-warm-500">Loading audio...</div>
+        )}
+        <iframe
+          key={`${videoId}-${startTime}`}
+          title="Song clip"
+          className="absolute inset-0 h-full w-full"
+          src={embedSrc}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          loading="lazy"
+          onLoad={() => setIframeLoaded(true)}
+        />
+      </div>
+      <p className="text-center text-xs text-warm-500 max-w-md mx-auto">
+        <a
+          href={watchUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sky-600 font-medium underline"
+        >
+          Open on YouTube
+        </a>
+        {' '}
+        if the embedded player does not load.
+      </p>
+      {iframeLoaded && (
+        <p className="text-center text-sm text-warm-500 lowercase">
+          use the youtube controls to play, pause, or seek whenever you like
+        </p>
       )}
     </div>
   );
 }
 
-// Song Guessing Game Component (New version with YouTube)
+// Song Guessing Game — YouTube clip + host picks which team got title & artist right
 function SongGame({
   song,
   onRoundComplete,
@@ -631,95 +548,28 @@ function SongGame({
   onNextSong: () => void;
 }) {
   const [phase, setPhase] = useState<SongGamePhase>('idle');
-  const [buzzedTeam, setBuzzedTeam] = useState<'boys' | 'girls' | null>(null);
-  const [guessTitle, setGuessTitle] = useState('');
-  const [guessArtist, setGuessArtist] = useState('');
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [stealAvailable, setStealAvailable] = useState(false);
-  const [playerReady, setPlayerReady] = useState(false);
+  const [showAnswer, setShowAnswer] = useState(false);
 
-  const resetRound = () => {
-    setPhase('idle');
-    setBuzzedTeam(null);
-    setGuessTitle('');
-    setGuessArtist('');
-    setIsCorrect(null);
-    setStealAvailable(false);
-    setPlayerReady(false);
-  };
+  useEffect(() => {
+    setShowAnswer(false);
+  }, [song.youtubeId]);
 
   const startPlaying = () => {
     setPhase('playing');
   };
 
-  const handleAudioEnded = () => {
-    setPhase('buzzing');
-  };
-
-  const handleBuzzIn = (team: 'boys' | 'girls') => {
-    setBuzzedTeam(team);
-    setPhase('guessing');
-  };
-
-  const normalizeString = (str: string) => {
-    return str.toLowerCase()
-      .replace(/[^a-z0-9\s]/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
-  };
-
-  const checkGuess = () => {
-    const normalizedGuessTitle = normalizeString(guessTitle);
-    const normalizedGuessArtist = normalizeString(guessArtist);
-    const normalizedTitle = normalizeString(song.title);
-    const normalizedArtist = normalizeString(song.artist);
-
-    // Check if title matches (allow partial matches for longer titles)
-    const titleMatch = normalizedTitle.includes(normalizedGuessTitle) || 
-                       normalizedGuessTitle.includes(normalizedTitle) ||
-                       normalizedGuessTitle === normalizedTitle;
-    
-    // Check if artist matches (more lenient - just needs to contain main artist name)
-    const artistMatch = normalizedArtist.includes(normalizedGuessArtist) || 
-                        normalizedGuessArtist.includes(normalizedArtist.split(' ')[0]) ||
-                        normalizedGuessArtist === normalizedArtist;
-
-    const correct = titleMatch && artistMatch && normalizedGuessTitle.length > 0 && normalizedGuessArtist.length > 0;
-    setIsCorrect(correct);
-
-    if (correct) {
-      setPhase('revealing');
-      onRoundComplete(buzzedTeam);
-    } else {
-      if (!stealAvailable) {
-        // First wrong guess - enable steal
-        setStealAvailable(true);
-        setPhase('stealing');
-        setGuessTitle('');
-        setGuessArtist('');
-      } else {
-        // Steal attempt failed
-        setPhase('revealing');
-        onRoundComplete(null);
-      }
-    }
-  };
-
-  const handleSteal = (team: 'boys' | 'girls') => {
-    setBuzzedTeam(team);
-    setPhase('guessing');
-    setGuessTitle('');
-    setGuessArtist('');
+  const awardPoint = (team: 'boys' | 'girls') => {
+    onRoundComplete(team);
   };
 
   const handleNextSong = () => {
-    resetRound();
+    setShowAnswer(false);
     onNextSong();
+    setPhase('playing');
   };
 
   return (
     <div className="space-y-6">
-      {/* Score Display */}
       <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-4 border border-cream-200">
         <div className="flex justify-center gap-8">
           <div className="text-center">
@@ -735,165 +585,70 @@ function SongGame({
       </div>
 
       <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-soft-xl p-8 border-2 border-sky-200">
-        {/* Idle Phase */}
         {phase === 'idle' && (
           <div className="text-center">
             <div className="text-5xl mb-4">🎵</div>
-            <h3 className="text-xl font-bold text-warm-700 mb-4 lowercase">ready for the next song?</h3>
-            <p className="text-warm-500 mb-6">listen to the 15-second intro and guess the song!</p>
+            <h3 className="text-xl font-bold text-warm-700 mb-4 lowercase">ready to play?</h3>
+            <p className="text-warm-500 mb-6">
+              the host controls play and pause on the video. when a team names the correct song title and artist,
+              tap their button to give them a point. keep going until you are done!
+            </p>
             <button
               onClick={startPlaying}
               className="btn-butter text-lg px-8 py-4 lowercase"
             >
-              play intro 🎶
+              show video 🎶
             </button>
           </div>
         )}
 
-        {/* Playing Phase */}
         {phase === 'playing' && (
-          <div className="text-center">
-            <div className="text-5xl mb-4 animate-bounce">🎧</div>
-            <h3 className="text-xl font-bold text-warm-700 mb-4 lowercase">listen carefully...</h3>
-            <YouTubePlayer
-              videoId={song.youtubeId}
-              startTime={song.startTime || 0}
-              duration={15}
-              onEnded={handleAudioEnded}
-              isPlaying={true}
-              onReady={() => setPlayerReady(true)}
-            />
-          </div>
-        )}
+          <div className="text-center space-y-6">
+            <div className="text-5xl mb-2">🎧</div>
+            <h3 className="text-xl font-bold text-warm-700 mb-2 lowercase">guess the song</h3>
+            <YouTubePlayer key={song.youtubeId} videoId={song.youtubeId} startTime={song.startTime || 0} />
 
-        {/* Buzzing Phase */}
-        {phase === 'buzzing' && (
-          <div className="text-center">
-            <div className="text-5xl mb-4">🔔</div>
-            <h3 className="text-xl font-bold text-warm-700 mb-4 lowercase">time to buzz in!</h3>
-            <p className="text-warm-500 mb-6">which team knows the answer?</p>
-            <div className="flex gap-4 justify-center">
-              <button
-                onClick={() => handleBuzzIn('boys')}
-                className="btn-sky text-lg px-8 py-4 flex items-center gap-2"
-              >
-                💙 Team Boys
-              </button>
-              <button
-                onClick={() => handleBuzzIn('girls')}
-                className="btn-peach text-lg px-8 py-4 flex items-center gap-2"
-              >
-                💗 Team Girls
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Guessing Phase */}
-        {phase === 'guessing' && buzzedTeam && (
-          <div>
-            <div className="text-center mb-6">
-              <div className="text-3xl mb-2">
-                {buzzedTeam === 'boys' ? '💙' : '💗'}
-              </div>
-              <h3 className="text-xl font-bold text-warm-700 lowercase">
-                {stealAvailable ? 'steal attempt!' : `team ${buzzedTeam} is guessing!`}
-              </h3>
-            </div>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm text-warm-500 mb-2 lowercase">song title</label>
-                <input
-                  type="text"
-                  value={guessTitle}
-                  onChange={(e) => setGuessTitle(e.target.value)}
-                  className="input-spring w-full text-lg"
-                  placeholder="enter song title..."
-                  autoFocus
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-warm-500 mb-2 lowercase">artist</label>
-                <input
-                  type="text"
-                  value={guessArtist}
-                  onChange={(e) => setGuessArtist(e.target.value)}
-                  className="input-spring w-full text-lg"
-                  placeholder="enter artist name..."
-                />
-              </div>
-              <button
-                onClick={checkGuess}
-                disabled={!guessTitle.trim() || !guessArtist.trim()}
-                className="w-full btn-mint text-lg py-4 lowercase disabled:opacity-50"
-              >
-                submit guess ✓
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Stealing Phase */}
-        {phase === 'stealing' && (
-          <div className="text-center">
-            <div className="text-5xl mb-4">😬</div>
-            <h3 className="text-xl font-bold text-peach-600 mb-2 lowercase">wrong answer!</h3>
-            <p className="text-warm-500 mb-6">
-              the other team can steal the point!
+            <p className="text-warm-600 text-sm max-w-md mx-auto">
+              which team said the correct <strong className="font-semibold">title</strong> and{' '}
+              <strong className="font-semibold">artist</strong>?
             </p>
-            <div className="flex gap-4 justify-center">
-              {buzzedTeam === 'boys' ? (
-                <button
-                  onClick={() => handleSteal('girls')}
-                  className="btn-peach text-lg px-8 py-4 flex items-center gap-2"
-                >
-                  💗 Team Girls Steal
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleSteal('boys')}
-                  className="btn-sky text-lg px-8 py-4 flex items-center gap-2"
-                >
-                  💙 Team Boys Steal
-                </button>
-              )}
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center items-stretch max-w-lg mx-auto">
               <button
-                onClick={() => {
-                  setPhase('revealing');
-                  onRoundComplete(null);
-                }}
-                className="btn-spring bg-cream-200 text-warm-600 text-lg px-8 py-4"
+                type="button"
+                onClick={() => awardPoint('boys')}
+                className="btn-sky text-lg px-6 py-4 flex-1 lowercase"
               >
-                skip steal
+                💙 team boys +1
+              </button>
+              <button
+                type="button"
+                onClick={() => awardPoint('girls')}
+                className="btn-peach text-lg px-6 py-4 flex-1 lowercase"
+              >
+                💗 team girls +1
               </button>
             </div>
-          </div>
-        )}
 
-        {/* Revealing Phase */}
-        {phase === 'revealing' && (
-          <div className="text-center">
-            <div className="text-5xl mb-4">
-              {isCorrect ? '🎉' : '😅'}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-2">
+              <button
+                type="button"
+                onClick={() => setShowAnswer((v) => !v)}
+                className="btn-spring bg-cream-200 text-warm-600 text-sm px-6 py-2 lowercase"
+              >
+                {showAnswer ? 'hide answer' : 'show answer'}
+              </button>
+              <button type="button" onClick={handleNextSong} className="btn-butter text-lg px-8 py-3 lowercase">
+                next song 🎵
+              </button>
             </div>
-            <h3 className="text-xl font-bold text-warm-700 mb-4 lowercase">
-              {isCorrect ? 'correct!' : 'the answer was...'}
-            </h3>
-            <div className="bg-cream-100 rounded-2xl p-6 mb-6">
-              <div className="text-2xl font-bold text-warm-700 mb-2">{song.title}</div>
-              <div className="text-lg text-warm-500">by {song.artist}</div>
-            </div>
-            {isCorrect && buzzedTeam && (
-              <p className="text-mint-600 font-bold mb-4">
-                +1 point for Team {buzzedTeam === 'boys' ? 'Boys 💙' : 'Girls 💗'}!
-              </p>
+
+            {showAnswer && (
+              <div className="bg-cream-100 rounded-2xl p-5 max-w-md mx-auto text-center border border-cream-200">
+                <div className="text-xl font-bold text-warm-700 mb-1">{song.title}</div>
+                <div className="text-warm-500">by {song.artist}</div>
+              </div>
             )}
-            <button
-              onClick={handleNextSong}
-              className="btn-butter text-lg px-8 py-4 lowercase"
-            >
-              next song 🎵
-            </button>
           </div>
         )}
       </div>
@@ -1033,6 +788,8 @@ export default function PlayGame() {
   const [typingPlayersCompleted, setTypingPlayersCompleted] = useState<Record<number, TypingPlayerResult>>({});
   const [triviaScore, setTriviaScore] = useState({ boys: 0, girls: 0 });
   const [songScore, setSongScore] = useState({ boys: 0, girls: 0 });
+  /** True after host clicks "finish game" for song mode — avoids showing game-over on initial load. */
+  const [songSessionEnded, setSongSessionEnded] = useState(false);
   const [memoryScore, setMemoryScore] = useState<{ moves: number; timeMs: number } | null>(null);
   const [manualScore, setManualScore] = useState({
     userId: '' as string,
@@ -1245,6 +1002,7 @@ export default function PlayGame() {
     setTypingScore(null);
     setTriviaScore({ boys: 0, girls: 0 });
     setSongScore({ boys: 0, girls: 0 });
+    setSongSessionEnded(false);
     setMemoryScore(null);
     nextPrompt();
   };
@@ -1507,7 +1265,7 @@ export default function PlayGame() {
       case 'charades':
         return 'act out the prompts! you have 60 seconds ⏱️';
       case 'song':
-        return 'listen to the instrumental intro and guess the song + artist! 🎵';
+        return 'play the youtube clip, pause or seek as needed — award a point to the team that gets title + artist right! 🎵';
       case 'typing':
         return 'type the paragraph — team winner is highest average WPM (same rule as the leaderboard). ⚡';
       case 'trivia':
@@ -2698,7 +2456,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
         {/* Game Running - for non-typing, non-manual games */}
         {isRunning && gameType !== 'typing' && gameType !== 'manual' && (
           <>
-            {/* Timer & Score - only for timed games (not song game which has its own timer) */}
+            {/* Timer & Score - charades + trivia (song game is untimed) */}
             {(gameType === 'charades' || gameType === 'trivia') && (
               <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-lg p-6 text-center border border-cream-200">
                 <div className={`text-6xl font-bold mb-4 ${timeLeft <= 10 ? 'text-peach-500 animate-pulse' : 'text-lavender-500'}`}>
@@ -2752,17 +2510,18 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
                   onNextSong={nextPrompt}
                 />
                 {/* Finish Game Option */}
-                {(songScore.boys > 0 || songScore.girls > 0) && (
-                  <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft p-5 border border-cream-200 text-center">
-                    <p className="text-warm-500 text-sm mb-3 lowercase">done playing?</p>
-                    <button
-                      onClick={() => setIsRunning(false)}
-                      className="btn-lavender lowercase text-sm"
-                    >
-                      finish game & record scores 🏁
-                    </button>
-                  </div>
-                )}
+                <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft p-5 border border-cream-200 text-center">
+                  <p className="text-warm-500 text-sm mb-3 lowercase">done playing?</p>
+                  <button
+                    onClick={() => {
+                      setIsRunning(false);
+                      setSongSessionEnded(true);
+                    }}
+                    className="btn-lavender lowercase text-sm"
+                  >
+                    finish game & record scores 🏁
+                  </button>
+                </div>
               </>
             )}
 
@@ -2817,7 +2576,7 @@ const handleTypingPlayerComplete = async (wpm: number, accuracy: number, timeMs:
         )}
 
         {/* Game Over - Song Game */}
-        {!isRunning && gameType === 'song' && (songScore.boys > 0 || songScore.girls > 0) && (
+        {!isRunning && gameType === 'song' && songSessionEnded && (
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-xl p-8 text-center border border-cream-200">
             <div className="text-5xl mb-4">🎵</div>
             <h2 className="text-3xl font-bold text-warm-700 mb-4 lowercase">game complete!</h2>
