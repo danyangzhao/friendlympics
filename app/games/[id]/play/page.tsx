@@ -1164,7 +1164,7 @@ export default function PlayGame() {
       setTypingPrompts(data.typing || []);
       setTriviaQuestions(data.trivia || []);
       setMemoryThemes(data.memory || {});
-      setSpeedDrawingPool(data.speedDrawing || []);
+      setSpeedDrawingPool(data.charades || []);
     } catch (error) {
       console.error('Failed to load prompts:', error);
     }
