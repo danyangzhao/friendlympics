@@ -43,6 +43,8 @@ interface Game {
   name: string;
   type: string;
   rules?: string;
+  team_win_rule?: string;
+  time_direction?: string;
 }
 
 interface Score {
@@ -57,6 +59,15 @@ interface Score {
   entryCount?: number;
 }
 
+interface TeamSummary {
+  boys: { metric: number | null; count: number };
+  girls: { metric: number | null; count: number };
+  winner: 'boys' | 'girls' | 'tie' | null;
+  rule: string;
+  timeDirection: string;
+  label: string;
+}
+
 export default function GameDetail() {
   const router = useRouter();
   const params = useParams();
@@ -65,6 +76,7 @@ export default function GameDetail() {
   const [eventId, setEventId] = useState<number | null>(null);
   const [game, setGame] = useState<Game | null>(null);
   const [scores, setScores] = useState<Score[]>([]);
+  const [teamSummary, setTeamSummary] = useState<TeamSummary | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadGameData = useCallback(async () => {
@@ -87,12 +99,17 @@ export default function GameDetail() {
       setGame(gameData || null);
 
       if (gameData) {
-        const leaderboardRes = await fetch(`/api/leaderboard?gameId=${gameId}`);
+        const [leaderboardRes, teamRes] = await Promise.all([
+          fetch(`/api/leaderboard?gameId=${gameId}`),
+          fetch(`/api/leaderboard?gameId=${gameId}&type=team`),
+        ]);
         if (leaderboardRes.ok) {
-          const leaderboardData = await leaderboardRes.json();
-          setScores(leaderboardData);
+          setScores(await leaderboardRes.json());
         } else {
           setScores(scoresRes);
+        }
+        if (teamRes.ok) {
+          setTeamSummary(await teamRes.json());
         }
       } else {
         setScores(scoresRes);
@@ -122,6 +139,19 @@ export default function GameDetail() {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const formatMetric = (value: number | null, rule: string) => {
+    if (value === null) return '—';
+    const isTime = rule === 'avg_time_ms' || rule === 'sum_time_ms';
+    if (isTime) {
+      const totalSec = value / 1000;
+      const min = Math.floor(totalSec / 60);
+      const sec = totalSec % 60;
+      if (min > 0) return `${min}m ${sec.toFixed(1)}s`;
+      return `${sec.toFixed(1)}s`;
+    }
+    return Number.isInteger(value) ? String(value) : value.toFixed(1);
   };
 
   const gameName = game?.name.toLowerCase() || '';
@@ -241,6 +271,78 @@ export default function GameDetail() {
             onSaved={loadGameData}
           />
         )}
+
+        {/* Team Scoreboard */}
+        {teamSummary && (teamSummary.boys.metric !== null || teamSummary.girls.metric !== null) && (() => {
+          const { boys, girls, winner, rule, label } = teamSummary;
+          const boysVal = formatMetric(boys.metric, rule);
+          const girlsVal = formatMetric(girls.metric, rule);
+          const hasBoth = boys.metric !== null && girls.metric !== null;
+
+          let diffText = '';
+          if (hasBoth && winner && winner !== 'tie') {
+            const isTime = rule === 'avg_time_ms' || rule === 'sum_time_ms';
+            const diff = Math.abs((boys.metric ?? 0) - (girls.metric ?? 0));
+            diffText = isTime ? formatMetric(diff, rule) : (Number.isInteger(diff) ? String(diff) : diff.toFixed(1));
+          }
+
+          return (
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-soft border border-cream-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">⚔️</span>
+                  <h2 className="text-lg font-bold text-warm-700 lowercase">team score</h2>
+                </div>
+                <span className="text-xs bg-cream-200 text-warm-500 px-3 py-1 rounded-full lowercase">{label}</span>
+              </div>
+
+              <div className="flex items-stretch gap-3">
+                {/* Boys */}
+                <div className={`flex-1 rounded-2xl p-4 text-center transition-all ${
+                  winner === 'boys' 
+                    ? 'bg-sky-100 border-2 border-sky-300 shadow-soft' 
+                    : 'bg-cream-50 border border-cream-200'
+                }`}>
+                  <div className="text-2xl mb-1">💙</div>
+                  <div className="text-xs text-warm-500 lowercase mb-1">boys</div>
+                  <div className={`text-2xl font-bold ${winner === 'boys' ? 'text-sky-600' : 'text-warm-600'}`}>
+                    {boysVal}
+                  </div>
+                  <div className="text-xs text-warm-400 mt-1">{boys.count} {boys.count === 1 ? 'entry' : 'entries'}</div>
+                  {winner === 'boys' && (
+                    <div className="text-xs font-semibold text-sky-600 mt-2 lowercase">leading{diffText ? ` by ${diffText}` : ''}</div>
+                  )}
+                </div>
+
+                {/* VS divider */}
+                <div className="flex flex-col items-center justify-center">
+                  {hasBoth && winner === 'tie' ? (
+                    <span className="text-sm font-bold text-warm-400 bg-cream-100 px-3 py-1 rounded-full">tied</span>
+                  ) : (
+                    <span className="text-sm font-bold text-warm-300">vs</span>
+                  )}
+                </div>
+
+                {/* Girls */}
+                <div className={`flex-1 rounded-2xl p-4 text-center transition-all ${
+                  winner === 'girls' 
+                    ? 'bg-peach-100 border-2 border-peach-300 shadow-soft' 
+                    : 'bg-cream-50 border border-cream-200'
+                }`}>
+                  <div className="text-2xl mb-1">💗</div>
+                  <div className="text-xs text-warm-500 lowercase mb-1">girls</div>
+                  <div className={`text-2xl font-bold ${winner === 'girls' ? 'text-peach-600' : 'text-warm-600'}`}>
+                    {girlsVal}
+                  </div>
+                  <div className="text-xs text-warm-400 mt-1">{girls.count} {girls.count === 1 ? 'entry' : 'entries'}</div>
+                  {winner === 'girls' && (
+                    <div className="text-xs font-semibold text-peach-600 mt-2 lowercase">leading{diffText ? ` by ${diffText}` : ''}</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Scores */}
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-soft border border-cream-200">

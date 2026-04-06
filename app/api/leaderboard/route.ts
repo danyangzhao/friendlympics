@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { calculateLeaderboard, getGameLeaderboard, calculateTeamLeaderboard } from '@/lib/leaderboard';
+import { calculateLeaderboard, getGameLeaderboard, calculateTeamLeaderboard, getGameTeamSummary } from '@/lib/leaderboard';
 import { ensureCanonicalGamesForEvent, getGameById } from '@/lib/data';
 
 export async function GET(request: NextRequest) {
@@ -13,6 +13,10 @@ export async function GET(request: NextRequest) {
       const game = getGameById(parseInt(gameId));
       if (!game) {
         return NextResponse.json({ error: 'Game not found' }, { status: 404 });
+      }
+      if (type === 'team') {
+        const summary = getGameTeamSummary(parseInt(gameId));
+        return NextResponse.json(summary);
       }
       const leaderboard = getGameLeaderboard(parseInt(gameId));
       return NextResponse.json(leaderboard);
