@@ -4,7 +4,11 @@ import { existsSync, mkdirSync } from 'fs';
 
 // Vercel serverless (and similar) only allow writes under /tmp; creating ./data throws EROFS → 500 on every API route.
 const isServerlessDeploy = Boolean(process.env.VERCEL);
-const dbDir = isServerlessDeploy ? '/tmp' : join(process.cwd(), 'data');
+const dbDir = process.env.DATA_DIR
+  ? process.env.DATA_DIR
+  : isServerlessDeploy
+    ? '/tmp'
+    : join(process.cwd(), 'data');
 if (!isServerlessDeploy && !existsSync(dbDir)) {
   mkdirSync(dbDir, { recursive: true });
 }

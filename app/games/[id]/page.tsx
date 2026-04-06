@@ -78,6 +78,7 @@ export default function GameDetail() {
   const [scores, setScores] = useState<Score[]>([]);
   const [teamSummary, setTeamSummary] = useState<TeamSummary | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showEditScores, setShowEditScores] = useState(false);
 
   const loadGameData = useCallback(async () => {
     const eid = localStorage.getItem('eventId');
@@ -263,15 +264,6 @@ export default function GameDetail() {
           </div>
         )}
 
-        {eventId !== null && (
-          <GameScoreEntry
-            eventId={eventId}
-            gameId={gameId}
-            gameType={game.type}
-            onSaved={loadGameData}
-          />
-        )}
-
         {/* Team Scoreboard */}
         {teamSummary && (teamSummary.boys.metric !== null || teamSummary.girls.metric !== null) && (() => {
           const { boys, girls, winner, rule, label } = teamSummary;
@@ -346,10 +338,33 @@ export default function GameDetail() {
 
         {/* Scores */}
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-soft border border-cream-200">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-xl">🏆</span>
-            <h2 className="text-lg font-bold text-warm-700 lowercase">scores</h2>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🏆</span>
+              <h2 className="text-lg font-bold text-warm-700 lowercase">scores</h2>
+            </div>
+            {eventId !== null && (
+              <button
+                type="button"
+                onClick={() => setShowEditScores(!showEditScores)}
+                className="text-sm text-butter-600 hover:text-butter-700 font-semibold lowercase transition-colors"
+              >
+                {showEditScores ? 'hide editor' : 'edit scores'}
+              </button>
+            )}
           </div>
+
+          {showEditScores && eventId !== null && (
+            <div className="mb-6 pb-5 border-b border-cream-200">
+              <GameScoreEntry
+                eventId={eventId}
+                gameId={gameId}
+                gameType={game.type}
+                gameName={game.name}
+                onSaved={loadGameData}
+              />
+            </div>
+          )}
           {scores.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-4xl mb-3">🌱</div>

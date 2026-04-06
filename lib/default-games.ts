@@ -85,7 +85,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
   {
     name: 'Beer Pong',
     type: 'score',
-    rules: 'Classic beer pong tournament. Points = number of games won.',
+    rules: '2v2 beer pong! Each team picks 2 players. Play as many rounds as you want — tap who won each round. The team that wins the most rounds takes the game.',
     team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
