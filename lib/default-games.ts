@@ -15,8 +15,8 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     name: 'Charades',
     type: 'score',
     rules:
-      "Act out the prompts! 60 seconds per round. Your team guesses what you're acting.",
-    team_win_rule: 'avg_points',
+      "Act out the prompts! 60 seconds per round. Your team guesses what you're acting. You may only skip 1 time.",
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
   {
@@ -39,15 +39,15 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     type: 'score',
     rules:
       'Answer trivia questions! First team to buzz in gets to answer. +1 point for correct answers.',
-    team_win_rule: 'avg_points',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
   {
     name: 'Memory Match',
     type: 'hybrid',
     rules:
-      'Flip cards to find matching pairs. Score based on moves and time - fewer moves = higher score!',
-    team_win_rule: 'avg_points',
+      'Flip cards to find matching pairs on a 5×5 board (12 pairs plus a free space in the center). The full board flashes face-up briefly at the start so you can memorize positions. Score = points from moves (1000 minus 10 per move) plus a speed bonus up to 150 that rewards faster finishes; total capped at 1200.',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
   {
@@ -55,7 +55,7 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     type: 'score',
     rules:
       "Draw each word as fast as you can! The app shows 25 random words per round. Host enters team scores when you're done.",
-    team_win_rule: 'avg_points',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
 
@@ -68,17 +68,17 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     time_direction: 'lower_better',
   },
   {
-    name: 'Plank + Wall Sit Relay',
+    name: 'plank-off',
     type: 'time',
     rules:
-      'Team endurance challenge! Combined time holding plank and wall sit positions.',
+      "Team endurance challenge! We will record every individual's time for overall hold of a plank. We will take the average score across the team. Highest average time wins!",
     team_win_rule: 'avg_time_ms',
     time_direction: 'higher_better',
   },
   {
-    name: '250-Piece Puzzle',
+    name: '500-Piece Puzzle',
     type: 'time',
-    rules: 'Race to complete a 250-piece puzzle. Fastest team wins!',
+    rules: 'Race to complete a 500-piece puzzle. Fastest team wins!',
     team_win_rule: 'avg_time_ms',
     time_direction: 'lower_better',
   },
@@ -86,15 +86,23 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     name: 'Beer Pong',
     type: 'score',
     rules: '2v2 beer pong! Each team picks 2 players. Play as many rounds as you want — tap who won each round. The team that wins the most rounds takes the game.',
-    team_win_rule: 'avg_points',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
   {
     name: 'Flip Cup Relay',
-    type: 'time',
+    type: 'score',
     rules:
-      'Team relay - drink and flip your cup! Fastest team to flip all cups wins.',
-    team_win_rule: 'avg_time_ms',
+      'Team relay - drink and flip your cup! Points = successful flips or relay wins.',
+    team_win_rule: 'sum_points',
+    time_direction: 'lower_better',
+  },
+  {
+    name: 'Eggs in the Carton',
+    type: 'score',
+    rules:
+      'Bounce ping pong balls into an egg carton! Each ball that lands in a slot scores a point. Highest score wins.',
+    team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },
 ];
