@@ -105,4 +105,13 @@ try {
   );
 }
 
+// Migration: events.status
+try {
+  db.prepare('SELECT status FROM events LIMIT 1').get();
+} catch {
+  db.exec(
+    "ALTER TABLE events ADD COLUMN status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active', 'completed'))"
+  );
+}
+
 export default db;

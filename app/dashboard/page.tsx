@@ -64,6 +64,7 @@ interface TeamLeaderboardEntry {
 export default function Dashboard() {
   const router = useRouter();
   const [eventId, setEventId] = useState<number | null>(null);
+  const [eventStatus, setEventStatus] = useState<string>('active');
   const [games, setGames] = useState<Game[]>([]);
   const [teamLeaderboard, setTeamLeaderboard] = useState<TeamLeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -92,6 +93,12 @@ export default function Dashboard() {
       }
 
       const leaderboardRes = await fetch(`/api/leaderboard?eventId=${id}&type=team`);
+      const eventRes = await fetch(`/api/events?id=${id}`);
+
+      if (eventRes.ok) {
+        const eventData = await eventRes.json();
+        setEventStatus(eventData.status || 'active');
+      }
 
       if (gamesRes.ok) {
         const gamesData = await gamesRes.json();
@@ -245,7 +252,7 @@ export default function Dashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className={`grid gap-3 ${eventStatus === 'completed' ? 'grid-cols-3' : 'grid-cols-2'}`}>
           <Link
             href="/host"
             className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-soft border border-cream-200 hover:shadow-soft-lg hover:-translate-y-1 transition-all text-center group"
@@ -264,6 +271,17 @@ export default function Dashboard() {
             </div>
             <span className="text-warm-700 font-semibold text-sm lowercase">full stats</span>
           </Link>
+          {eventStatus === 'completed' && (
+            <Link
+              href="/summary"
+              className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-soft border-2 border-peach-300 hover:shadow-soft-lg hover:-translate-y-1 transition-all text-center group"
+            >
+              <div className="w-12 h-12 mx-auto mb-3 bg-peach-100 rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                🏁
+              </div>
+              <span className="text-warm-700 font-semibold text-sm lowercase">summary</span>
+            </Link>
+          )}
         </div>
       </div>
 

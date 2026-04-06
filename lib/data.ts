@@ -22,6 +22,11 @@ export function getEventById(id: number) {
   return stmt.get(id) as any;
 }
 
+export function updateEventStatus(eventId: number, status: 'active' | 'completed') {
+  const stmt = db.prepare('UPDATE events SET status = ? WHERE id = ?');
+  stmt.run(status, eventId);
+}
+
 // User operations
 export function createUser(eventId: number, name: string, nickname?: string, avatar?: string, team?: 'boys' | 'girls') {
   const stmt = db.prepare('INSERT INTO users (event_id, name, nickname, avatar, team) VALUES (?, ?, ?, ?, ?)');
