@@ -76,9 +76,9 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     time_direction: 'higher_better',
   },
   {
-    name: '250-Piece Puzzle',
+    name: '500-Piece Puzzle',
     type: 'time',
-    rules: 'Race to complete a 250-piece puzzle. Fastest team wins!',
+    rules: 'Race to complete a 500-piece puzzle. Fastest team wins!',
     team_win_rule: 'avg_time_ms',
     time_direction: 'lower_better',
   },
@@ -94,6 +94,14 @@ export const CANONICAL_GAMES: readonly CanonicalGameDefinition[] = [
     type: 'score',
     rules:
       'Team relay - drink and flip your cup! Points = successful flips or relay wins.',
+    team_win_rule: 'sum_points',
+    time_direction: 'lower_better',
+  },
+  {
+    name: 'Eggs in the Carton',
+    type: 'score',
+    rules:
+      'Bounce ping pong balls into an egg carton! Each ball that lands in a slot scores a point. Highest score wins.',
     team_win_rule: 'sum_points',
     time_direction: 'lower_better',
   },

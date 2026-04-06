@@ -3,7 +3,7 @@ import type { TeamWinRule, TimeDirection } from './scoring';
 import { defaultsForGameType } from './scoring';
 import { CANONICAL_GAMES } from './default-games';
 
-const RETIRED_CANONICAL_GAMES = new Set(['Eggs in a Carton']);
+const RETIRED_CANONICAL_GAMES = new Set<string>([]);
 
 // Event operations
 export function createEvent(name: string, eventCode: string, startAt: string, endAt: string) {
@@ -93,10 +93,10 @@ function moveGameReferences(sourceGameId: number, targetGameId: number) {
 }
 
 function normalizeLegacyPuzzleGame(eventId: number, existingGames: any[]) {
-  const legacyPuzzleRows = existingGames.filter((g) => g.name === '500-Piece Puzzle');
+  const legacyPuzzleRows = existingGames.filter((g) => g.name === '250-Piece Puzzle');
   if (legacyPuzzleRows.length === 0) return existingGames;
 
-  const canonicalPuzzleDef = CANONICAL_GAMES.find((g) => g.name === '250-Piece Puzzle');
+  const canonicalPuzzleDef = CANONICAL_GAMES.find((g) => g.name === '500-Piece Puzzle');
   if (!canonicalPuzzleDef) return existingGames;
 
   const canonicalPuzzleRow = existingGames.find((g) => g.name === canonicalPuzzleDef.name);
